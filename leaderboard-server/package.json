@@ -1,0 +1,1 @@
+{"name":"kukirin-global-leaderboard","private":true,"version":"1.0.0","type":"module","engines":{"node":">=24"},"scripts":{"start":"node server.mjs"}}

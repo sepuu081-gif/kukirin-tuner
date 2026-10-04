@@ -42,3 +42,9 @@ The debug APK is generated at `android/app/build/outputs/apk/debug/app-debug.apk
 ## Assets and simulation
 
 Asset credits are included beside the media in `public/assets`, including the video, workshop photo and sound credits. The stunt bar uses the supplied T2U photograph. Vehicle tuning, VESC detection and performance are game simulations, not a connection to a physical controller. Vehicle brands belong to their respective owners.
+
+## v57
+
+Full-body paint across riding modes, full-black preset, optional fender removal, live career/drag preview, Estonian police van photograph, first-launch rider name, and Uber Eats style in-game deliveries with a saved euro wallet. The private fender code is intentionally excluded from the displayed code list and UNLOCKALL.
+
+The shared leaderboard client and SQLite server are included in `leaderboard-server`. No public server has been deployed yet. Configure a persistent HTTPS server URL on the leaderboard screen. Results queue offline and send when configured; no fake global scores are shown.

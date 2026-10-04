@@ -723,6 +723,7 @@ export const BATTERY_CELLS = [
 ];
 
 export const SECRET_CODES = {
+  MARIUSONTUFF: {key:'kukirin_unlock_fenders',reward:'Fender removal unlocked.',hidden:true,manualOnly:true,respectBonus:0},
   FRESHTYRES: { key:'kukirin_unlock_freshtyres', effect:'tyres', reward:'Replace tyres on every vehicle once.' },
   TIREGUARD: { key:'kukirin_unlock_tireguard', reward:'65% less tyre wear during rides.' },
   GRIPMASTER: { key:'kukirin_unlock_gripmaster', reward:'12% grip recovery, capped at fresh dry tyre grip.' },

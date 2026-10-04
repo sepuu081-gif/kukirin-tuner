@@ -1,3 +1,5 @@
+import RaceRidePreview from '../components/RaceRidePreview';
+import {submitScore} from '../lib/leaderboard';
 import { getTires, saveTires, tireEffects, wearTires } from "../lib/rideUpgrades";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -62,6 +64,7 @@ export default function DragRace() {
     try { return JSON.parse(localStorage.getItem("kukirin_drag_history") || "[]"); } catch { return []; }
   });
 
+  const scoreSubmitted = useRef(false);
   const keys = useRef({ w: false });
   const startTime = useRef(0);
   const playerFinished = useRef(false);
@@ -97,6 +100,7 @@ export default function DragRace() {
   }, []);
 
   const resetRaceState = useCallback(() => {
+    scoreSubmitted.current=false;
     playerPosRef.current = 0; aiPosRef.current = 0;
     playerSpeedRef.current = 0; aiSpeedRef.current = 0;
     playerFinished.current = false; aiFinished.current = false;
@@ -267,6 +271,7 @@ export default function DragRace() {
       const pWon = playerTime <= aiTime;
       setWinner(pWon ? "player" : "ai");
       setPhase("result");
+      if(!scoreSubmitted.current){scoreSubmitted.current=true;submitScore("drag",playerTime,vehicle.name);}
 
       const rep = pWon
         ? raceMode === "online" ? 150
@@ -503,16 +508,17 @@ export default function DragRace() {
               <span>0m</span><span>{elapsed.toFixed(1)}s</span><span>400m</span>
             </div>
 
+            <div className="race-ride-preview"><RaceRidePreview vehicle={vehicle} build={build} speed={playerSpeed} distance={playerPos/1000} seconds={elapsed} label={`${careerEvent?"CAREER":"DRAG"} · ${playerPos.toFixed(0)} / 400 m · ${activeOpponent.name}`}/></div>
             {/* Track - You */}
             <div className="rounded-lg border border-primary/30 bg-card p-3 space-y-2">
               <div className="flex justify-between text-[10px]">
                 <span className="text-primary font-bold">YOU — {vehicle.name}</span>
                 <span className="text-foreground">{playerSpeed.toFixed(0)} km/h · {playerPos.toFixed(0)}m</span>
               </div>
-              <div className="relative h-8 bg-secondary rounded-md overflow-hidden">
+              <div className="relative h-3 bg-secondary rounded-md overflow-hidden">
                 <div className="absolute inset-y-0 left-0 bg-primary/20 rounded-md transition-all duration-100" style={{ width: `${playerPct}%` }} />
                 <div className="absolute top-1/2 -translate-y-1/2 transition-all duration-100" style={{ left: `${Math.min(playerPct, 94)}%` }}>
-                  <span className="text-lg">🛴</span>
+                  <span className="text-xs">●</span>
                 </div>
                 {playerPct >= 100 && <div className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-green-400">FINISH</div>}
               </div>
@@ -524,10 +530,10 @@ export default function DragRace() {
                 <span className="text-muted-foreground font-bold">{activeOpponent.emoji} {activeOpponent.name} — {activeOpponent.vehicle}</span>
                 <span className="text-foreground">{aiSpeed.toFixed(0)} km/h · {aiPos.toFixed(0)}m</span>
               </div>
-              <div className="relative h-8 bg-secondary rounded-md overflow-hidden">
+              <div className="relative h-3 bg-secondary rounded-md overflow-hidden">
                 <div className="absolute inset-y-0 left-0 bg-red-500/20 rounded-md transition-all duration-100" style={{ width: `${aiPct}%` }} />
                 <div className="absolute top-1/2 -translate-y-1/2 transition-all duration-100" style={{ left: `${Math.min(aiPct, 94)}%` }}>
-                  <span className="text-lg">🏍</span>
+                  <span className="text-xs">●</span>
                 </div>
                 {aiPct >= 100 && <div className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-red-400">FINISH</div>}
               </div>
@@ -540,7 +546,7 @@ export default function DragRace() {
               onPointerCancel={() => { keys.current.w = false; }}
               onLostPointerCapture={() => { keys.current.w = false; }}
               style={{ touchAction: 'none' }}
-              className="w-full rounded-xl bg-primary/20 border border-primary/40 py-8 text-primary font-bold text-lg active:bg-primary/40 select-none"
+              className="w-full rounded-xl bg-primary/20 border border-primary/40 py-4 text-primary font-bold text-lg active:bg-primary/40 select-none"
             >
               [W] GAS — HOLD TO ACCELERATE
             </button>

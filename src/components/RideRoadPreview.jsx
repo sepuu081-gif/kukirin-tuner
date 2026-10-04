@@ -1,5 +1,6 @@
 import { BatteryCharging, Navigation, Radio, Thermometer } from "lucide-react";
 import { useLanguage } from "../lib/i18n";
+import PoliceVan from './PoliceVan';
 import RideDashboard from "./RideDashboard";
 import WheelieBalanceBar from './WheelieBalanceBar';
 import ParkScene from './ParkScene';
@@ -107,7 +108,7 @@ export default function RideRoadPreview({
       {(police === "approaching" || police === "chasing") && (
         <div className="ride-police" style={{ "--police-scale": `${0.62 + policeDist / 230}` }}>
           <div className="ride-police-lights"><i /><i /></div>
-          <div className="ride-police-car">🚔</div>
+          <PoliceVan/>
           <div className="ride-police-distance">{t("POLICE")} {policeDist.toFixed(0)}%</div>
         </div>
       )}

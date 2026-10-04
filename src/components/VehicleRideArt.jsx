@@ -4,7 +4,7 @@ import { getRiderPose } from '../lib/riderPose';
 import { photoCenterShift } from '../lib/photoFraming';
 import InstalledPartsArt from './InstalledPartsArt';
 import RiderPhotoRig from './RiderPhotoRig';
-import { paintG2Pixels } from '../lib/appearanceTuning';
+import { paintVehiclePixels, parseHex } from '../lib/appearanceTuning';
 import PhotoTuningOverlay from './PhotoTuningOverlay';
 import { removeStudioBackdrop } from '../lib/photoBackdrop';
 
@@ -136,7 +136,7 @@ const photoWheelLayouts = {
   g4_max: [14.4, 84.4, 85.2, 84.5, 18.8, 29, 8, 70],
 };
 
-function PhotoWheel({ photo, x, y, diameter, position }) {
+function PhotoWheel({ photo, x, y, diameter, position, appearance }) {
   const ref = useRef(null);
   useEffect(() => {
     let cancelled = false;
@@ -152,23 +152,24 @@ function PhotoWheel({ photo, x, y, diameter, position }) {
       const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
       for (let i = 0; i < pixels.data.length; i += 4) {
         if (Math.min(pixels.data[i], pixels.data[i + 1], pixels.data[i + 2]) > 232) pixels.data[i + 3] = 0;
+        else if(appearance?.customEnabled){const lum=(pixels.data[i]+pixels.data[i+1]+pixels.data[i+2])/3;if(lum>65){const color=parseHex(appearance.wheelColor,'#111827');for(let c=0;c<3;c++)pixels.data[i+c]=Math.min(255,Math.round(color[c]*(.2+lum/255*1.1)+Math.max(0,lum-170)/85*6));}}
       }
       ctx.putImageData(pixels, 0, 0);
       canvas.dataset.loaded = 'true';
     };
     image.src = photo;
     return () => { cancelled = true; };
-  }, [photo, x, y, diameter]);
+  }, [photo, x, y, diameter, appearance?.customEnabled,appearance?.wheelColor]);
   return <canvas ref={ref} data-center={`${x},${y}`} className={`photo-wheel-spin photo-wheel-${position}`} style={{ left:`${x}%`, top:`${y}%`, width:`${diameter}%` }} />;
 }
 
-function PhotoWheels({ vehicle, photo }) {
+function PhotoWheels({ vehicle, photo, appearance }) {
   const layout = getVehiclePhotoLayout(vehicle, photoWheelLayouts);
   const [fx, fy, rx, ry, diameter] = layout;
   // Keep the axle and suspension stationary; only the tire annulus rotates.
   return <div className="photo-wheel-layer" aria-hidden="true">
-    <PhotoWheel photo={photo} x={fx} y={fy} diameter={diameter} position="front" />
-    <PhotoWheel photo={photo} x={rx} y={ry} diameter={layout[8] || diameter} position="rear" />
+    <PhotoWheel photo={photo} x={fx} y={fy} diameter={diameter} position="front" appearance={appearance} />
+    <PhotoWheel photo={photo} x={rx} y={ry} diameter={layout[8] || diameter} position="rear" appearance={appearance} />
   </div>;
 }
 
@@ -189,18 +190,19 @@ function OpaquePhoto({ photo, onError, name, vehicle, appearance }) {
       if (!getVehiclePhotoInfo(vehicle)?.cutout && getVehiclePhotoInfo(vehicle)?.kind !== 'illustration') {
         removeStudioBackdrop(pixels.data, target.width, target.height);
       }
-      if (vehicle.id === 'g2_2026' || getVehiclePhotoInfo(vehicle)?.base === 'g2_2026') paintG2Pixels(pixels.data,target.width,target.height,appearance);
+      paintVehiclePixels(pixels.data,target.width,target.height,appearance,getVehiclePhotoLayout(vehicle,photoWheelLayouts),{moto:vehicle.vehicleType==='emoto'});
       ctx.putImageData(pixels, 0, 0);
       const mask = getVehiclePhotoMask(vehicle);
       if(mask){ctx.globalCompositeOperation='destination-out';ctx.beginPath();mask.forEach(([x,y],i)=>i?ctx.lineTo(x*target.width/100,y*target.height/100):ctx.moveTo(x*target.width/100,y*target.height/100));ctx.closePath();ctx.fill();ctx.globalCompositeOperation='source-over';}
       target.dataset.loaded = 'true';
       target.dataset.paint = appearance?.customEnabled ? 'on' : 'off';
       target.dataset.stem = appearance?.stemColor || '';
+      target.dataset.fenders=appearance?.fendersRemoved&&localStorage.getItem('kukirin_unlock_fenders')==='true'?'removed':'fitted';
     };
     image.onerror = () => errorHandler.current();
     image.src = photo;
     return () => { cancelled = true; };
-  }, [photo, vehicle, appearance?.customEnabled, appearance?.deckColor, appearance?.stemColor, appearance?.accentColor, appearance?.wrap, appearance?.sticker]);
+  }, [photo, vehicle, appearance?.customEnabled, appearance?.deckColor, appearance?.stemColor, appearance?.accentColor, appearance?.wrap, appearance?.sticker,appearance?.wheelColor,appearance?.fendersRemoved]);
   return <canvas ref={canvas} className="opaque-vehicle-photo" role="img" aria-label={`${name} on road`} />;
 }
 
@@ -221,7 +223,7 @@ export default function VehicleRideArt({ build, showRider = true, wheelieAngle =
     style={{ '--photo-center-shift': centerShift, '--wheelie-angle': `${wheelieAngle ?? (24 + balance * 12) * (1 - wheelieBarFactor * .65)}deg`, '--wheelie-rise': '0px', '--wheel-spin-duration': `${Math.max(.06, Math.PI * (vehicle?.tireSize || 10) * .0254 / Math.max(.1, speed / 3.6))}s`, transformOrigin: `${layout[2]}% ${layout[3]}%` }}
   >
     <OpaquePhoto appearance={appearance} photo={photo} vehicle={vehicle} name={vehicle.name} onError={() => setFailedPhoto(photo)} />
-    <PhotoWheels vehicle={vehicle} photo={photo} />
+    <PhotoWheels vehicle={vehicle} photo={photo} appearance={appearance} />
     {scraping && <div className="photo-contact-effects" style={{left:`${layout[2]}%`,top:`${layout[3]}%`,transform:`rotate(-${wheelieAngle||0}deg)`}}><div className="scrape-sparks" style={{top:`${(layout[8]||layout[4])/2}cqw`}}>{Array.from({length:7},(_,i)=><i key={i} style={{'--spark':i}}/>)}</div></div>}
     <PhotoTuningOverlay appearance={appearance} layout={layout} g2={vehicle.id === 'g2_2026' || getVehiclePhotoInfo(vehicle)?.base === 'g2_2026'} />
     <InstalledPartsArt vehicle={vehicle} layout={layout} build={build} wheelieBarFactor={wheelieBarFactor}/>

@@ -27,6 +27,7 @@ import RideRoadPreview from "../components/RideRoadPreview";
 import { playSound, startEngineSound, updateEngineSound, stopEngineSound, updatePoliceSiren, stopPoliceSiren } from "../lib/soundEngine";
 import { useLanguage } from "../lib/i18n";
 import { applyBatteryUse, getBatteryProfile, saveBatteryProfile } from "../lib/batteryState";
+import {submitScore} from '../lib/leaderboard';
 import { getRideLogs, saveRideLog } from "../lib/rideLogs";
 import RideLogViewer from "../components/RideLogViewer";
 import { getVehicleCharge, setVehicleCharge } from "../lib/chargingState";
@@ -286,6 +287,7 @@ export default function TelemetryRace() {
     };
     const saved = saveRideLog(vehicleId, { vehicleName: vehicle?.name || vehicleId, reason, samples, summary });
     logSavedRef.current = true;
+    if(saved&&summary.maxSpeed>0)submitScore("speed",summary.maxSpeed,vehicle?.name||vehicleId);
     if (saved) setLastRideLog(saved);
     persistBattery();
     return saved;

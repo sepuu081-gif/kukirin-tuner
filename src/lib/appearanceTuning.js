@@ -46,3 +46,30 @@ export function paintG2Pixels(data,width,height,appearance) {
 export function stickerLabel(appearance) {
   return appearance?.sticker==='racing'?'G2 RACING':null;
 }
+
+// Work on the photograph's opaque pixels, excluding the rubber tyre circles.
+export function paintVehiclePixels(data,width,height,appearance,layout,{moto=false}={}) {
+  const [fx,fy,rx,ry,diameter,hx,hy,deck]=layout;
+  const frontRadius=diameter/2,rearRadius=(layout[8]||diameter)/2;
+  const painted=appearance?.customEnabled;
+  const colors={deck:parseHex(appearance?.deckColor,'#111827'),stem:parseHex(appearance?.stemColor,'#111827'),accent:parseHex(appearance?.accentColor,'#111827'),wheel:parseHex(appearance?.wheelColor,'#111827')};
+  const removed=appearance?.fendersRemoved&&localStorage.getItem('kukirin_unlock_fenders')==='true'&&!moto;
+  for(let py=0;py<height;py++)for(let px=0;px<width;px++){
+    const i=(py*width+px)*4;if(data[i+3]<40)continue;
+    const x=px/width*100,y=py/height*100;
+    const fd=Math.hypot(x-fx,(y-fy)*height/width),rd=Math.hypot(x-rx,(y-ry)*height/width);
+    if(removed&&((x>rx-8&&x<rx+8&&y>deck-4&&y<ry-rearRadius*.7&&rd>rearRadius*.85)||(x>fx-7&&x<fx+7&&y>deck-4&&y<fy-frontRadius*.72&&fd>frontRadius*.85))){data[i+3]=0;continue;}
+    if(!painted)continue;
+    const wheel=fd<frontRadius*.91||rd<rearRadius*.91;
+    const lum=.2126*data[i]+.7152*data[i+1]+.0722*data[i+2];
+    if(wheel&&lum<65)continue;
+    const warm=data[i]>data[i+1]*1.12&&data[i+1]>data[i+2]*1.15;
+    const stemX=hx+(fx-hx)*Math.max(0,Math.min(1,(y-hy)/Math.max(1,deck-hy)));
+    const key=wheel?'wheel':warm?'accent':(y<deck-3&&Math.abs(x-stemX)<12)?'stem':'deck';
+    const color=colors[key],shade=.2+lum/255*1.1;
+    // Dark paint retains a small highlight, rather than turning metal grey.
+    const highlight=Math.max(...color)<30?Math.max(0,lum-35)*.085:Math.max(0,lum-170)/85*18;
+    for(let c=0;c<3;c++)data[i+c]=Math.min(255,Math.round(color[c]*shade+highlight));
+  }
+  return data;
+}

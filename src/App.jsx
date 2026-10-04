@@ -19,6 +19,9 @@ import HouseGarage from './pages/HouseGarage';
 import Settings from './pages/Settings';
 import StuntPark from './pages/StuntPark';
 import CityRide from './pages/CityRide';
+import FirstLaunchName from './components/FirstLaunchName';
+import Leaderboard from './pages/Leaderboard';
+import {syncScores} from './lib/leaderboard';
 import AppSound from './components/AppSound';
 import { LanguageProvider } from './lib/i18n';
 
@@ -61,6 +64,7 @@ const AuthenticatedApp = () => {
       <Route path="/house" element={<HouseGarage />} />
       <Route path="/settings" element={<Settings />} />
       <Route path="/stunt" element={<StuntPark />} />
+      <Route path="/leaderboard" element={<Leaderboard/>} />
       <Route path="/city" element={<CityRide />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
@@ -108,6 +112,7 @@ function BackNavigation() {
 
 
 function App() {
+  useEffect(()=>{void syncScores();const sync=()=>{void syncScores();};window.addEventListener("online",sync);return()=>window.removeEventListener("online",sync);},[]);
 
   return (
     <AuthProvider>
@@ -117,7 +122,7 @@ function App() {
           <Router>
             <ScrollToTop />
             <BackNavigation />
-            <AuthenticatedApp />
+            <FirstLaunchName><AuthenticatedApp /></FirstLaunchName>
           </Router>
           <Toaster />
         </LanguageProvider>

@@ -31,7 +31,7 @@ export function redeemSecretCode(input) {
   const code = String(input ?? '').trim().toUpperCase();
   if (!Object.hasOwn(SECRET_CODES, code)) return { success:false };
   const unlocked = new Set(getUnlockedCodes());
-  const targets = code === 'UNLOCKALL' ? Object.keys(SECRET_CODES) : [code];
+  const targets = code === 'UNLOCKALL' ? Object.keys(SECRET_CODES).filter(key=>!SECRET_CODES[key].manualOnly) : [code];
   let bonus = 0;
   let changed = false;
   for (const target of targets) {

@@ -15,7 +15,7 @@ export default function AppearanceStudio({ appearance, onChange, vehicle, build,
   const ap={...DEFAULT_APPEARANCE,...appearance};
   const change=next=>{setHistory(items=>[...items.slice(-19),ap]);onChange(next);};
   const set=(key,value)=>change({...ap,customEnabled:true,[key]:value});
-  const parts=[['stemColor','Stem Colour'],['deckColor','Deck Colour'],['accentColor','Accent colour'],['riderHelmetColor','Helmet Colour']];
+  const parts=[['stemColor','Stem Colour'],['deckColor','Deck Colour'],['accentColor','Accent colour'],['wheelColor','Wheel Colour'],['riderHelmetColor','Helmet Colour']];
   const wraps=localStorage.getItem('kukirin_unlock_wrapdrop')==='true'?WRAPS:WRAPS.slice(0,8);
   return <div className="appearance-studio">
     <div className="tuning-showroom" aria-label="Live tuning preview">
@@ -27,12 +27,12 @@ export default function AppearanceStudio({ appearance, onChange, vehicle, build,
         { [['paint','Paint','Värv'],['lights','Lights','Tuled'],['decals','Stickers','Kleebised'],['bodywork','Bodywork','Keretööd']].map(([id,en,et])=><button type="button" key={id} aria-pressed={section===id} onClick={()=>setSection(id)}>{text(en,et)}</button>) }
       </div>
       <div className="studio-panel">
-        {section==='bodywork'&&<BodyworkWorkshop build={build} vehicle={vehicle} onBuildChange={onBuildChange}/>}
+        {section==='bodywork'&&<><BodyworkWorkshop build={build} vehicle={vehicle} onBuildChange={onBuildChange}/>{localStorage.getItem('kukirin_unlock_fenders')==='true'&&<label className="appearance-toggle"><span>{text('Remove fenders','Eemalda porilauad')}</span><input type="checkbox" aria-label={text('Remove fenders','Eemalda porilauad')} checked={!!ap.fendersRemoved} onChange={e=>set('fendersRemoved',e.target.checked)}/></label>}</>}
         {section==='paint'&&<>
           <label className="appearance-select">{text('Paint part','Värvitav osa')}<select aria-label={text('Paint part','Värvitav osa')} value={part} onChange={e=>setPart(e.target.value)}>{parts.map(([key,label])=><option key={key} value={key}>{t(label)}</option>)}</select></label>
-          <ColourControl label={t(parts.find(([key])=>key===part)[1])} value={ap[part]} onChange={colour=>set(part,colour)}/>
+          <button type="button" className="studio-reset" onClick={()=>change({...ap,customEnabled:true,stemColor:'#050505',deckColor:'#050505',accentColor:'#050505',wheelColor:'#050505',sticker:'none'})}>{text('Full black','Üleni must')}</button><ColourControl label={t(parts.find(([key])=>key===part)[1])} value={ap[part]} onChange={colour=>set(part,colour)}/>
           <label className="appearance-toggle"><span>{t('Custom paint')}</span><input type="checkbox" aria-label={t('Custom paint')} checked={ap.customEnabled} onChange={e=>change({...ap,customEnabled:e.target.checked})}/></label>
-          <p className="studio-hint">{part==='riderHelmetColor'?text('Helmet colour is visible while riding.','Kiivri värv on nähtav sõidu ajal.'):text('Body paint is available on the G2 photo. LEDs and extra stickers also work on other models.','Kerevärvi saab muuta G2 fotol. LED-id ja lisakleebised töötavad ka teistel mudelitel.')}</p>
+          <p className="studio-hint">{part==='riderHelmetColor'?text('Helmet colour is visible while riding.','Kiivri värv on nähtav sõidu ajal.'):text('Your saved colours follow the scooter in every riding mode.','Salvestatud värvid on nähtavad kõigis sõidurežiimides.')}</p>
         </>}
         {section==='lights'&&<>
           <label className="appearance-toggle"><span>{t('Under-deck LEDs')}</span><input type="checkbox" aria-label={t('Under-deck LEDs')} checked={ap.ledEnabled} onChange={e=>set('ledEnabled',e.target.checked)}/></label>

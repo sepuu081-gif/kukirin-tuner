@@ -113,7 +113,7 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-2">
             <Link to="/settings" className="back-touch text-primary" aria-label={t('Settings')}><Settings className="h-5 w-5" /></Link>
-            <LanguageToggle compact />
+            <Link to="/leaderboard" className="text-xs text-sky-300">🏆</Link><LanguageToggle compact />
             <div className="hidden sm:flex items-center gap-2 rounded-md border border-border/50 bg-card px-2.5 py-1.5">
               <Trophy className="h-3.5 w-3.5 text-yellow-400" />
               <span className={`font-mono text-[10px] font-bold ${respectColor}`}>{respect} REP</span>
@@ -312,7 +312,7 @@ export default function Home() {
               )}
               {redeemStatus?.success === true && (
                 <div className="rounded-md border border-green-500/40 bg-green-500/5 p-3 space-y-1">
-                  <p className="font-mono text-[11px] text-green-400 font-bold">✓ {redeemStatus.code} UNLOCKED</p>
+                  <p className="font-mono text-[11px] text-green-400 font-bold">✓ {SECRET_CODES[redeemStatus.code]?.hidden?'SPECIAL FEATURE':redeemStatus.code} UNLOCKED</p>
                   <p className="font-mono text-[10px] text-muted-foreground">{t(redeemStatus.reward)}</p>
                   <p className="font-mono text-[10px] text-yellow-400">+50 respect earned</p>
                 </div>
@@ -323,7 +323,7 @@ export default function Home() {
             {unlockedCodes.length > 0 && (
               <div className="space-y-2">
                 <p className="font-mono text-[10px] text-muted-foreground uppercase tracking-widest">Unlocked ({unlockedCodes.length}/{Object.keys(SECRET_CODES).length})</p>
-                {unlockedCodes.map((code) => (
+                {unlockedCodes.filter(code=>!SECRET_CODES[code]?.hidden).map((code) => (
                   <div key={code} className="rounded-md border border-border bg-card px-3 py-2 font-mono text-[10px] flex items-center gap-2">
                     <Unlock className="h-3 w-3 text-yellow-400" />
                     <span className="text-yellow-400 font-bold">{code}</span>
@@ -336,7 +336,7 @@ export default function Home() {
             {/* All codes list */}
             <div className="rounded-lg border border-border/40 bg-card/30 p-4 font-mono text-[10px] text-muted-foreground space-y-2">
               <div className="text-foreground font-bold mb-2 text-xs">All Codes ({Object.keys(SECRET_CODES).length} total)</div>
-              {Object.entries(SECRET_CODES).map(([code, data]) => {
+              {Object.entries(SECRET_CODES).filter(([,data])=>!data.hidden).map(([code, data]) => {
                 const earned = unlockedCodes.includes(code);
                 return (
                   <div key={code} className={`flex items-start gap-2 rounded px-2 py-1.5 border transition-all ${earned ? "border-yellow-500/30 bg-yellow-500/5" : "border-border/30"}`}>
@@ -447,7 +447,7 @@ export default function Home() {
             <div>
               <p className="font-mono text-[10px] text-muted-foreground uppercase tracking-widest mb-3">Badges</p>
               <div className="grid grid-cols-3 gap-3">
-                {Object.entries(SECRET_CODES).map(([code, data]) => {
+                {Object.entries(SECRET_CODES).filter(([,data])=>!data.hidden).map(([code, data]) => {
                   const earned = unlockedCodes.includes(code);
                   return (
                     <div key={code} className={`rounded-lg border p-3 text-center transition-all ${earned ? "border-yellow-500/40 bg-yellow-500/5" : "border-border/30 opacity-40"}`}>

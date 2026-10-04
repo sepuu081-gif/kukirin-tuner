@@ -1,0 +1,12 @@
+import {useEffect,useState} from 'react';
+import {Link} from 'react-router-dom';
+import {useLanguage} from '../lib/i18n';
+import {fetchScores,leaderboardURL,setLeaderboardURL} from '../lib/leaderboard';
+export default function Leaderboard(){
+ const {language}=useLanguage();const et=language==='et';const [mode,setMode]=useState('drag'),[rows,setRows]=useState([]),[status,setStatus]=useState(''),[url,setUrl]=useState(leaderboardURL),[reload,setReload]=useState(0);
+ useEffect(()=>{let active=true;setStatus('loading');fetchScores(mode).then(data=>{if(active){setRows(data);setStatus('ready');}}).catch(error=>{if(active){setRows([]);setStatus(error.message==='not_configured'?'setup':'offline');}});return()=>{active=false;};},[mode,reload]);
+ return <main className="leaderboard-page app-surface"><Link to="/">← {et?'Tagasi':'Back'}</Link><h1>{et?'Ühine edetabel':'Global leaderboard'}</h1><p>{et?'Kõigi sama serveriga ühendatud mängijate rekordid.':'Records from every player connected to the same server.'}</p><nav>{[['drag','400 m drag'],['speed',et?'Tippkiirus':'Top speed'],['delivery',et?'Kulleritööd':'Deliveries']].map(([id,label])=><button key={id} aria-pressed={mode===id} onClick={()=>setMode(id)}>{label}</button>)}</nav>
+ {status==='loading'?<p>{et?'Laadin…':'Loading…'}</p>:status==='setup'?<p role="status">{et?'Edetabeli server ei ole veel seadistatud. Sinu tulemused salvestatakse ja saadetakse pärast ühendamist.':'The leaderboard server is not configured yet. Your results are queued until connected.'}</p>:status==='offline'?<p role="status">{et?'Serveriga ei saa praegu ühendust. Proovi uuesti.':'Server unavailable. Try again.'}</p>:<ol>{rows.map((r,i)=><li key={r.id}><b>{i+1}. {r.name}</b><span>{r.vehicle}</span><strong>{Number(r.value).toFixed(mode==='drag'?3:0)} {mode==='drag'?'s':mode==='speed'?'km/h':'€'}</strong></li>)}{!rows.length&&<p>{et?'Tulemusi veel pole.':'No results yet.'}</p>}</ol>}
+ <button onClick={()=>setReload(n=>n+1)}>{et?'Värskenda':'Refresh'}</button><details><summary>{et?'Serveri ühendus':'Server connection'}</summary><form onSubmit={e=>{e.preventDefault();try{setLeaderboardURL(url);setReload(n=>n+1);}catch{setStatus('offline');}}}><input type="url" required aria-label="Leaderboard server URL" value={url} onChange={e=>setUrl(e.target.value)} placeholder="https://your-server.example"/><button>{et?'Ühenda':'Connect'}</button></form></details>
+ </main>;
+}

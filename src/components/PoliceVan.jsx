@@ -1,0 +1,1 @@
+export default function PoliceVan(){return <div className="estonian-police-van"><img src="/assets/police/estonian-sprinter.png" alt="Eesti politsei Mercedes Sprinter"/><div className="van-beacons"><i/><i/></div></div>;}

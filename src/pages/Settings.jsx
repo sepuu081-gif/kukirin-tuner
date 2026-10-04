@@ -22,7 +22,7 @@ export default function Settings() {
       <Setting icon={Volume2} title={et ? 'Mänguhelid' : 'Game sounds'} description={et ? 'Mootor, sõidumüra ja nuppude helid.' : 'Motor, road and button sounds.'} checked={sound} onChange={() => { setSoundEnabled(!sound); setSound(!sound); }} />
       <section className="setting-row"><Languages/><div><h2>{et ? 'Keel' : 'Language'}</h2><p>Eesti / English</p></div><LanguageToggle /></section>
       <p className="settings-note">{et ? 'Aku tühjenemine ja temperatuurist sõltuv võimsus töötavad mõlemas režiimis.' : 'Battery drain and temperature-based power limits remain active in both modes.'}</p>
-    </main>
+    <p className="settings-note">Politseifoto: Estonian.em · <a href="https://commons.wikimedia.org/wiki/File:Mercedes_Sprinter_Estonian_police_van.png" target="_blank" rel="noreferrer">Wikimedia Commons</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noreferrer">CC BY-SA 4.0</a></p></main>
   </div>;
 }
 
