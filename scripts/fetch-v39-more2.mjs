@@ -1,0 +1,5 @@
+import fs from 'node:fs/promises';
+const saved=JSON.parse(await fs.readFile('../../outputs/v39-catalogs.json'));
+const urls=['https://dualtronusa.com/products.json?limit=250&page=3','https://www.segway.la/products.json?limit=250&page=2','https://fluidfreeride.com/products.json?limit=250&page=3','https://kukiringlobal.com/products.json?limit=250','https://alienrides.com/products.json?limit=250','https://joyorescooter.com/products.json?limit=250'];
+await Promise.all(urls.map(async url=>{try{const json=await(await fetch(url,{signal:AbortSignal.timeout(18000)})).json();saved.push({store:new URL(url).origin,products:json.products});console.log(new URL(url).host,json.products?.length);}catch(e){console.log(url,e.message)}}));await fs.writeFile('../../outputs/v39-catalogs.json',JSON.stringify(saved));
+for(const s of saved.slice(-6))console.log(s.store,s.products?.filter(p=>Number(p.variants?.[0]?.price)>200&&!/motor|battery|charger|rim|caliper|deck cover|damper|protection|suspension|seat kit|wheel|fork|display|screen|controller|extend|cover|upgrade|brake/i.test(p.title)).map(p=>p.handle+' | '+p.title).slice(0,65).join('\n'));

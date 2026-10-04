@@ -1,0 +1,1 @@
+export const STUNT_BAR={id:'t2u_stunt_bar',name:'T2U Footrest Stunt Bar',category:'wheelie_bar',sizeClass:1,guardFactor:.7,weight:1.6,price:150,mount:'footrest',photo:'/assets/parts/t2u-stunt-bar.jpg',desc:'Steel rear footrest with serrated grip edges and a scrape surface. Model-specific mounting adapter included in the game.'};

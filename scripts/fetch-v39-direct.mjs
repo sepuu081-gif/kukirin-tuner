@@ -1,0 +1,3 @@
+import fs from 'node:fs/promises';
+const urls=['https://joyorscooter.com/products.json?limit=250','https://scootidoo.com/products/dualtron-mini.js','https://www.minimotors-nyc.com/products/dualtron-spider-2.js','https://www.voromotors.com/products/refurbished-dualtron-eagle-pro-electric-scooter.js','https://en.kugookirin.com/'];
+await Promise.all(urls.map(async(url,i)=>{try{const text=await(await fetch(url,{signal:AbortSignal.timeout(18000)})).text();await fs.writeFile('../../outputs/v39-direct-'+i+'.json',text);console.log(i,text.slice(0,60));if(i===0){const p=JSON.parse(text).products;console.log(p.filter(p=>/a3|x3/i.test(p.title)).map(p=>p.handle+' | '+p.title).join('\n'));}}catch(e){console.log(i,e.message)}}));

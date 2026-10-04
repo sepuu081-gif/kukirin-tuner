@@ -1,0 +1,4 @@
+import fs from 'node:fs/promises';
+const stores=['https://kukirin.global','https://dualtronusa.com','https://joyor.com','https://www.kaabousa.com','https://fluidfreeride.com','https://store.segway.com','https://www.kugoo-scooter.com','https://www.voromotors.com'];
+const data=await Promise.all(stores.map(async store=>{try{const res=await fetch(store+'/products.json?limit=250',{signal:AbortSignal.timeout(20000)});const json=await res.json();return {store,products:json.products};}catch(e){return {store,error:e.message};}}));
+await fs.writeFile('../../outputs/v39-catalogs.json',JSON.stringify(data));for(const d of data){console.log(d.store,d.products?.length??d.error);console.log(d.products?.filter(p=>!/accessor|part|brake|tire|battery|charger|replacement|controller|motor|screw/i.test(p.title)&&p.images?.length).map(p=>p.handle+' | '+p.title).join('\n'));}

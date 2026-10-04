@@ -1,0 +1,2 @@
+import fs from 'node:fs/promises';let data=JSON.parse(await fs.readFile('../../outputs/v39-catalogs.json'));
+for(let [id,handle,indices]of [['nami_burne2','nami-burn-e-open-box-refurbished',[4,5,6,7]],['nami_burne_max','nami-burn-e-2',[3,5,7]],['kaabo_wolf_gt','kaabo-king-gt-pro-electric-scooter',[7]]]){let p=data.flatMap(s=>s.products||[]).find(p=>p.handle===handle);for(let i of indices){let url=p.images[i].src;await fs.writeFile('../../outputs/v39-detail-'+id+'-'+i+'.'+new URL(url).pathname.split('.').at(-1),Buffer.from(await(await fetch(url)).arrayBuffer()));}}

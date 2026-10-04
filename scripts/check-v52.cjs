@@ -1,0 +1,23 @@
+const {chromium}=require('C:/Users/sebas/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const assert=require('node:assert/strict');
+(async()=>{const browser=await chromium.launch({channel:'chrome',headless:true});try{
+ const p=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});const errors=[];p.on('pageerror',e=>errors.push(e.message));
+ await p.addInitScript(()=>{if(location.protocol==='http:'&&!localStorage.getItem('qa52')){localStorage.clear();localStorage.setItem('qa52','1');localStorage.setItem('kukirin_language','en');localStorage.setItem('kukirin_g2_style_v41','true');}});
+ await p.goto('http://127.0.0.1:5173/#/build/g2_2026?tab=appearance');await p.getByRole('button',{name:'Bodywork',exact:true}).click();
+ const get=()=>p.evaluate(()=>JSON.parse(localStorage.getItem('kukirin_builds')).g2_2026);
+ const original=await get();assert.equal(original.weldCount,0);
+ for(const width of [360,390,412]){await p.setViewportSize({width,height:844});assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));}
+ await p.setViewportSize({width:390,height:844});await p.locator('[data-project=deck_extension]').getByRole('button').click();await p.getByRole('button',{name:'Prepare surfaces'}).click();await p.getByRole('button',{name:'Start welding'}).click();await p.getByRole('button',{name:'Cancel',exact:true}).click();await p.waitForTimeout(3200);assert.equal((await get()).weldCount,0,'cancel running job must never commit');
+ async function finish(id){await p.locator(`[data-project=${id}]`).getByRole('button').click();await p.getByRole('button',{name:'Prepare surfaces'}).click();await p.getByRole('button',{name:'Start welding'}).click();await p.getByRole('button',{name:'Inspect & finish'}).waitFor();await p.getByRole('button',{name:'Inspect & finish'}).click();}
+ await finish('deck_extension');assert.equal((await get()).weldCount,1);assert.equal((await get()).frameExpansion,1);
+ await finish('frame_brace');assert.equal((await get()).bodywork.frame_brace,1);assert(await p.locator('[data-project=frame_brace]').getByRole('button').isDisabled());
+ const stats=await p.evaluate(async()=>{const {calcBuildStats}=await import('/src/lib/buildState.js');const {VEHICLES}=await import('/src/lib/vehicleData.js');const b=JSON.parse(localStorage.getItem('kukirin_builds')).g2_2026,v=VEHICLES.find(v=>v.id==='g2_2026');return [calcBuildStats(v,{...b,bodywork:{}}),calcBuildStats(v,b)];});assert.equal(Math.round((stats[1].totalWeight-stats[0].totalWeight)*10),12);assert(stats[1].durability>stats[0].durability);
+ await p.reload();await p.getByRole('button',{name:'Bodywork',exact:true}).click();assert(await p.locator('[data-project=frame_brace]').getByRole('button').isDisabled());
+ await p.route('**/*',route=>new URL(route.request().url()).hostname==='127.0.0.1'?route.continue():route.abort());await p.reload();await p.getByRole('button',{name:'Bodywork',exact:true}).click();await p.waitForFunction(()=>[...document.querySelectorAll('.bodywork-project img')].length===2&&[...document.querySelectorAll('.bodywork-project img')].every(i=>i.complete&&i.naturalWidth>0));assert(await p.locator('.bodywork-project img').evaluateAll(imgs=>imgs.every(i=>i.complete&&i.naturalWidth>0)),'bundled workshop photos available offline');await p.locator('.bodywork-workshop').scrollIntoViewIfNeeded();await p.screenshot({path:'../../outputs/v52-bodywork.png'});
+ // Pending oversized installs need repeatable inspected jobs; cancellation retains existing part.
+ await p.goto('http://127.0.0.1:5173/#/build/g2_2026');const oversized=p.locator('.part-card').filter({has:p.getByRole('button',{name:'Needs welding',exact:true})}).first();const partName=await oversized.locator('span.font-semibold').first().innerText();await oversized.getByRole('button',{name:'Needs welding',exact:true}).click();await p.getByRole('button',{name:'Cancel',exact:true}).click();assert.equal((await get()).weldCount,1);
+ await oversized.getByRole('button',{name:'Needs welding',exact:true}).click();let jobs=0;
+ while(await p.locator('.welding-job').count()) {assert(++jobs<12);await p.getByRole('button',{name:'Prepare surfaces'}).click();await p.getByRole('button',{name:'Start welding'}).click();await p.getByRole('button',{name:'Inspect & finish'}).waitFor();await p.getByRole('button',{name:'Inspect & finish'}).click();}
+ assert.equal((await get()).parts.motor.name,partName);
+ assert.deepEqual(errors,[]);console.log('PASS bodywork cancel, inspected extension + reinforcement, durable stats, save/reload, offline photos, 360/390/412 widths, repeated oversized-part welding.');
+}finally{await browser.close();}})().catch(e=>{console.error(e);process.exit(1);});

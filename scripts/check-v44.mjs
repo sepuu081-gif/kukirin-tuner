@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {newWheelie,stepWheelie} from '../src/lib/wheeliePhysics.js';
+const simulate=(state,seconds,inputs,dt=.08)=>{for(let t=0;t<seconds-1e-8;t+=dt)state=stepWheelie(state,{...inputs,dt});return state;};
+assert.deepEqual(simulate(newWheelie(),5,{speed:20}),newWheelie(),'no uncommanded lift');
+const lifted=simulate(newWheelie(),1.6,{hold:true,speed:20});assert(lifted.angle>30&&lifted.angle<60);
+const early=simulate(newWheelie(),.64,{hold:true,speed:20});const released=simulate(early,3,{speed:20});assert(released.angle<early.angle,'release must lower low wheelie');
+const held=simulate(lifted,1,{hold:true,speed:20});assert(held.angle>78&&held.scraping);
+const braked=simulate(held,.88,{hold:true,rearBrake:true,speed:20});assert(braked.angle<held.angle&&!braked.looped,'brake counteracts pitch even while hold stays pressed');
+assert(simulate(newWheelie(),4,{hold:true,speed:20}).looped);
+const guarded=simulate(newWheelie(),8,{hold:true,speed:20,guard:.5});assert(guarded.scraping&&!guarded.looped&&guarded.angle<=85);
+assert.deepEqual(stepWheelie(held,{speed:0,hold:true}),newWheelie());
+assert(Math.abs(simulate(newWheelie(),1.6,{hold:true,speed:20},.04).angle-lifted.angle)<3,'time-step stability');
+console.log('PASS v44: continuous lift, release, held rear-brake recovery, scraping, loopout, wheelie-bar guard, stopped reset and time-step stability.');

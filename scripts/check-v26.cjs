@@ -1,0 +1,41 @@
+const { chromium } = require('C:/Users/sebas/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const assert = require('node:assert/strict');
+
+(async () => {
+  const browser = await chromium.launch({ channel: 'chrome', headless: true });
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await page.goto('http://127.0.0.1:5173/#/build/g4');
+  await page.evaluate(() => localStorage.setItem('kukirin_language', 'en'));
+  await page.reload();
+  assert.equal(await page.getByPlaceholder('Search parts…').isVisible(), true);
+  assert.equal((await page.locator('.part-catalog-list').evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length)), 2);
+  await page.getByPlaceholder('Search parts…').fill('impossible-no-part');
+  assert.equal(await page.getByText('No matching parts').isVisible(), true);
+  await page.getByPlaceholder('Search parts…').fill('');
+  await page.getByRole('button', { name: 'Fits only' }).click();
+  assert.equal(await page.getByRole('button', { name: 'Fits only' }).getAttribute('aria-pressed'), 'true');
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  await page.screenshot({ path: '../../outputs/v26-parts-picker.png' });
+
+  await page.goto('http://127.0.0.1:5173/#/city');
+  await page.locator('select').selectOption('g4');
+  await page.getByRole('button', { name: /Free Ride/ }).click();
+  const gas = page.getByRole('button', { name: 'Gas' });
+  const brake = page.getByRole('button', { name: 'Brake' });
+  await gas.dispatchEvent('pointerdown', { pointerId: 1, pointerType: 'touch' });
+  await page.waitForTimeout(2200);
+  const launchSpeed = Number(await page.locator('.city-speed strong').innerText());
+  assert(launchSpeed > 3 && launchSpeed < 45, `2.2s launch should be progressive, got ${launchSpeed}`);
+  await brake.dispatchEvent('pointerdown', { pointerId: 2, pointerType: 'touch' });
+  await gas.dispatchEvent('pointerup', { pointerId: 1, pointerType: 'touch' });
+  assert.equal(await brake.getAttribute('aria-label'), 'BRAKE');
+  await page.waitForTimeout(450);
+  const brakeSpeed = Number(await page.locator('.city-speed strong').innerText());
+  assert(brakeSpeed < launchSpeed, 'braking must reduce speed while another pointer releases');
+  await brake.dispatchEvent('pointerup', { pointerId: 2, pointerType: 'touch' });
+  assert.deepEqual(errors, []);
+  console.log(`PASS: phone parts picker, search/filter, no overflow, progressive launch ${launchSpeed} km/h, independent touch brake ${brakeSpeed} km/h, no runtime errors`);
+  await browser.close();
+})().catch(error => { console.error(error); process.exit(1); });

@@ -1,0 +1,36 @@
+const { chromium } = require('C:/Users/sebas/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const assert = require('node:assert/strict');
+
+(async () => {
+  const browser = await chromium.launch({channel:'chrome',headless:true});
+  const page = await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+  const errors=[]; page.on('pageerror',e=>errors.push(e.message));
+  await page.goto('http://127.0.0.1:5173/#/city');
+  await page.evaluate(()=>{ localStorage.setItem('kukirin_language','en'); localStorage.setItem('kukirin_respect','1000'); localStorage.removeItem('kukirin_vehicle_charge'); });
+  await page.reload();
+  await page.locator('select').selectOption('surron_light_bee_x');
+  await page.clock.install();
+  await page.getByRole('button',{name:/Free Ride/}).click();
+  assert.equal(await page.getByText('Free Ride',{exact:true}).isVisible(),true);
+  await page.getByRole('button',{name:'GAS'}).dispatchEvent('pointerdown',{pointerId:1,pointerType:'touch'});
+  await page.clock.runFor(45000);
+  assert.equal(await page.locator('.city-road').getAttribute('class').then(v=>v.includes('city-time-night')),true);
+  assert.equal(await page.locator('.city-road').getAttribute('class').then(v=>v.includes('city-weather-cloudy')),true);
+  assert(Number((await page.locator('.wanted-meter').getAttribute('class')).match(/wanted-(\d)/)[1])>=1);
+  assert(Number(await page.locator('.city-speed strong').innerText())>50);
+  await page.screenshot({path:'../../outputs/v22-free-roam-night.png'});
+  await page.getByRole('button',{name:'GAS'}).dispatchEvent('pointerup',{pointerId:1,pointerType:'touch'});
+  await page.clock.runFor(70000);
+  await page.getByText('POLICE CAUGHT YOU').waitFor();
+  const before=Number(await page.evaluate(()=>localStorage.getItem('kukirin_respect')));
+  assert(before<1000);
+  await page.screenshot({path:'../../outputs/v22-police-busted.png'});
+  await page.getByRole('button',{name:'PAY & CONTINUE'}).click();
+  assert.equal(await page.locator('.wanted-meter').getAttribute('class').then(v=>v.includes('wanted-0')),true);
+  await page.evaluate(()=>window.dispatchEvent(new Event('kukirin:native-back')));
+  await page.getByRole('heading',{name:'City Ride'}).waitFor();
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+  assert.deepEqual(errors,[]);
+  console.log('PASS: free ride, day/night, dynamic weather, 1-5 wanted levels, police pursuit/catch/fine, continue, native back, phone layout');
+  await browser.close();
+})().catch(e=>{console.error(e);process.exit(1)});

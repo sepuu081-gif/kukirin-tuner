@@ -1,0 +1,6 @@
+import fs from 'node:fs/promises';
+const saved=JSON.parse(await fs.readFile('../../outputs/v39-catalogs.json'));
+const urls=['https://dualtronusa.com/products.json?limit=250&page=2','https://fluidfreeride.com/products.json?limit=250&page=2','https://www.kaabousa.com/products.json?limit=250&page=2','https://www.voromotors.com/products.json?limit=250&page=2','https://www.segway.la/products.json?limit=250','https://kugoo.eu/products.json?limit=250','https://kukirinscooter.co.uk/products.json?limit=250','https://surron.co.uk/products.json?limit=250','https://riderguide.com/products.json?limit=250'];
+await Promise.all(urls.map(async url=>{try{const res=await fetch(url,{signal:AbortSignal.timeout(20000)});const json=await res.json();saved.push({store:new URL(url).origin,products:json.products});console.log(new URL(url).host,json.products?.length);}catch(e){console.log(url,e.message)}}));
+await fs.writeFile('../../outputs/v39-catalogs.json',JSON.stringify(saved));
+for(const s of saved)console.log(s.store,s.products?.filter(p=>Number(p.variants?.[0]?.price)>200 && !/battery|part|seat |motor |controller|shock|charger|wheel |fork|kit|extend|insurance/i.test(p.title)).map(p=>p.handle+' | '+p.title).join('\n'));

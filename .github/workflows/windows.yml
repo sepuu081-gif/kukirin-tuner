@@ -1,0 +1,31 @@
+name: Build Windows game
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run desktop:build
+      - name: Package portable Windows app
+        shell: pwsh
+        run: Compress-Archive -LiteralPath 'desktop-release/KuKirin Tuner-win32-x64' -DestinationPath 'KuKirin-Tuner-Windows.zip'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: KuKirin-Tuner-Windows
+          path: KuKirin-Tuner-Windows.zip
+      - name: Publish download
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "windows-${{ github.run_number }}" 'KuKirin-Tuner-Windows.zip' --target '${{ github.sha }}' --title 'KuKirin Tuner Windows v56' --notes 'Portable Windows 64-bit app. Extract the ZIP and launch KuKirin Tuner.exe. W = throttle, S = rear brake, Space = wheelie, F11 = fullscreen. Offline riding supported.'

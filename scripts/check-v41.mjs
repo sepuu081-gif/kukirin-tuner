@@ -1,0 +1,22 @@
+import assert from 'node:assert/strict';
+const saved=new Map();globalThis.localStorage={getItem:k=>saved.get(k)??null,setItem:(k,v)=>saved.set(k,String(v)),removeItem:k=>saved.delete(k)};
+const {BLUE_G2_STYLE,paintG2Pixels,parseHex}=await import('../src/lib/appearanceTuning.js');
+const {getBuild,saveBuild,createStockBuild,calcBuildStats}=await import('../src/lib/buildState.js');
+const {VEHICLES}=await import('../src/lib/vehicleData.js');
+const {createScooterModel}=await import('../src/lib/scooterModels3D.js');
+const v=VEHICLES.find(v=>v.id==='g2_2026');
+const original=createStockBuild(v.id);original.weldCount=3;saveBuild(original);
+const tuned=getBuild(v.id);assert.equal(tuned.weldCount,3);assert.equal(tuned.appearance.ledEnabled,true);assert.equal(tuned.appearance.stemColor,BLUE_G2_STYLE.stemColor);
+tuned.appearance.stemColor='#ff0000';saveBuild(tuned);assert.equal(getBuild(v.id).appearance.stemColor,'#ff0000','migration must not reset later edits');
+const stock=createStockBuild(v.id);assert.equal(stock.appearance.customEnabled,false);assert.equal(calcBuildStats(v,stock).topSpeed,calcBuildStats(v,{...stock,appearance:BLUE_G2_STYLE}).topSpeed);
+const data=new Uint8ClampedArray(100*100*4);for(let i=0;i<data.length;i+=4){data[i]=data[i+1]=data[i+2]=100;data[i+3]=200;}
+const source=new Uint8ClampedArray(data);paintG2Pixels(data,100,100,BLUE_G2_STYLE);
+const stem=(42*100+31)*4,deck=(85*100+50)*4,tire=(90*100+12)*4;
+assert(data[stem+2]>data[stem]*3);assert(data[deck]<source[deck]);assert.equal(data[tire],source[tire]);
+for(let i=3;i<data.length;i+=4)assert.equal(data[i],source[i],'paint must preserve alpha');
+const disabled=new Uint8ClampedArray(source);paintG2Pixels(disabled,100,100,{...BLUE_G2_STYLE,customEnabled:false});assert.deepEqual(disabled,source);
+assert.deepEqual(parseHex('bad'),[56,189,248]);
+const model=createScooterModel(v,1,BLUE_G2_STYLE);assert.equal(model.group.getObjectByName('model-stem').material.color.getHexString(),'1266b4');
+let strips=0;model.group.traverse(o=>{if(o.name==='tuning-led')strips++;});assert.equal(strips,2);assert(model.group.getObjectByName('underdeck-glow'));
+const off=createScooterModel(v,1,{...BLUE_G2_STYLE,ledEnabled:false});assert(!off.group.getObjectByName('underdeck-glow'));
+console.log('PASS v41: one-time G2 style migration keeps parts/later edits, stock physics unchanged, panel colour changes preserve tyres/alpha, exact 3D stem and on/off LEDs.');

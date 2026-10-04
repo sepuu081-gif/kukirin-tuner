@@ -1,0 +1,12 @@
+Workshop photographs (bundled for offline play)
+
+TIG_welding.jpg - Mak04 - Public domain
+https://commons.wikimedia.org/wiki/File:TIG_welding.jpg
+Original bytes, no modifications. Display cropped using CSS.
+
+08-TIG-weld.jpg - TTLightningRod - CC BY-SA 2.5
+https://commons.wikimedia.org/wiki/File:08-TIG-weld.jpg
+https://creativecommons.org/licenses/by-sa/2.5/
+Original bytes, no modifications. Display cropped using CSS.
+
+These are generic process reference photographs, not photographs of the player's modified vehicle.

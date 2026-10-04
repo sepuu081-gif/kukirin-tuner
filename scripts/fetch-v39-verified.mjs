@@ -1,0 +1,4 @@
+import fs from 'node:fs/promises';
+const entries=JSON.parse(await fs.readFile('../../outputs/v39-photo-candidates.json'));
+for(const[id,index]of [['dt_mini',1],['dt_spider2',2]]){const product=JSON.parse(await fs.readFile('../../outputs/v39-direct-'+index+'.json'));const images=product.images.slice(0,3);for(let i=0;i<images.length;i++){const url=images[i].startsWith('//')?'https:'+images[i]:images[i];const res=await fetch(url);await fs.writeFile('../../outputs/v39-'+id+'-'+i+'.'+new URL(url).pathname.split('.').at(-1),Buffer.from(await res.arrayBuffer()));}entries.push({id,page:index===1?'https://scootidoo.com/products/dualtron-mini':'https://www.minimotors-nyc.com/products/dualtron-spider-2',title:product.title,images});}
+await fs.writeFile('../../outputs/v39-photo-candidates.json',JSON.stringify(entries,null,2));

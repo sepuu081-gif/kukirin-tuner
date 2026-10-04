@@ -1,0 +1,805 @@
+[
+  {
+    "id": "g2",
+    "page": "https://kukirin.global/products/kukirin-g2-electric-scooter",
+    "url": "https://cdn.shopify.com/s/files/1/0763/7866/9241/files/kukirin-g2-new-main-image_1.webp?v=1779691026"
+  },
+  {
+    "id": "g2-pro",
+    "page": "https://kukirin.global/products/kukirin-g2-pro-electric-scooter",
+    "url": "https://cdn.shopify.com/s/files/1/0763/7866/9241/files/kukirin-g2pro-main-image_2.webp?v=1770172061"
+  },
+  {
+    "id": "g2-max",
+    "page": "https://kukirin.global/products/kukirin-g2-max-electric-scooter",
+    "url": "https://cdn.shopify.com/s/files/1/0763/7866/9241/files/kukirin-g2max-main-image_1.webp?v=1770192445"
+  },
+  {
+    "id": "g2-master",
+    "page": "https://kukirin.global/products/kukirin-g2-master-electric-scooter",
+    "url": "https://cdn.shopify.com/s/files/1/0763/7866/9241/files/kukirin-g2-master-main-image_1.webp?v=1770198256"
+  },
+  {
+    "id": "g2-ultra",
+    "page": "https://kukirin.global/products/kukirin-g2-ultra-electric-scooter",
+    "url": "https://cdn.shopify.com/s/files/1/0763/7866/9241/files/kukirin-g2-ultra-main-image_1.webp?v=1770279320"
+  },
+  {
+    "id": "g3-pro",
+    "page": "https://kukirin.global/products/kukirin-g3-pro-electric-scooter",
+    "url": "https://cdn.shopify.com/s/files/1/0763/7866/9241/files/kukirin-g3-pro-main-image_3.webp?v=1783904133"
+  },
+  {
+    "id": "g3",
+    "page": "https://kukirinofficial.com/products/kukirin-g3-electric-scooter",
+    "url": "https://kukirinofficial.com/cdn/shop/files/kugoo-escooter-default-title-kukirin-g3-electric-scooter-55050957029706.webp?v=1774713392"
+  },
+  {
+    "id": "g4",
+    "page": "https://kukirin.global/products/kukirin-g4-electric-scooter",
+    "url": "https://cdn.shopify.com/s/files/1/0763/7866/9241/files/kukirin-g4-new-main-image_18.webp?v=1775702801"
+  },
+  {
+    "id": "g4-max",
+    "page": "https://en.kugookirin.com/Products_details/50.html",
+    "url": "https://kukirin.shop/cdn/shop/files/kukirin-g4-max-main-image_1.webp?v=1770255310"
+  },
+  {
+    "id": "g2-vmp",
+    "page": "https://kukirin.global/products/kukirin-g2-vmp-electric-scooter",
+    "url": "https://cdn.shopify.com/s/files/1/0763/7866/9241/files/kukirin-g2_vmp_main-image_8.webp?v=1775616289"
+  },
+  {
+    "id": "g2-pro-vmp",
+    "page": "https://kukirin.global/products/kukirin-g2-pro-vmp-electric-scooter",
+    "url": "https://cdn.shopify.com/s/files/1/0763/7866/9241/files/kukirin-g2_pro_vmp_-main-image_1.webp?v=1770188478"
+  },
+  {
+    "id": "g2-pro-abe",
+    "page": "https://kukirin.global/products/kukirin-g2-pro-abe-electric-scooter",
+    "url": "https://cdn.shopify.com/s/files/1/0763/7866/9241/files/kukirin-g2-pro-abe-main-image_1.webp?v=1770693033"
+  },
+  {
+    "id": "t3",
+    "page": "https://kukirin.global/products/kukirin-t3-electric-scooter",
+    "url": "https://cdn.shopify.com/s/files/1/0763/7866/9241/files/kukirin-t3-main-image_1.webp?v=1770281698"
+  },
+  {
+    "id": "m4-max",
+    "page": "https://kukirin.global/products/kukirin-m4-max-electric-scooter",
+    "url": "https://cdn.shopify.com/s/files/1/0763/7866/9241/files/kukirin-m4-max-main-image_1.webp?v=1770276113"
+  },
+  {
+    "id": "s1-max",
+    "page": "https://kukirin.global/products/kukirin-s1-max-electric-scooter",
+    "url": "https://cdn.shopify.com/s/files/1/0763/7866/9241/files/kukirin-s1-max-main-image_1.webp?v=1770274145"
+  },
+  {
+    "id": "inmotion_rs",
+    "page": "https://inmotionworld.com/products/inmotion-rs",
+    "url": "https://cdn.shopify.com/s/files/1/0630/1951/6082/files/RS-_-__01-03_5425b724-0576-48a5-9689-0df2f543c4d9.png?v=1775035760",
+    "usage": "Offline ride preview, model-specific photograph"
+  },
+  {
+    "id": "inmotion_rs_lite",
+    "page": "https://inmotionworld.com/products/inmotion-rs-lite",
+    "url": "https://cdn.shopify.com/s/files/1/0630/1951/6082/files/RSlite-_-__01-03_1914648a-bfe0-4895-83bc-e3da2b56b4e9.png?v=1735644459",
+    "usage": "Offline ride preview, model-specific photograph"
+  },
+  {
+    "id": "inmotion_air_pro",
+    "page": "https://inmotionworld.com/products/inmotion-air-pro-portable-folding-electric-scooter-for-adults",
+    "url": "https://cdn.shopify.com/s/files/1/0630/1951/6082/files/207-_4.png?v=1761538990",
+    "usage": "Offline ride preview, model-specific photograph"
+  },
+  {
+    "id": "dt_thunder3",
+    "page": "https://dualtronusa.com/products/dualtron-thunder-3-electric-scooter",
+    "url": "https://cdn.shopify.com/s/files/1/0018/7616/4681/files/DT-Thunder-3-Image-2.jpg?v=1775404228",
+    "usage": "Offline ride preview, model-specific photograph"
+  },
+  {
+    "id": "dt_victor_limited",
+    "page": "https://dualtronusa.com/products/dualtron-victor-limited-electric-scooter",
+    "url": "https://cdn.shopify.com/s/files/1/0018/7616/4681/files/DT-Victor-Limited-Image-2.jpg?v=1775404303",
+    "usage": "Offline ride preview, model-specific photograph"
+  },
+  {
+    "id": "dt_city",
+    "page": "https://dualtronusa.com/products/dualtron-city-ey4",
+    "url": "https://cdn.shopify.com/s/files/1/0018/7616/4681/files/DT-City-2-Image-2.jpg?v=1775404373",
+    "usage": "Offline ride preview, model-specific photograph"
+  },
+  {
+    "id": "dt_new_storm",
+    "page": "https://dualtronusa.com/products/dualtron-new-storm-electric-scooter",
+    "url": "https://cdn.shopify.com/s/files/1/0018/7616/4681/files/DT-New-Storm-Image-2.jpg?v=1775402797",
+    "usage": "Offline ride preview, model-specific photograph"
+  },
+  {
+    "id": "nb_zt3_pro",
+    "page": "https://www.segway.la/products/segway-kickscooter-zt3-pro",
+    "title": "Segway KickScooter ZT3 Pro",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/files/segway-kickscooter-zt3-pro-3163878.png?v=1790383576",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/files/segway-kickscooter-zt3-pro-2017609.jpg?v=1774547775",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/files/segway-kickscooter-zt3-pro-5174649.png?v=1774547774",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/files/segway-kickscooter-zt3-pro-3544178.jpg?v=1774547775",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/files/segway-kickscooter-zt3-pro-5982660.jpg?v=1774547775"
+    ],
+    "release": 39
+  },
+  {
+    "id": "joyor_t10",
+    "page": "https://joyor.com/products/joyor-t10-electric-scooter",
+    "title": "Joyor T10 (EU) Electric Scooter",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/0982/2047/4647/files/joyor-t10-nfc-main-image_9.webp?v=1778654445",
+      "https://cdn.shopify.com/s/files/1/0982/2047/4647/files/joyor-t10-nfc-main-image_1.webp?v=1778654445",
+      "https://cdn.shopify.com/s/files/1/0982/2047/4647/files/joyor-t10-nfc-main-image_11.webp?v=1778654444",
+      "https://cdn.shopify.com/s/files/1/0982/2047/4647/files/joyor-t10-nfc-main-image_2.webp?v=1778654445",
+      "https://cdn.shopify.com/s/files/1/0982/2047/4647/files/joyor-t10-nfc-main-image_3.webp?v=1778654444"
+    ],
+    "release": 39
+  },
+  {
+    "id": "a1",
+    "page": "https://kukirinscooter.co.uk/products/kukirin-a1-electric-scooter",
+    "title": "Kukirin A1 Electric Scooter",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/0800/1840/7676/files/se-kukirin-a1-main-image_1.webp?v=1776138489",
+      "https://cdn.shopify.com/s/files/1/0800/1840/7676/files/se-kukirin-a1-main-image_3.webp?v=1776138489",
+      "https://cdn.shopify.com/s/files/1/0800/1840/7676/files/se-kukirin-a1-main-image_4.webp?v=1776138489",
+      "https://cdn.shopify.com/s/files/1/0800/1840/7676/files/se-kukirin-a1-main-image_2.webp?v=1776138489",
+      "https://cdn.shopify.com/s/files/1/0800/1840/7676/files/se-kukirin-a1-main-image_5.webp?v=1776138489"
+    ],
+    "release": 39
+  },
+  {
+    "id": "joyor_s10sz",
+    "page": "https://joyor.com/products/joyor-s10-s-z-electric-scooter",
+    "title": "Joyor S10-S-Z (EU) Electric Scooter",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/0982/2047/4647/files/joyor-s10-s-z-main-image_5.webp?v=1769390733",
+      "https://cdn.shopify.com/s/files/1/0982/2047/4647/files/joyor-s10-s-z-main-image_9.webp?v=1769390733",
+      "https://cdn.shopify.com/s/files/1/0982/2047/4647/files/joyor-s10-s-z-main-image_6.webp?v=1769390733",
+      "https://cdn.shopify.com/s/files/1/0982/2047/4647/files/joyor-s10-s-z-main-image_4.webp?v=1769390733",
+      "https://cdn.shopify.com/s/files/1/0982/2047/4647/files/joyor-s10-s-z-main-image_3.webp?v=1769390733"
+    ],
+    "release": 39
+  },
+  {
+    "id": "joyor_f5",
+    "page": "https://joyor.com/products/joyor-f5-eu-electric-scooter",
+    "title": "Joyor F5 (EU) Electric Scooter",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/0982/2047/4647/files/joyor-f5-main-image_5_1480b6df-74e3-459b-9709-6d188c90b4cd.webp?v=1769395341",
+      "https://cdn.shopify.com/s/files/1/0982/2047/4647/files/joyor-f5-main-image_12_d145127b-4158-4dcd-a4b9-4b112c2797df.webp?v=1769395341",
+      "https://cdn.shopify.com/s/files/1/0982/2047/4647/files/joyor-f5-main-image_7_a7d51ad6-aaf8-4e79-a432-99df0d56c581.webp?v=1769395341",
+      "https://cdn.shopify.com/s/files/1/0982/2047/4647/files/joyor-f5-main-image_11_54783443-4989-417b-ba3b-a78802c3512a.webp?v=1769395341",
+      "https://cdn.shopify.com/s/files/1/0982/2047/4647/files/joyor-f5-main-image_1_6c1b06eb-1d3f-46d8-9a96-069ed59bdeb0.webp?v=1769395341"
+    ],
+    "release": 39
+  },
+  {
+    "id": "t3",
+    "page": "https://kukirin.global/products/kukirin-t3-electric-scooter",
+    "title": "Kukirin T3 Electric Scooter",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/0763/7866/9241/files/kukirin-t3-main-image_1.webp?v=1770281698",
+      "https://cdn.shopify.com/s/files/1/0763/7866/9241/files/kukirin-t3-main-image_4.webp?v=1770803354",
+      "https://cdn.shopify.com/s/files/1/0763/7866/9241/files/kukirin-t3-main-image_2.webp?v=1770803354",
+      "https://cdn.shopify.com/s/files/1/0763/7866/9241/files/kukirin-t3-main-image_3.webp?v=1770803354",
+      "https://cdn.shopify.com/s/files/1/0763/7866/9241/files/kukirin-t3-main-image_5.webp?v=1770281698"
+    ],
+    "release": 39
+  },
+  {
+    "id": "nb_f30",
+    "page": "https://www.segway.la/products/ninebot-kickscooter-f30-by-segway",
+    "title": "Ninebot Kickscooter F30 by Segway",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/products/ninebot-kickscooter-f30-by-segway-4636145.jpg?v=1774548192",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/products/ninebot-kickscooter-f30-by-segway-6605879.jpg?v=1774548192",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/products/ninebot-kickscooter-f30-by-segway-6275251.jpg?v=1774548192",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/products/ninebot-kickscooter-f30-by-segway-9928194.jpg?v=1774548192",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/products/ninebot-kickscooter-f30-by-segway-2664249.jpg?v=1774548193"
+    ],
+    "release": 39
+  },
+  {
+    "id": "nami_burne_max",
+    "page": "https://fluidfreeride.com/products/nami-burn-e-2",
+    "title": "NAMI BURN-E 2",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/0020/6077/9589/files/Burne2award_df7e38e4-7965-4ed5-bdba-d9810bde882f.jpg?v=1728296727",
+      "https://cdn.shopify.com/s/files/1/0020/6077/9589/products/viper-2-2-3_a5f20f0c-1fa4-440a-9d70-f73e4eab5682.jpg?v=1699974243",
+      "https://cdn.shopify.com/s/files/1/0020/6077/9589/products/bestsuspensionscooteroftheyear.jpg?v=1699974243",
+      "https://cdn.shopify.com/s/files/1/0020/6077/9589/products/nami42_23c5a326-f014-4581-b2db-4f347532def0.jpg?v=1699974243",
+      "https://cdn.shopify.com/s/files/1/0020/6077/9589/files/BurnEFolded_1ca34a01-0981-474f-a1dd-5324e00c7f1f.jpg?v=1728296814"
+    ],
+    "release": 39
+  },
+  {
+    "id": "nb_e22",
+    "page": "https://www.segway.la/products/copy-of-ninebot-kickscooter-e22",
+    "title": "Ninebot Kickscooter E22",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/files/ninebot-kickscooter-e22-6404332.png?v=1774547955",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/files/ninebot-kickscooter-e22-4317973.png?v=1774547955",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/files/ninebot-kickscooter-e22-3578985.jpg?v=1774547956",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/files/ninebot-kickscooter-e22-4883594.png?v=1774547956",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/files/ninebot-kickscooter-e22-3449549.png?v=1774547956"
+    ],
+    "release": 39
+  },
+  {
+    "id": "x1",
+    "page": "https://kukirin.global/products/kukirin-x1-e-bike",
+    "title": "KuKirin X1 E-Bikes",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/0763/7866/9241/files/kukirin-x1-main-image_1.webp?v=1772098243",
+      "https://cdn.shopify.com/s/files/1/0763/7866/9241/files/kukirin-x1-main-image_5.webp?v=1772098554",
+      "https://cdn.shopify.com/s/files/1/0763/7866/9241/files/kukirin-x1-main-image_41.webp?v=1772098554",
+      "https://cdn.shopify.com/s/files/1/0763/7866/9241/files/kukirin-x1-main-image_23.webp?v=1772098554",
+      "https://cdn.shopify.com/s/files/1/0763/7866/9241/files/kukirin-x1-main-image_37.webp?v=1772098554"
+    ],
+    "release": 39
+  },
+  {
+    "id": "m5_pro",
+    "page": "https://www.kugookirineu.com/products/kukirin-m5-pro-electric-scooter-960wh-power-50km-h-max-speed",
+    "title": "KUKIRIN M5 Pro Electric Scooter | 960WH Power | 52KM/H Max Speed",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/0242/9907/7728/products/6_55d35844-f4f8-49be-ae97-023d74e9a59c.png?v=1675741890",
+      "https://cdn.shopify.com/s/files/1/0242/9907/7728/products/2_08292f2a-2017-4643-b028-7dc5c62cf32c.png?v=1675741890",
+      "https://cdn.shopify.com/s/files/1/0242/9907/7728/products/1_6ad2238a-579f-4514-8ca8-ff62f4f1a973.png?v=1675741890",
+      "https://cdn.shopify.com/s/files/1/0242/9907/7728/products/5_e7491b41-fa27-4c10-8a22-fcce76954c90.png?v=1675741890"
+    ],
+    "release": 39
+  },
+  {
+    "id": "nb_max_g30",
+    "page": "https://www.segway.la/products/ninebot-kickscooter-max",
+    "title": "Ninebot KickScooter MAX G30P by Segway",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/products/ninebot-kickscooter-max-g30p-by-segway-3947337.png?v=1774548313",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/products/ninebot-kickscooter-max-g30p-by-segway-4654396.png?v=1774548313",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/products/ninebot-kickscooter-max-g30p-by-segway-1392720.png?v=1774548314",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/products/ninebot-kickscooter-max-g30p-by-segway-6856156.png?v=1774548314",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/products/ninebot-kickscooter-max-g30p-by-segway-5458231.png?v=1774548314"
+    ],
+    "release": 39
+  },
+  {
+    "id": "wish02_pro",
+    "page": "https://kukiringlobal.com/products/kugoo-wish-02-pro",
+    "title": "【KUGOO WISH 02 PRO】 Best deal 2026 KUGOO WISH 02 PRO 4000W Electric Dirt Bike – | Free shipping by sea from China factory directly, It has been included shipping fee | 60 days delivery EU & USA",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/0668/5812/3307/files/KUGOO-Wish-02-PRO05_upscayl_2x_realesrgan-x4plus.jpg?v=1772182726",
+      "https://cdn.shopify.com/s/files/1/0668/5812/3307/files/KUGOO-Wish-02-PRO09_upscayl_2x_realesrgan-x4plus.jpg?v=1772182726",
+      "https://cdn.shopify.com/s/files/1/0668/5812/3307/files/KUGOO-Wish-02-PRO01_upscayl_2x_realesrgan-x4plus.jpg?v=1772182726",
+      "https://cdn.shopify.com/s/files/1/0668/5812/3307/files/KUGOO-Wish-02-PRO06_upscayl_2x_realesrgan-x4plus.jpg?v=1772182726",
+      "https://cdn.shopify.com/s/files/1/0668/5812/3307/files/KUGOO-Wish-02-PRO07_upscayl_2x_realesrgan-x4plus.jpg?v=1772182726"
+    ],
+    "release": 39
+  },
+  {
+    "id": "rion_apex",
+    "page": "https://alienrides.com/products/rion-apex-fastest-electric-scooter",
+    "title": "RION Apex Electric Scooter",
+    "images": [
+      "//cdn.shopify.com/s/files/1/0549/2201/8981/files/MGS5369.webp?v=1724448332",
+      "//cdn.shopify.com/s/files/1/0549/2201/8981/files/apex_magura_caliper.jpg?v=1724458640",
+      "//cdn.shopify.com/s/files/1/0549/2201/8981/files/apex_rear_fork.jpg?v=1724458640",
+      "//cdn.shopify.com/s/files/1/0549/2201/8981/files/Magura_master.jpg?v=1724458640",
+      "//cdn.shopify.com/s/files/1/0549/2201/8981/files/apex_front.jpg?v=1724458640"
+    ],
+    "release": 39
+  },
+  {
+    "id": "dt_sonic_alien",
+    "page": "https://dualtronusa.com/products/dualtron-sonic-model-a-alien-electric-scooter",
+    "title": "Dualtron Sonic Model A - Alien",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/0018/7616/4681/files/DT-Sonic-Alien-Image-1.jpg?v=1775404353",
+      "https://cdn.shopify.com/s/files/1/0018/7616/4681/files/DT-Sonic-Alien-Image-2.jpg?v=1775404352",
+      "https://cdn.shopify.com/s/files/1/0018/7616/4681/files/DT-Sonic-Alien-Image-3.jpg?v=1775404353",
+      "https://cdn.shopify.com/s/files/1/0018/7616/4681/files/DT-Sonic-Alien-Image-4.jpg?v=1775404353",
+      "https://cdn.shopify.com/s/files/1/0018/7616/4681/files/DT-Sonic-Alien-Image-5.jpg?v=1775404353"
+    ],
+    "release": 39
+  },
+  {
+    "id": "kaabo_wkgtr",
+    "page": "https://www.kaabousa.com/products/kaabo-king-gtr",
+    "title": "King GTR",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/0466/8227/6001/files/Wolf_Warrior_GTR-260706.jpg?v=1783326011",
+      "https://cdn.shopify.com/s/files/1/0466/8227/6001/files/kaabo-king-gtr-high-performance-electric-scooter-urban-riding.jpg?v=1769995545",
+      "https://cdn.shopify.com/s/files/1/0466/8227/6001/files/kaabo-king-gtr-off-road-electric-scooter-desert-riding-for-adults.jpg?v=1769995545",
+      "https://cdn.shopify.com/s/files/1/0466/8227/6001/files/kaabo-king-gtr-dual-headlights-front-lighting-electric-scooter.jpg?v=1769995545",
+      "https://cdn.shopify.com/s/files/1/0466/8227/6001/files/kaabo-king-gtr-front-suspension-frame-electric-scooter.jpg?v=1769995545"
+    ],
+    "release": 39
+  },
+  {
+    "id": "kaabo_mantis8",
+    "page": "https://www.kaabousa.com/products/kaabo-mantis-8-dual-motor-long-range-city-commuter-foldable-electric-scooter",
+    "title": "Mantis 8 Lite",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/0466/8227/6001/files/Mantis-8_e7b08c61-8c25-4d85-88a5-2dea888d1ff8.jpg?v=1776695137",
+      "https://cdn.shopify.com/s/files/1/0466/8227/6001/files/city-ride-kaabo-mantis-8-electric-scooter.jpg?v=1776695142",
+      "https://cdn.shopify.com/s/files/1/0466/8227/6001/products/KaaboUSA-Mantis8Red-Street_1000px.jpg?v=1776695139",
+      "https://cdn.shopify.com/s/files/1/0466/8227/6001/files/kaabo-mantis-8-electric-scooter-folded-man-walking.jpg?v=1776695142",
+      "https://cdn.shopify.com/s/files/1/0466/8227/6001/files/urban-commuter-kaabo-mantis-8-scooter.jpg?v=1776695143"
+    ],
+    "release": 39
+  },
+  {
+    "id": "nami_burne2",
+    "page": "https://fluidfreeride.com/products/nami-burn-e-open-box-refurbished",
+    "title": "NAMI BURN-E 2 MAX - Open Box & Refurbished",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/0020/6077/9589/files/NamiBurne2maxaward_2.jpg?v=1709218657",
+      "https://cdn.shopify.com/s/files/1/0020/6077/9589/files/8_b02fc9d2-9484-45e4-bb4a-aae0439f046e.jpg?v=1707413130",
+      "https://cdn.shopify.com/s/files/1/0020/6077/9589/files/nami7_671f5e05-4179-4129-9374-5f15b1ffa6a7.jpg?v=1707413128",
+      "https://cdn.shopify.com/s/files/1/0020/6077/9589/files/cockpit_95bf5fb7-a0d1-4c7d-9c8d-5c1c9c5ce481.png?v=1707413129"
+    ],
+    "release": 39
+  },
+  {
+    "id": "surron_ultra_bee",
+    "page": "https://www.voromotors.com/products/surron-ultra-bee",
+    "title": "2026 Surron Ultra Bee HP SW - 24.5kW Powerful Dirt EBike 74V 60Ah",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/2476/0976/files/hf_20260830_211315_fe5f8103-9383-4ddb-bd46-d44b88b52284.png?v=1788124491",
+      "https://cdn.shopify.com/s/files/1/2476/0976/files/Homepage_Desktop_Versions_412x171px_410x729px_24.webp?v=1766797031",
+      "https://cdn.shopify.com/s/files/1/2476/0976/files/Homepage_Desktop_Versions_412x171px_410x729px_25.webp?v=1766797090",
+      "https://cdn.shopify.com/s/files/1/2476/0976/files/ultra-bee-2.webp?v=1766798082",
+      "https://cdn.shopify.com/s/files/1/2476/0976/files/sur-ron-ultra-bee-new_1.webp?v=1766798082"
+    ],
+    "release": 39
+  },
+  {
+    "id": "wish01",
+    "page": "https://kukiringlobal.com/products/kugoo-wish-01",
+    "title": "Kugoo E-Moto Dirt Bike | It can be shipped to USA, EU, UK, Canada, and Mid-East countries 【Ship from Germany】",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/0668/5812/3307/files/image_7943.png?v=1772170891",
+      "https://cdn.shopify.com/s/files/1/0668/5812/3307/files/12_bb10d161-c2c3-43ea-83d1-b3484e2d8f6c.jpg?v=1772170891",
+      "https://cdn.shopify.com/s/files/1/0668/5812/3307/files/13_77221bc1-e6d5-4f6e-8bfd-05e155224028.jpg?v=1772170891",
+      "https://cdn.shopify.com/s/files/1/0668/5812/3307/files/17.jpg?v=1772170891",
+      "https://cdn.shopify.com/s/files/1/0668/5812/3307/files/2_8a6fcbb1-2016-4e54-97ec-7fc56bb977c5.jpg?v=1772170891"
+    ],
+    "release": 39
+  },
+  {
+    "id": "nb_gt2",
+    "page": "https://www.segway.la/products/segway-superscooter-gt2",
+    "title": "Segway SuperScooter GT2",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/products/GT2kickscooter.png?v=1671477826",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/products/segway-superscooter-gt2-7924005.png?v=1774548012",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/products/GT2kickscooter2.png?v=1671477878",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/products/GT2chargingport.png?v=1666141627",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/products/12GT2.png?v=1666141627"
+    ],
+    "release": 39
+  },
+  {
+    "id": "kaabo_wolf_gt",
+    "page": "https://www.kaabousa.com/products/kaabo-king-gt-pro-electric-scooter",
+    "title": "King GT Pro",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/0466/8227/6001/files/kaabo-king-gt-pro-electric-scooter-black-front-view_png.png?v=1776665240",
+      "https://cdn.shopify.com/s/files/1/0466/8227/6001/files/Wolf-King-GT-Pro-02-270724.jpg?v=1784869865",
+      "https://cdn.shopify.com/s/files/1/0466/8227/6001/files/Wolf-King-GT-Pro-01.jpg?v=1784869866",
+      "https://cdn.shopify.com/s/files/1/0466/8227/6001/files/Wolf-King-GT-Pro-03-270724.jpg?v=1784869865",
+      "https://cdn.shopify.com/s/files/1/0466/8227/6001/files/kaabo-king-gt-pro-handlebar-brake-switch-control-detail_png.png?v=1776665803"
+    ],
+    "release": 39
+  },
+  {
+    "id": "nb_max_g2",
+    "page": "https://www.segway.la/products/ninebot-kickscooter-max-g2",
+    "title": "Ninebot KickScooter MAX G2",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/files/ninebot-kickscooter-max-g2-8771138.png?v=1774547958",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/files/ninebot-kickscooter-max-g2-5557712.png?v=1774547959",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/files/ninebot-kickscooter-max-g2-7387285.png?v=1774547959",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/files/ninebot-kickscooter-max-g2-6052213.png?v=1774547959",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/files/ninebot-kickscooter-max-g2-5750275.png?v=1774547959"
+    ],
+    "release": 39
+  },
+  {
+    "id": "wish04",
+    "page": "https://kukiringlobal.com/products/kugoo-wish-04",
+    "title": "【KUGOO WISH 04】5700W Powerful Dirt Bike | ships to USA/EU/UK/Canada/ Mexico/ Saudi Arabia/ UAE from China factory, 60 days delivery",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/0668/5812/3307/files/kugoo-wish-04-6.jpg?v=1772177791",
+      "https://cdn.shopify.com/s/files/1/0668/5812/3307/files/kugoo-wish-04-1.jpg?v=1772177791",
+      "https://cdn.shopify.com/s/files/1/0668/5812/3307/files/kugoo-wish-04-2.jpg?v=1772177791",
+      "https://cdn.shopify.com/s/files/1/0668/5812/3307/files/kugoo-wish-04-3.jpg?v=1772177791",
+      "https://cdn.shopify.com/s/files/1/0668/5812/3307/files/kugoo-wish-04-4.jpg?v=1772177791"
+    ],
+    "release": 39
+  },
+  {
+    "id": "nb_p1000e",
+    "page": "https://www.segway.la/products/segway-kickscooter-p100s",
+    "title": "Segway KickScooter P100s",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/products/P100S.26.png?v=1680123756",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/products/P100S.39.png?v=1680128480",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/products/P100S.40.png?v=1680128589",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/products/P100S.41.png?v=1680128650",
+      "https://cdn.shopify.com/s/files/1/0084/0731/8607/products/P100S.42.png?v=1680128742"
+    ],
+    "release": 39
+  },
+  {
+    "id": "m4_legacy",
+    "page": "https://www.kugookirineu.com/products/kugoo-kirin-m4-electric-scooter",
+    "title": "KUKIRIN M4 Electric Scooter | 600WH Power | 45KM/H Max Speed",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/0242/9907/7728/products/1_-7.png?v=1663658694",
+      "https://cdn.shopify.com/s/files/1/0242/9907/7728/products/1_0bfd3cb3-6d90-4dea-ae25-279be9239295.png?v=1663658694",
+      "https://cdn.shopify.com/s/files/1/0242/9907/7728/products/1_-2.png?v=1663658694",
+      "https://cdn.shopify.com/s/files/1/0242/9907/7728/products/1_-3.png?v=1663658694"
+    ],
+    "release": 39
+  },
+  {
+    "id": "kaabo_mantis10",
+    "page": "https://fluidfreeride.com/products/kaabo-mantis-v2-fluid-edition-open-box-refurbished",
+    "title": "Kaabo MANTIS V2 - fluid Edition - Open Box & Refurbished",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/0020/6077/9589/files/MantisV2award_0922cc69-d470-4fcc-9e0e-97658a069efa.jpg?v=1707412789",
+      "https://cdn.shopify.com/s/files/1/0020/6077/9589/files/3_362fb69f-870a-47a2-b89d-0a963eff9757.jpg?v=1707412793",
+      "https://cdn.shopify.com/s/files/1/0020/6077/9589/files/14_004f10f4-4574-46f4-9ab5-52072c6efc2c.jpg?v=1707412792",
+      "https://cdn.shopify.com/s/files/1/0020/6077/9589/files/16_7df54223-2dd4-4f4d-8cef-7523b4c0864a.jpg?v=1707412793"
+    ],
+    "release": 39
+  },
+  {
+    "id": "m4_pro_2024",
+    "page": "https://www.kugookirineu.com/products/kugoo-kirin-m4-pro-electric-scooter",
+    "title": "KUKIRIN M4 Pro Electric Scooter | 864WH Power | 50KM/H Max Speed",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/0242/9907/7728/products/7.png?v=1665819887",
+      "https://cdn.shopify.com/s/files/1/0242/9907/7728/products/1000-1000.png?v=1665819887",
+      "https://cdn.shopify.com/s/files/1/0242/9907/7728/products/5.png?v=1665819887",
+      "https://cdn.shopify.com/s/files/1/0242/9907/7728/products/10_49a04ee1-9bdf-44c9-8dba-72f4dd3a31a4.jpg?v=1665819887"
+    ],
+    "release": 39
+  },
+  {
+    "id": "dt_x_ltd",
+    "page": "https://dualtronusa.com/products/dualtron-limited",
+    "title": "Dualtron X Limited",
+    "images": [
+      "https://cdn.shopify.com/s/files/1/0018/7616/4681/files/DT-X-Limited-Image-1.jpg?v=1775403058",
+      "https://cdn.shopify.com/s/files/1/0018/7616/4681/files/DT-X-Limited-Image-2.jpg?v=1775403058",
+      "https://cdn.shopify.com/s/files/1/0018/7616/4681/files/DT-X-Limited-Image-3.jpg?v=1775403058",
+      "https://cdn.shopify.com/s/files/1/0018/7616/4681/files/DT-X-Limited-Image-5.jpg?v=1775403058"
+    ],
+    "release": 39
+  },
+  {
+    "id": "xm_4ultra",
+    "page": "https://www.mi.com/global/product/xiaomi-electric-scooter-4-ultra/",
+    "images": [
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/8e215e33547d4ed0795be4d6a117b7f7.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/075a8485c670158ce5dfac89307aa355.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/424f4cfdffaf787410e40722badb0a2c.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/9a3fb387f908faf1f83ddaaae4e267cf.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/50193218bf46d27dcec3822c6d04b209.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/2340aa0fa82f276e38979cdb08664538.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/bdae50320ad279c74d2b12ae3dd06a19.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/650701f5ee6f8125d88aed6301bd8b5c.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/img02.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/img04.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/img03.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/56501bf8ef75b15419522f9d6c5979e3.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/b96fd0d0fac4be571103f3f3d363e3e0.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/8a7536794cbb17e776b1393f5de16969.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/399d4a5999b257817602fe95e7919450.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/3319f08dfce02bef1c636fe8edf97e83.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/b01b225ae4bc1e630b9b8e8aa30ed0f3.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/img05-2.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/img05-1.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/23112d2bde75c4c531fcf8946da9ea6e.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/02dfa324bb4fac6e4d914ee69865c12c.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/0cca911c083dc7d213b0a03a4e1e1800.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/3cbcfb51ff2ea288d1aa81255f6404a0.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/6258928576134ec4f3bc776ba1cf8537.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/f441390a86c077d84e004984efa3c1a9.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/6bfd075846a07a9756bd7c98d2c19a3b.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/c35b6a5c8790ff7015c9ebe323b47875.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-4-ultra/pc/e9f98c0d83604ab619540719365ef2c1.png"
+    ],
+    "title": "xm_4ultra",
+    "release": 39
+  },
+  {
+    "id": "xm_4pro_600w",
+    "page": "https://www.mi.com/global/product/xiaomi-electric-scooter-4-pro/",
+    "images": [
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/59eb9d76eab18d889498033943533535.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/31bb745b2bd49855d8fc497164738c2e.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/4fb96ef23fe20cbb37e08e06aa0bcdb9.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/dd5702b5522034940003a28d70bf21dd.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/5ab2680647988b514f2ea77de208f956.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/3a0e0c079cf9f479e22e501e6873b6b4.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/082a92fa94514a83ae02d7b8f2d0aae1.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/c927b34d68d0695ab5cbaafb87d6c05c.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/baffdd29e89fe1a5e7493ae31bc36045.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/b12d729ed7ec2e47bdfb3933dcd49d4a.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/602d0892016f3a3917f6f0ef9011282f.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/193d4ff64153435c0141df9ad7c10ea4.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/2e920bb7d097b6556859c107e2b77e3f.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/9fd29af1ced997e7e71cd420c9d9f85f.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/f27a2697334b8c917e669cea8320b406.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/4df8d2ce0fb91a3343b27fba2748ed1a.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/bcf831dbdad8d88fcbbace05cac8667d.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/6c0d3c1e8ad3ac158479d979756fb7b2.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/db9dd68100b60ec7e0eab1db86c213ff.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/095f14e339c0cd97222f9b36f9f23a3b.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/0dc8996afceb5356223ff796196f0ac5.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/92e9c508ced10f2ad0dbc36fd9cdaf45.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/7961c9af585d41fd43cb0dcea75d2c11.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/64b45f42aa081c73d5bcf5dedc78d654.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/c90f307cbf68e79fb978c7ddc56d646c.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/80f23b3e32e58011f325becfb5918749.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/db3c3c1364895503373bb07764ab5b27.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/8796edf9c19bb0f7e93abcc473106c0b.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/fda8296ec2c550e7dc254bba9eb207d3.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/30277ff96c8ef7579630189f15c20d84.jpg"
+    ],
+    "title": "xm_4pro_600w",
+    "release": 39
+  },
+  {
+    "id": "xm_5",
+    "page": "https://www.mi.com/global/product/xiaomi-electric-scooter-5/",
+    "images": [
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/1-kv.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/543d319a217fcbe21179460c0cc85dc6.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/c60557c26f41a08aebb048c45062a058.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/f3c33804d66bf573c93bddfa52afd05e.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/f1cecc2bc0f363977d650eb062597372.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/a615cee89ac371b176e8352e48444f86.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/c3f6f949f691f19dbc3249b0b1178dcc.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/2a9620db2f37b87c5d00561e2faf063c.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/2-front.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/3-10-inch.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/4-60km.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/0002a5fc93553c6232b9c5b8c1a62150.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/d0044ce9646fd5b4c2fee1b49ec774bf.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/e894f00c77ac1da107625078beb823e3.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/b04e5a69f249215aa9421033b6942828.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/7a2e15a1d92487a44e1d3b30c868ac6a.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/220c8ead8b046af9ff829dcefbc3cd6e.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/dee7eab9b83031acf3b07b3f3f27e0aa.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/f2cdf0030763b115e9e14fb3dfae9116.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/5cb88c84c1e97afd651972993bc980a2.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/30dfec0d2688c36436bcca14747abbc2.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/pedestrian-mode-pc-1.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/a84c5b194e957d8c3381149fab0fa0db.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/standard-mode-pc-2.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/cda41277c6a9484fe58227cda85a04c4.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/sport-mode-pc-3.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/95790da712fafb5c79f14daa80c45a6d.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/5a4aa07088b9bbd62bd37a3ee6476491.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/9122c8878277a9370f3dec6ce9837e8a.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/04a7e3a0baddb69f090fadb46dadc295.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/7df2dd951fefb1126d4fd416b0a684de.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/093794c10027deed4a96bfbe0efc3f62.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/dd5fa6753b182fb2caedd32ed00048f6.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/302f72e3d6217d054f3e706d07c66c8a.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/a53464a4b85d633132d4f85b66b0b62b.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/5-dual-brake.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/6-intelligent.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/b9d3715424f69a41d82d82e9c2d644ce.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/d141f0cfc17a529bbb11d2f7a89a7fca.jpg",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-electric-scooter-5/pc/9e1fac9c007247b96491870810e65c77.jpg"
+    ],
+    "title": "xm_5",
+    "release": 39
+  },
+  {
+    "id": "stark_varg_mx",
+    "page": "https://www.starkfuture.com/products/stark-varg",
+    "images": [
+      "https://assets.starkfuture.com/frontend-assets/varg/mx1.2/red.webp",
+      "https://assets.starkfuture.com/frontend-assets/common/new_logo.png",
+      "https://assets.starkfuture.com/frontend-assets/mx1.2/hero_01_mobile.webp",
+      "https://assets.starkfuture.com/frontend-assets/mx1.2/product_carousel_red_01_mobile.webp",
+      "https://assets.starkfuture.com/frontend-assets/mx1.2/product_carousel_red_02_mobile.webp",
+      "https://assets.starkfuture.com/frontend-assets/mx1.2/product_carousel_red_03_mobile.webp",
+      "https://assets.starkfuture.com/frontend-assets/mx1.2/product_carousel_red_04_mobile.webp",
+      "https://assets.starkfuture.com/frontend-assets/mx1.2/hero_02_mobile.webp",
+      "https://assets.starkfuture.com/frontend-assets/mx1.2/carousel_01_slide_01_mobile.webp",
+      "https://assets.starkfuture.com/frontend-assets/mx1.2/carousel_01_slide_02_mobile.webp",
+      "https://assets.starkfuture.com/frontend-assets/mx1.2/carousel_01_slide_03_mobile.webp",
+      "https://assets.starkfuture.com/frontend-assets/mx1.2/carousel_01_slide_04_mobile.webp",
+      "https://assets.starkfuture.com/frontend-assets/mx1.2/hero_03_mobile.webp",
+      "https://assets.starkfuture.com/frontend-assets/mx1.2/carousel_02_slide_01_mobile.webp",
+      "https://assets.starkfuture.com/frontend-assets/mx1.2/carousel_02_slide_02_mobile.webp",
+      "https://assets.starkfuture.com/frontend-assets/mx1.2/carousel_02_slide_03_mobile.webp",
+      "https://assets.starkfuture.com/frontend-assets/mx1.2/carousel_02_slide_05_mobile.webp",
+      "https://assets.starkfuture.com/frontend-assets/mx1.2/hero_04_mobile.webp",
+      "https://assets.starkfuture.com/frontend-assets/mx1.2/carousel_03_slide_01_mobile.webp",
+      "https://assets.starkfuture.com/frontend-assets/mx1.2/carousel_03_slide_02_mobile.webp",
+      "https://assets.starkfuture.com/frontend-assets/mx1.2/carousel_03_slide_03_mobile.webp",
+      "https://assets.starkfuture.com/frontend-assets/mx1.2/carousel_03_slide_04_mobile.webp",
+      "https://assets.starkfuture.com/frontend-assets/mx1.2/hero_05_mobile.webp"
+    ],
+    "title": "stark_varg_mx",
+    "release": 39
+  },
+  {
+    "id": "dt_mini",
+    "page": "https://scootidoo.com/products/dualtron-mini",
+    "title": "Dualtron Mini — Trottinette électrique 1450W — 50 km autonomie",
+    "images": [
+      "//cdn.shopify.com/s/files/1/0820/1302/8691/files/Sans-titre-19.png?v=1789771422",
+      "//cdn.shopify.com/s/files/1/0820/1302/8691/files/DUALTRON_AMINIA_10-600x600.jpg?v=1789771424"
+    ],
+    "release": 39
+  },
+  {
+    "id": "dt_spider2",
+    "page": "https://www.minimotors-nyc.com/products/dualtron-spider-2",
+    "title": "Dualtron Spider 2",
+    "images": [
+      "//cdn.shopify.com/s/files/1/0260/3312/7472/products/Dualtron_Spider_2_Prdoct_Photo_WR_3__92735.1631644920.jpg?v=1641591349",
+      "//cdn.shopify.com/s/files/1/0260/3312/7472/products/Dualtron_Spider_2_Prdoct_Photo_WR__52887.1631644920.jpg?v=1641591349",
+      "//cdn.shopify.com/s/files/1/0260/3312/7472/products/Dualtron_Spider_2_Prdoct_Photo_WR_2__14352.1631644920.jpg?v=1641591349"
+    ],
+    "release": 39
+  },
+  {
+    "id": "joyor_a3",
+    "page": "https://joyorscooter.com/pages/electric-scooter-joyor-a3",
+    "images": [
+      "http://joyorscooter.com/cdn/shop/files/Logo-Joyor-Rojo-Espacio-de-Seguridad.png?v=1744291340",
+      "https://joyorscooter.com/cdn/shop/files/Logo-Joyor-Rojo-Espacio-de-Seguridad.png?v=1744291340",
+      "https://joyorscooter.com/cdn/shop/files/NUEVO_LOGO_HORI_300x300.png?v=1689755355",
+      "https://joyorscooter.com/cdn/shop/files/NUEVO_LOGO_HORI_135x.png?v=1689755355",
+      "https://joyorscooter.com/cdn/shop/files/Electric-scooter-Joyor-patinete-electrico-g5_535x.jpg?v=1740151641",
+      "https://joyorscooter.com/cdn/shop/files/Diseno_Frontal_JOYOR_T6D_DGT_300x.webp?v=1785488555",
+      "https://joyorscooter.com/cdn/shop/files/Diseno_Frontal_JOYOR_T-PRO_DGT_300x.webp?v=1773925471",
+      "https://joyorscooter.com/cdn/shop/files/electric_scooter_joyor_s-pro_dgt_stamp_300x.jpg?v=1763994674",
+      "https://joyorscooter.com/cdn/shop/files/electric-scooter-joyor-a3_750x.jpg?v=1690278460",
+      "https://joyorscooter.com/cdn/shop/files/A-Series-A3-2-PhotoRoom_535x.png?v=1690279057",
+      "https://joyorscooter.com/cdn/shop/files/A-Series-A3-2-PhotoRoom_600x600@2x.png?v=1690279057",
+      "https://joyorscooter.com/cdn/shop/files/A-Series-A3-White-Front-Tire_535x.png?v=1690281059",
+      "https://joyorscooter.com/cdn/shop/files/A-Series-A3-White-Front-Tire_600x600@2x.png?v=1690281059",
+      "https://joyorscooter.com/cdn/shop/files/A-Series-A3-White-Rear-Tire_535x.png?v=1690281101",
+      "https://joyorscooter.com/cdn/shop/files/A-Series-A3-White-Rear-Tire_600x600@2x.png?v=1690281101",
+      "https://joyorscooter.com/cdn/shop/files/Medidas-patinetes-a3_535x.png?v=1690282800",
+      "https://joyorscooter.com/cdn/shop/files/Medidas-patinetes-a3_600x600@2x.png?v=1690282800",
+      "https://img.youtube.com/vi/xv2xpplgrJE/hqdefault.jpg"
+    ],
+    "release": 39
+  },
+  {
+    "id": "xm_4ultra",
+    "page": "https://www.mi.com/global/product/xiaomi-electric-scooter-4-ultra/specs/",
+    "images": [
+      "https://i01.appmifile.com/v1/MI_18455B3E4DA706226CF7535A58E875F0267/pms_1677429798.22575825.png",
+      "https://i02.appmifile.com/853_operator_sg/13/02/2023/8d7caa4072686738325047f8c145eb5e.jpg"
+    ],
+    "release": 39
+  },
+  {
+    "id": "xm_5",
+    "page": "https://www.mi.com/global/product/xiaomi-electric-scooter-5/specs/",
+    "images": [
+      "https://i02.appmifile.com/430_operatorx_operatorx_opx/15/01/2025/e0bed0243795942e6604fda8b6d02043.png",
+      "https://i02.appmifile.com/343_operator_sg/23/12/2024/91f10ec56e4a2ed115d010bd7868911e.jpg"
+    ],
+    "release": 39
+  },
+  {
+    "id": "xm_s2_pro2",
+    "page": "https://www.mi.com/global/mi-electric-scooter-Pro2/specs/",
+    "images": [
+      "https://i02.appmifile.com/i18n/share/new-logo.png",
+      "https://i01.appmifile.com/webfile/globalimg/miv4/page-404.png"
+    ],
+    "release": 39
+  },
+  {
+    "id": "xm_4pro_600w",
+    "page": "https://www.mi.com/global/product/xiaomi-electric-scooter-4-pro/specs/",
+    "images": [
+      "https://i01.appmifile.com/v1/MI_18455B3E4DA706226CF7535A58E875F0267/pms_1666838244.98981922.png",
+      "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-scooter-4-pro/c488097e0f7f52d01c4e74e680acf833.jpg"
+    ],
+    "release": 39
+  },
+  {
+    "id": "dt_thunder",
+    "page": "https://dualtron.com.es/producto/patinetes-electricos/dualtron-thunder/",
+    "images": [
+      "https://dualtron.com.es/wp-content/uploads/2022/05/dualtron-thunder-vista-frontal-solorueda.jpg",
+      "https://dualtron.com.es/wp-content/uploads/2020/12/cropped-favicon-dualtron-270x270.png",
+      "https://dualtron.com.es/wp-content/uploads/2022/05/dualtron-thunder-vista-frontal-solorueda-600x600.jpg",
+      "https://dualtron.com.es/wp-content/uploads/2022/05/dualtron-thunder-vista-trasera-solorueda-600x600.jpg",
+      "https://dualtron.com.es/wp-content/uploads/2022/05/dualtron-thunder-vista-trasera-solorueda.jpg",
+      "https://dualtron.com.es/wp-content/uploads/2022/05/dualtron-thunder-vista-parte-trasera-plegado-detalles-solorueda-600x600.jpg",
+      "https://dualtron.com.es/wp-content/uploads/2022/05/dualtron-thunder-vista-parte-trasera-plegado-detalles-solorueda.jpg",
+      "https://dualtron.com.es/wp-content/uploads/2022/05/dualtron-thunder-vista-parte-trasera-detalles-solorueda-600x600.jpg",
+      "https://dualtron.com.es/wp-content/uploads/2022/05/dualtron-thunder-vista-parte-trasera-detalles-solorueda.jpg",
+      "https://dualtron.com.es/wp-content/uploads/2022/05/dualtron-thunder-vista-lateral-solorueda-600x600.jpg",
+      "https://dualtron.com.es/wp-content/uploads/2022/05/dualtron-thunder-vista-lateral-solorueda.jpg",
+      "https://dualtron.com.es/wp-content/uploads/2022/05/dualtron-thunder-vista-frontal-plegado-solorueda-600x600.jpg",
+      "https://dualtron.com.es/wp-content/uploads/2022/05/dualtron-thunder-vista-frontal-plegado-solorueda.jpg",
+      "https://dualtron.com.es/wp-content/uploads/2022/05/dualtron-thunder-vista-delantera-lateral-solorueda-600x600.jpg",
+      "https://dualtron.com.es/wp-content/uploads/2022/05/dualtron-thunder-vista-delantera-lateral-solorueda.jpg",
+      "https://dualtron.com.es/wp-content/uploads/2022/05/dualtron-thunder-suspension-delantera-solorueda-600x600.jpg",
+      "https://dualtron.com.es/wp-content/uploads/2022/05/dualtron-thunder-suspension-delantera-solorueda.jpg",
+      "https://solorueda.com/wp-content/uploads/2019/05/dualtron-thunder.png",
+      "https://dualtron.com.es/wp-content/uploads/2022/06/speedway-leger-vista-frontal-negro-solorueda-350x350.jpg",
+      "https://dualtron.com.es/wp-content/uploads/2022/06/spider-ii-350x350.jpg",
+      "https://dualtron.com.es/wp-content/uploads/2022/06/speedway-mini-4-vista-lateral-1-solorueda-350x350.jpg",
+      "https://dualtron.com.es/wp-content/uploads/2022/05/dualtron-ultra-vista-frontal-solorueda-350x350.jpg",
+      "https://dualtron.com.es/wp-content/uploads/2025/12/Cetelem-logo.png.png"
+    ],
+    "release": 39
+  },
+  {
+    "id": "xm_mi3",
+    "page": "https://www.mi.com/global/mi-electric-scooter-3/specs/",
+    "images": [
+      "https://i01.appmifile.com/v1/MI_18455B3E4DA706226CF7535A58E875F0267/pms_1666839285.45777636.png",
+      "https://i02.appmifile.com/784_operator_sg/11/07/2022/69782c403fe7f601d04754a01ade43f4.png",
+      "https://i02.appmifile.com/623_operator_sg/11/07/2022/a4d2dd8fba210f31407e92a5c67c7c2d.png"
+    ],
+    "release": 39
+  },
+  {
+    "id": "surron_light_bee_x",
+    "page": "https://surrontm.com/light-bee-x/",
+    "images": [
+      "https://surrontm.com/wp-content/uploads/2024/03/cropped-download-270x270.png",
+      "https://surrontm.com/wp-content/uploads/2026/05/26WhiteLB-1024x683.webp",
+      "https://surrontm.com/wp-content/uploads/2026/05/26LBBlack-1024x683.webp",
+      "https://surrontm.com/wp-content/uploads/2026/05/26LBPurple-1024x683.webp",
+      "https://surrontm.com/wp-content/uploads/2026/05/26LBGreen-1024x683.webp",
+      "https://surrontm.com/wp-content/uploads/2026/05/26LB1-1024x320.webp",
+      "https://surrontm.com/wp-content/uploads/2026/05/26LB2-1024x432.webp",
+      "https://surrontm.com/wp-content/uploads/2026/05/26LB4-768x1024.webp",
+      "https://surrontm.com/wp-content/uploads/2026/05/26LB5-796x1024.webp",
+      "https://surrontm.com/wp-content/uploads/2026/05/Screenshot-2026-05-28-064258.png",
+      "https://surrontm.com/wp-content/uploads/2026/05/26LB6-scaled.webp",
+      "https://surrontm.com/wp-content/uploads/2026/05/26LB7-scaled.webp",
+      "https://surrontm.com/wp-content/uploads/2026/05/26LB8-scaled.webp",
+      "https://surrontm.com/wp-content/uploads/2026/05/Screenshot-2026-05-28-070538.png",
+      "https://surrontm.com/wp-content/uploads/2026/05/26LB9-scaled.webp",
+      "https://surrontm.com/wp-content/uploads/2026/05/26LB10-scaled.webp",
+      "https://surrontm.com/wp-content/uploads/2026/05/Screenshot-2026-05-28-070912.png",
+      "https://surrontm.com/wp-content/uploads/2026/05/26LB11-scaled.webp",
+      "https://surrontm.com/wp-content/uploads/2026/05/26LB12-scaled.webp",
+      "https://surrontm.com/wp-content/uploads/2026/05/Screenshot-2026-05-28-071310.png",
+      "https://surrontm.com/wp-content/uploads/2026/05/26LB13-scaled.webp",
+      "https://surrontm.com/wp-content/uploads/2026/05/26LB14-scaled.webp",
+      "https://surrontm.com/wp-content/uploads/2026/05/Screenshot-2026-05-17-213946.png",
+      "https://surrontm.com/wp-content/uploads/2026/06/Screenshot-2026-06-04-062134.png"
+    ],
+    "release": 39
+  },
+  {
+    "id": "stark_varg_mx",
+    "page": "https://www.englishelectricmotorco.com/bikes/stark-varg-mx-1-2/",
+    "images": [
+      "https://www.englishelectricmotorco.com/wp-content/uploads/2023/09/Stark-Varg-White-PNG-1024x622-1.png"
+    ],
+    "release": 39,
+    "note": "VARG family factory photograph; not exact MX 1.2 trim."
+  }
+]

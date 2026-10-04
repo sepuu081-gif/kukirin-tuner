@@ -1,0 +1,46 @@
+const { chromium } = require('C:/Users/sebas/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const assert = require('node:assert/strict');
+
+(async () => {
+  const browser = await chromium.launch({ channel: 'chrome', headless: true });
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await page.goto('http://127.0.0.1:5173/#/city');
+  await page.evaluate(() => {
+    localStorage.setItem('kukirin_language', 'en');
+    localStorage.setItem('kukirin_respect', '1000');
+    localStorage.removeItem('kukirin_vehicle_charge');
+  });
+  await page.reload();
+  assert.equal(await page.getByText('6 city districts').isVisible(), true);
+  assert.equal(await page.locator('.city-district-list span').count(), 6);
+  await page.locator('select').selectOption('surron_light_bee_x');
+  await page.clock.install();
+  await page.getByRole('button', { name: /Free Ride/ }).click();
+  const gas = page.getByRole('button', { name: 'Gas' });
+  await gas.dispatchEvent('pointerdown', { pointerId: 1, pointerType: 'touch' });
+  await page.clock.runFor(10000);
+  assert(Number(await page.locator('.city-speed strong').innerText()) > 45, 'gas button must accelerate');
+  await gas.dispatchEvent('pointerup', { pointerId: 1, pointerType: 'touch' });
+  const movingSpeed = Number(await page.locator('.city-speed strong').innerText());
+  await page.getByRole('button', { name: 'Brake' }).dispatchEvent('pointerdown', { pointerId: 2, pointerType: 'touch' });
+  await page.clock.runFor(1200);
+  await page.getByRole('button', { name: 'Brake' }).dispatchEvent('pointerup', { pointerId: 2, pointerType: 'touch' });
+  assert(Number(await page.locator('.city-speed strong').innerText()) < movingSpeed, 'brake button must slow down');
+  const laneBefore = await page.locator('.city-rider').getAttribute('class');
+  await page.getByRole('button', { name: 'Right' }).click();
+  assert.notEqual(await page.locator('.city-rider').getAttribute('class'), laneBefore, 'lane button must work');
+  await gas.dispatchEvent('pointerdown', { pointerId: 3, pointerType: 'touch' });
+  await page.clock.runFor(32000);
+  assert(Number((await page.locator('.wanted-meter').getAttribute('class')).match(/wanted-(\d)/)[1]) >= 1, 'radar/speeding must raise wanted level');
+  assert.equal(await page.locator('.city-district-chip').isVisible(), true);
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  await page.screenshot({ path: '../../outputs/v23-open-city-ride.png' });
+  await gas.dispatchEvent('pointerup', { pointerId: 3, pointerType: 'touch' });
+  await page.getByRole('button', { name: 'Back to map' }).click();
+  await page.getByRole('heading', { name: 'City Ride' }).waitFor();
+  assert.deepEqual(errors, []);
+  console.log('PASS: open-city map, six districts, gas/brake/lane/back buttons, radar wanted system, phone layout and no browser errors');
+  await browser.close();
+})().catch(error => { console.error(error); process.exit(1); });

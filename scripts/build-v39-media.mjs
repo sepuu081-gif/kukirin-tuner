@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+const read=name=>JSON.parse(fs.readFileSync('../../outputs/v39-'+name+'.json'));
+const existing=read('existing-metadata'),photos=read('new-metadata'),renders=read('render-metadata'),aliases=read('aliases');
+const media={...existing,...photos,...renders},layouts={...read('new-layouts'),...read('render-layouts')};
+for(const[id,base]of Object.entries(aliases))media[id]={...media[base],kind:'base-photo',base};
+if(media.stark_varg_mx)media.stark_varg_mx={...media.stark_varg_mx,kind:'base-photo',note:'Stark VARG factory photograph; exact MX 1.2 trim is not represented.'};
+if(media.nb_p1000e)media.nb_p1000e={...media.nb_p1000e,kind:'base-photo',note:'P100S chassis photograph for the game regional variant.'};
+const candidates=[...read('photo-candidates'),...read('page-candidates')];
+for(const item of candidates)if(media[item.id]?.kind!=='illustration')media[item.id].source=item.page;
+media.stark_varg_mx.source='https://www.englishelectricmotorco.com/bikes/stark-varg-mx-1-2/';
+fs.writeFileSync('src/lib/vehicleMediaData.js','// Offline vehicle imagery. Illustrations are procedural game renders, not manufacturer photos.\nexport const VEHICLE_MEDIA = '+JSON.stringify(media,null,2)+';\nexport const VEHICLE_MEDIA_LAYOUTS = '+JSON.stringify(layouts,null,2)+';\n');
+console.log('Media entries:',Object.keys(media).length, Object.values(media).reduce((a,m)=>(a[m.kind]=(a[m.kind]||0)+1,a),{}));

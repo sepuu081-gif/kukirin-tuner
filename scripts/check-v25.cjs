@@ -1,0 +1,40 @@
+const { chromium } = require('C:/Users/sebas/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const assert = require('node:assert/strict');
+(async()=>{
+ const browser=await chromium.launch({channel:'chrome',headless:true});
+ const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+ const errors=[]; page.on('pageerror',e=>errors.push(e.message));
+ const models=['g2_2026','g2_pro_2023','g2_max','g2_master','g2_ultra','g3_pro','g4'];
+ await page.route('**/*',route=>route.request().url().startsWith('http://127.0.0.1:5173')?route.continue():route.abort());
+ for(const id of models){
+  await page.goto(`http://127.0.0.1:5173/#/telemetry/${id}?stock=1`);
+  await page.evaluate(()=>localStorage.setItem('kukirin_language','en')); await page.reload();
+  await page.getByRole('button',{name:/ENGAGE/}).click();
+  await page.locator('.ride-photo-art img').waitFor();
+  await page.waitForFunction(()=>document.querySelector('.ride-photo-art img')?.naturalWidth>0);
+  assert(await page.locator('.ride-photo-art img').evaluate(img=>img.currentSrc.includes('/assets/vehicles/')));
+  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+  const gas=page.getByRole('button',{name:'GAS'});
+  await gas.dispatchEvent('pointerdown',{pointerId:1,pointerType:'touch'});
+  await page.waitForTimeout(350);
+  await gas.dispatchEvent('pointerup',{pointerId:1,pointerType:'touch'});
+  if(id==='g4') await page.screenshot({path:'../../outputs/v25-g4-photo.png'});
+ }
+ await page.goto('http://127.0.0.1:5173/#/city');
+ await page.locator('select').selectOption('g4');
+ await page.getByRole('button',{name:/Free Ride/}).click();
+ await page.waitForFunction(()=>document.querySelector('.city-rider img')?.naturalWidth>0);
+ await page.screenshot({path:'../../outputs/v25-city-photo.png'});
+ await page.getByRole('button',{name:'Back to map'}).click();
+ await page.getByRole('heading',{name:'City Ride'}).waitFor();
+ await page.setViewportSize({width:320,height:740});
+ await page.goto('http://127.0.0.1:5173/#/telemetry/g2_2026?stock=1');
+ await page.getByRole('button',{name:/ENGAGE/}).click();
+ assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+ await page.route('**/assets/vehicles/g2.jpg',route=>route.abort());
+ await page.reload(); await page.getByRole('button',{name:/ENGAGE/}).click();
+ await page.locator('svg.ride-model-art').waitFor();
+ assert.deepEqual(errors,[]);
+ console.log('PASS: seven local model photos without external network, 320/390px layout, city model selection/back, missing-photo fallback, no runtime errors');
+ await browser.close();
+})().catch(e=>{console.error(e);process.exit(1)});

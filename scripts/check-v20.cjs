@@ -1,0 +1,65 @@
+const { chromium } = require('C:/Users/sebas/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const assert = require('node:assert/strict');
+
+(async () => {
+  const browser = await chromium.launch({ channel: 'chrome', headless: true });
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  const errors = [];
+  page.on('pageerror', err => errors.push(err.message));
+  await page.goto('http://127.0.0.1:5173');
+  await page.evaluate(() => localStorage.setItem('kukirin_language', 'en'));
+  await page.reload();
+  await page.getByRole('link', { name: 'Settings', exact: true }).click();
+  const damage = page.getByRole('switch', { name: 'Component damage' });
+  await damage.click();
+  assert.equal(await damage.getAttribute('aria-checked'), 'false');
+  await page.reload();
+  assert.equal(await damage.getAttribute('aria-checked'), 'false');
+  await page.screenshot({ path: '../../outputs/v20-settings-phone.png', fullPage: true });
+  await page.evaluate(() => {
+    localStorage.setItem('kukirin_broken_parts', JSON.stringify([{vehicleId:'g2_pro_2023', part:'motor', code:'ERR_MOTOR_MELT'}]));
+    localStorage.setItem('kukirin_builds', JSON.stringify({ g2_pro_2023: { vehicleId:'g2_pro_2023', parts:{screen_delete:{id:'rfid_kill_switch'}}, weldCount:0, frameExpansion:0, bms:null, appearance:{} } }));
+  });
+  await page.goto('http://127.0.0.1:5173/#/telemetry/g2_pro_2023');
+  const engage = page.getByRole('button', {name: /ENGAGE|START|KÄIVITA/i});
+  await engage.click();
+  await page.clock.install();
+  await page.evaluate(() => localStorage.setItem('kukirin_vesc_params_g2_pro_2023', JSON.stringify({motorCurrentMax:10000,batteryCurrentMax:10000,fieldWeakeningMax:1000,absoluteMax:10000})));
+  await page.keyboard.down('w');
+  await page.clock.runFor(15000);
+  assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem('kukirin_broken_parts')).length),1);
+  assert.equal(await page.getByRole('button',{name:'Kill switch',exact:true}).count(),1);
+  const kill = page.getByRole('button', { name:'Kill switch', exact:true });
+  await kill.click();
+  assert.equal(await page.getByRole('button',{name:'Restart',exact:true}).getAttribute('aria-pressed'),'true');
+  await page.getByRole('button',{name:'Restart',exact:true}).click();
+  assert.equal(await kill.getAttribute('aria-pressed'),'false');
+  await page.keyboard.up('w');
+  await page.evaluate(() => localStorage.removeItem('kukirin_vesc_params_g2_pro_2023'));
+  await page.screenshot({ path: '../../outputs/v20-ride-phone.png', fullPage:true });
+  await page.evaluate(() => window.dispatchEvent(new Event('kukirin:native-back')));
+  await engage.waitFor();
+  await page.evaluate(() => window.dispatchEvent(new Event('kukirin:native-back')));
+  await page.waitForURL('**/#/build/g2_pro_2023');
+  await page.getByRole('link',{name:'Back',exact:true}).waitFor();
+  await page.evaluate(() => window.dispatchEvent(new Event('kukirin:native-back')));
+  await page.waitForURL('**/#/vehicle/g2_pro_2023');
+  await page.getByRole('link',{name:/Back|Garage/i}).first().waitFor();
+  await page.evaluate(() => window.dispatchEvent(new Event('kukirin:native-back')));
+  await page.waitForURL('**/#/');
+  await page.screenshot({ path: '../../outputs/v20-home-phone.png' });
+  for (const width of [320,390,430]) {
+    await page.setViewportSize({width,height:844});
+    assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `Home overflow at ${width}`);
+    await page.goto('http://127.0.0.1:5173/#/settings');
+    assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `Settings overflow at ${width}`);
+    await page.getByRole('link',{name:'Back',exact:true}).click();
+  }
+  await page.goto('http://127.0.0.1:5173/#/settings');
+  await damage.click();
+  await page.goto('http://127.0.0.1:5173/#/telemetry/g2_pro_2023');
+  assert.equal(await page.getByRole('button',{name:/REPAIR REQUIRED/}).isDisabled(),true);
+  assert.deepEqual(errors,[]);
+  console.log('PASS: damage persistence, existing damage bypass, damage re-enable, kill/restart, native back chain, 320/390/430px overflow and no browser errors');
+  await browser.close();
+})().catch(err => { console.error(err); process.exit(1); });

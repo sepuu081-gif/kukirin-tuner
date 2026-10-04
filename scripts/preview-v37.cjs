@@ -1,0 +1,3 @@
+const {chromium}=require('C:/Users/sebas/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+(async()=>{const browser=await chromium.launch({channel:'chrome',headless:true,args:['--enable-webgl','--use-angle=swiftshader']});const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+page.on('pageerror',e=>console.log('ERROR',e.message));await page.goto('http://127.0.0.1:5173/#/telemetry/g4?stock=1');await page.getByRole('button',{name:/ENGAGE/}).click();await page.waitForTimeout(1800);await page.screenshot({path:'../../outputs/v37-before.png'});await browser.close();})();

@@ -1,0 +1,8 @@
+{
+  "appId": "ee.kukirin.tuner",
+  "appName": "KuKirin Tuner",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  }
+}
