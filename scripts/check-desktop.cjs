@@ -2,10 +2,12 @@ const { _electron } = require('C:/Users/sebas/.cache/codex-runtimes/codex-primar
 const assert = require('node:assert/strict');
 const path = require('node:path');
 const executablePath = path.resolve('desktop-release/KuKirin Tuner-win32-x64/KuKirin Tuner.exe');
+const testProfile = path.join(require('node:os').tmpdir(), 'kukirin-test-' + Date.now());
+const launchOptions = { executablePath, env: {...process.env, KUKIRIN_TEST_PROFILE:testProfile} };
 (async () => {
   let app;
   try {
-    app = await _electron.launch({ executablePath });
+    app = await _electron.launch(launchOptions);
     let page = await app.firstWindow();
     const errors = [];
     page.on('pageerror', e => errors.push(e.message));
@@ -34,7 +36,7 @@ const executablePath = path.resolve('desktop-release/KuKirin Tuner-win32-x64/KuK
     await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].setFullScreen(false));
     assert.deepEqual(errors, []);
     await app.close();
-    app = await _electron.launch({ executablePath }); page = await app.firstWindow();
+    app = await _electron.launch(launchOptions); page = await app.firstWindow();
     await page.waitForFunction(() => document.body.innerText.length > 100);
     assert.equal(await page.evaluate(() => localStorage.getItem('desktop_smoke')), 'saved');
     await page.evaluate(() => localStorage.removeItem('desktop_smoke'));

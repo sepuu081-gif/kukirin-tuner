@@ -6,6 +6,7 @@ protocol.registerSchemesAsPrivileged([{ scheme: 'kukirin', privileges: {
   standard: true, secure: true, supportFetchAPI: true, stream: true,
 } }]);
 app.setName('KuKirin Tuner');
+if (process.env.KUKIRIN_TEST_PROFILE) app.setPath('userData', process.env.KUKIRIN_TEST_PROFILE);
 let window;
 const contentRoot = path.resolve(__dirname, app.isPackaged ? 'dist' : '../dist');
 function createWindow() {
