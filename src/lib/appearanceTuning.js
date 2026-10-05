@@ -1,3 +1,4 @@
+import {wrapPixel} from './wrapMaterials.js';
 export const BLUE_G2_STYLE = { customEnabled:true, deckColor:'#111827', stemColor:'#1266b4', wheelColor:'#111827', accentColor:'#38bdf8', riderHelmetColor:'#38bdf8', ledEnabled:true, ledColor:'#38bdf8', ledMode:'steady', sticker:'factory', stickerColor:'#e0f2fe', wrap:null };
 export const ORANGE_G2_STYLE = { ...BLUE_G2_STYLE, stemColor:'#202832', accentColor:'#f97316', ledColor:'#f97316', riderHelmetColor:'#f97316' };
 export function parseHex(value, fallback='#38bdf8') {
@@ -48,7 +49,7 @@ export function stickerLabel(appearance) {
 }
 
 // Work on the photograph's opaque pixels, excluding the rubber tyre circles.
-export function paintVehiclePixels(data,width,height,appearance,layout,{moto=false}={}) {
+export function paintVehiclePixels(data,width,height,appearance,layout,{moto=false,wrapMaterial=null,wrapTexture=null}={}) {
   const [fx,fy,rx,ry,diameter,hx,hy,deck]=layout;
   const frontRadius=diameter/2,rearRadius=(layout[8]||diameter)/2;
   const painted=appearance?.customEnabled;
@@ -67,6 +68,11 @@ export function paintVehiclePixels(data,width,height,appearance,layout,{moto=fal
     const stemX=hx+(fx-hx)*Math.max(0,Math.min(1,(y-hy)/Math.max(1,deck-hy)));
     const key=wheel?'wheel':warm?'accent':(y<deck-3&&Math.abs(x-stemX)<12)?'stem':'deck';
     const color=colors[key],shade=.2+lum/255*1.1;
+    if(wrapMaterial&&!wheel&&(key==='stem'||(key==='deck'&&y>deck-9&&x>Math.min(fx,rx)+4&&x<Math.max(fx,rx)-3))){
+      const covered=wrapPixel(wrapMaterial,wrapTexture,x,y,color,lum);
+      for(let c=0;c<3;c++)data[i+c]=covered[c];
+      continue;
+    }
     // Dark paint retains a small highlight, rather than turning metal grey.
     const highlight=Math.max(...color)<30?Math.max(0,lum-35)*.085:Math.max(0,lum-170)/85*18;
     for(let c=0;c<3;c++)data[i+c]=Math.min(255,Math.round(color[c]*shade+highlight));

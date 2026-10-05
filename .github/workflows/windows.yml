@@ -28,4 +28,5 @@ jobs:
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "windows-${{ github.run_number }}" 'KuKirin-Tuner-Windows.zip' --target '${{ github.sha }}' --title 'KuKirin Tuner Windows v61' --notes 'Portable Windows 64-bit app. Extract the ZIP and launch KuKirin Tuner.exe. W = throttle, S = rear brake, Space = wheelie, F11 = fullscreen. Offline riding supported.'
+        run: gh release create "windows-${{ github.run_number }}" 'KuKirin-Tuner-Windows.zip' --target '${{ github.sha }}' --title 'KuKirin Tuner Windows v62' --notes 'Portable Windows 64-bit app. Extract the ZIP and launch KuKirin Tuner.exe. W = throttle, S = rear brake, Space = wheelie, F11 = fullscreen. Offline riding supported.'
+

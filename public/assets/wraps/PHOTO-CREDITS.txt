@@ -1,0 +1,7 @@
+Photo textures bundled unmodified for offline use.
+Carbon: Christine Twigg, CC BY-SA 4.0, https://commons.wikimedia.org/wiki/File:Carbon_fibre_weave.jpg
+https://creativecommons.org/licenses/by-sa/4.0/
+Camouflage: U.S. Army, Public domain, https://commons.wikimedia.org/wiki/File:%22M81%22_U.S._woodland_camouflage_pattern_swatch.png
+Galaxy: Hubble Heritage Team (AURA/STScI/NASA), Public domain, https://commons.wikimedia.org/wiki/File:NGC_4414_(NASA-med).jpg
+Texture mapping and colour modulation are applied at runtime to the game's vehicle photographs. The carbon texture and adapted carbon surface retain CC BY-SA 4.0 licensing.
+Chrome and matte finishes simulate surface lighting; they are not photographic textures.

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import {loadWrapTexture, WRAP_MATERIALS} from '../lib/wrapMaterials';
 import { getVehiclePhoto, getVehiclePhotoMask, getVehiclePhotoLayout, getVehiclePhotoInfo, getVehicleHandGrips } from '../lib/vehiclePhotos';
 import { getRiderPose } from '../lib/riderPose';
 import { photoCenterShift } from '../lib/photoFraming';
@@ -180,8 +181,10 @@ function OpaquePhoto({ photo, onError, name, vehicle, appearance }) {
   useEffect(() => {
     let cancelled = false;
     const image = new Image();
-    image.onload = () => {
+    image.onload = async () => {
       if (cancelled || !canvas.current) return;
+      const wrapTexture=await loadWrapTexture(appearance?.wrap);
+      if(cancelled||!canvas.current)return;
       const target = canvas.current;
       target.width = image.naturalWidth; target.height = image.naturalHeight;
       const ctx = target.getContext('2d', { willReadFrequently: true });
@@ -190,13 +193,14 @@ function OpaquePhoto({ photo, onError, name, vehicle, appearance }) {
       if (!getVehiclePhotoInfo(vehicle)?.cutout && getVehiclePhotoInfo(vehicle)?.kind !== 'illustration') {
         removeStudioBackdrop(pixels.data, target.width, target.height);
       }
-      paintVehiclePixels(pixels.data,target.width,target.height,appearance,getVehiclePhotoLayout(vehicle,photoWheelLayouts),{moto:vehicle.vehicleType==='emoto'});
+      paintVehiclePixels(pixels.data,target.width,target.height,appearance,getVehiclePhotoLayout(vehicle,photoWheelLayouts),{moto:vehicle.vehicleType==='emoto',wrapTexture,wrapMaterial:WRAP_MATERIALS[appearance?.wrap]});
       ctx.putImageData(pixels, 0, 0);
       const mask = getVehiclePhotoMask(vehicle);
       if(mask){ctx.globalCompositeOperation='destination-out';ctx.beginPath();mask.forEach(([x,y],i)=>i?ctx.lineTo(x*target.width/100,y*target.height/100):ctx.moveTo(x*target.width/100,y*target.height/100));ctx.closePath();ctx.fill();ctx.globalCompositeOperation='source-over';}
       target.dataset.loaded = 'true';
       target.dataset.paint = appearance?.customEnabled ? 'on' : 'off';
       target.dataset.stem = appearance?.stemColor || '';
+      target.dataset.wrap = appearance?.wrap || 'none';
       target.dataset.fenders=appearance?.fendersRemoved&&localStorage.getItem('kukirin_unlock_fenders')==='true'?'removed':'fitted';
     };
     image.onerror = () => errorHandler.current();

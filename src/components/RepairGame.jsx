@@ -1,311 +1,70 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { Search, Wrench, AlertTriangle, Cog, Settings, Power, X, CheckCircle, ChevronRight, Loader2, Zap, Droplet, Star, Clock, Sparkles, Microscope, Disc, Activity } from "lucide-react";
-import { FAILURE_CODES } from "../lib/vehicleData";
-import { getRepairFlow } from "../lib/repairData";
-import RepairScene from "./repair/RepairScene";
+import { useState, useEffect, useRef } from 'react';
+import { X, Wrench, CheckCircle, Power, ShieldCheck } from 'lucide-react';
+import { VEHICLES, FAILURE_CODES } from '../lib/vehicleData';
+import { getRepairFlow, REPAIR_TOOLS } from '../lib/repairData';
+import { getVehiclePhoto } from '../lib/vehiclePhotos';
+import { useLanguage } from '../lib/i18n';
 
-export default function RepairGame({ brokenPart, vehicleName, repairCost, onComplete, onCancel }) {
-  const flow = getRepairFlow(brokenPart?.part);
-  const failInfo = FAILURE_CODES.find(f => f.code === brokenPart?.code);
-  const totalSteps = flow.steps.length;
-
-  const [phase, setPhase] = useState(0); // 0 = scan, then 1..N steps
-  const [stepProgress, setStepProgress] = useState(0); // clicks done within current step
-  const [activeTool, setActiveTool] = useState(null);
-  const [mistakes, setMistakes] = useState(0);
-  const [startTime] = useState(Date.now());
-  const [elapsed, setElapsed] = useState(0);
-  const [shake, setShake] = useState(false);
-  const [sparks, setSparks] = useState([]);
-  const [inspecting, setInspecting] = useState(false);
-  const [scanning, setScanning] = useState(false);
-  const [scanDone, setScanDone] = useState(false);
-  const [testing, setTesting] = useState(false);
-  const [testPassed, setTestPassed] = useState(false);
-  const sparkId = useRef(0);
-
-  // Phase 0 = diagnostic scan, phases 1..N = repair steps, phase N+1 = complete
-  const currentStep = phase > 0 && phase <= totalSteps ? flow.steps[phase - 1] : null;
-  const isComplete = testPassed;
-
-  useEffect(() => {
-    if (isComplete) return;
-    const id = setInterval(() => setElapsed(Math.floor((Date.now() - startTime) / 1000)), 1000);
-    return () => clearInterval(id);
-  }, [isComplete, startTime]);
-
-  useEffect(() => {
-    const step = phase > 0 && phase <= totalSteps ? flow.steps[phase - 1] : null;
-    setActiveTool(step?.tool || null);
-    setStepProgress(0);
-  }, [phase]);
-
-  useEffect(() => {
-    if (!scanning) return;
-    const t = setTimeout(() => { setScanning(false); setScanDone(true); }, 2500);
-    return () => clearTimeout(t);
-  }, [scanning]);
-
-  const addSparks = useCallback((x, y) => {
-    const newSparks = Array.from({ length: 5 }, () => ({ id: sparkId.current++, x, y, sx: (Math.random() - 0.5) * 60, sy: (Math.random() - 0.5) * 60 }));
-    setSparks(prev => [...prev, ...newSparks]);
-    setTimeout(() => setSparks(prev => prev.filter(s => !newSparks.find(ns => ns.id === s.id))), 500);
-  }, []);
-
-  const handleTargetClick = (targetId, x, y) => {
-    if (!currentStep) return;
-    if (currentStep.target !== targetId) return;
-    if (currentStep.tool !== activeTool) {
-      setMistakes(m => m + 1);
-      setShake(true);
-      setTimeout(() => setShake(false), 300);
-      return;
-    }
-    addSparks(x, y);
-    const next = stepProgress + 1;
-    if (next >= currentStep.count) {
-      setStepProgress(0);
-      if (phase < totalSteps) {
-        setPhase(p => p + 1);
-      } else {
-        // Last step done — run test
-        setTesting(true);
-        setTimeout(() => { setTesting(false); setTestPassed(true); }, 2500);
-      }
-    } else {
-      setStepProgress(next);
-    }
-  };
-
-  const runScan = () => { setScanning(true); };
-
-  const fmtTime = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
-  const stars = mistakes === 0 ? 3 : mistakes <= 3 ? 2 : 1;
-  const bonusRep = stars === 3 ? Math.floor(repairCost * 0.5) : stars === 2 ? Math.floor(repairCost * 0.25) : 0;
-
-  const tools = useMemo(() => currentStep ? getToolsForStep(currentStep.tool) : [], [phase]);
-
-  const stepLabels = ["Scan", ...flow.steps.map(s => s.label.split(" ")[0]), "Done"];
-
-  return (
-    <div className="fixed inset-0 z-[100] bg-black flex flex-col">
-      {/* Background */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-black to-zinc-950" />
-        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(circle at 50% 50%, white 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
-      </div>
-
-      {/* Header */}
-      <div className="relative border-b border-zinc-800/50 bg-zinc-950/60 backdrop-blur-md px-4 py-3 flex items-center justify-between flex-shrink-0 z-10">
-        <div className="flex items-center gap-3">
-          <button onClick={onCancel} className="text-zinc-400 hover:text-white transition-colors"><X className="h-5 w-5" /></button>
-          <Wrench className={`h-4 w-4 ${flow.color}`} />
-          <span className="font-mono text-xs font-bold text-white uppercase tracking-wider">{flow.label}</span>
-          <span className="font-mono text-[10px] text-zinc-500 hidden sm:inline">{vehicleName}</span>
-        </div>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5 font-mono text-[10px] text-zinc-400"><Clock className="h-3.5 w-3.5" /> {fmtTime(elapsed)}</div>
-          <div className={`flex items-center gap-1.5 font-mono text-[10px] font-bold ${mistakes > 0 ? "text-red-400" : "text-green-400"}`}><AlertTriangle className="h-3.5 w-3.5" /> {mistakes}</div>
-          <div className="font-mono text-[10px] text-yellow-400 font-bold">{repairCost} REP</div>
-        </div>
-      </div>
-
-      {/* Step progress bar */}
-      <div className="relative px-3 py-2.5 bg-zinc-950/30 border-b border-zinc-800/50 flex-shrink-0 z-10 overflow-x-auto no-scrollbar">
-        <div className="flex items-center gap-1 min-w-max mx-auto" style={{ maxWidth: "100%" }}>
-          {flow.steps.map((s, i) => {
-            const stepNum = i + 1;
-            const done = phase > stepNum;
-            const active = phase === stepNum;
-            return (
-              <div key={i} className="flex items-center flex-shrink-0">
-                <div className={`h-2 w-2 rounded-full transition-all ${done ? "bg-green-500" : active ? "bg-primary animate-pulse" : "bg-zinc-700"}`} />
-                {i < flow.steps.length - 1 && <div className={`h-0.5 w-4 ${done ? "bg-green-500/40" : "bg-zinc-800"}`} />}
-              </div>
-            );
-          })}
-        </div>
-        <div className="text-center mt-1.5 font-mono text-[9px] text-zinc-500 uppercase tracking-wider">
-          {phase === 0 ? "Diagnostic" : isComplete ? "Complete" : `Step ${phase}/${totalSteps}: ${currentStep?.label || ""}`}
-        </div>
-      </div>
-
-      {/* Main content */}
-      <div className={`relative flex-1 overflow-y-auto flex flex-col items-center p-4 sm:p-6 ${shake ? "animate-shake" : ""}`}>
-        <div className="w-full max-w-lg">
-          {/* Diagnostic phase */}
-          {phase === 0 && (
-            <div className="space-y-4">
-              <div className="text-center">
-                <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/40 bg-cyan-500/10 px-3 py-1 mb-3">
-                  <Search className="h-3.5 w-3.5 text-cyan-400" />
-                  <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-cyan-400">Diagnose</span>
-                </div>
-                <p className="font-mono text-xs text-zinc-300">{scanDone ? "Fault identified. Inspect or begin repair." : "Run a diagnostic scan to identify the fault."}</p>
-              </div>
-              <div className="rounded-xl border border-zinc-800 bg-zinc-950/60 p-4">
-                <RepairScene scene={flow.scene} phase={0} scanning={scanning} scanDone={scanDone} brokenPart={brokenPart} onTargetClick={() => {}} />
-              </div>
-              <div className="flex flex-col gap-2">
-                {!scanDone && (
-                  <button onClick={runScan} disabled={scanning} className="w-full rounded-lg bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 py-3 font-mono text-sm font-bold text-white uppercase tracking-wider transition-colors flex items-center justify-center gap-2">
-                    {scanning ? <><Loader2 className="h-4 w-4 animate-spin" /> Scanning...</> : <><Search className="h-4 w-4" /> Run Diagnostic Scan</>}
-                  </button>
-                )}
-                {scanDone && (
-                  <div className="flex gap-2">
-                    {failInfo && (
-                      <button onClick={() => setInspecting(true)} className="flex-1 rounded-lg bg-cyan-600/20 border border-cyan-500/40 hover:bg-cyan-600/30 py-3 font-mono text-xs font-bold text-cyan-400 uppercase tracking-wider transition-colors flex items-center justify-center gap-2">
-                        <Microscope className="h-4 w-4" /> Inspect
-                      </button>
-                    )}
-                    <button onClick={() => setPhase(1)} className="flex-1 rounded-lg bg-yellow-600 hover:bg-yellow-500 py-3 font-mono text-sm font-bold text-white uppercase tracking-wider transition-colors flex items-center justify-center gap-2">
-                      Begin Repair <ChevronRight className="h-4 w-4" />
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Repair steps */}
-          {phase > 0 && !isComplete && (
-            <div className="space-y-4">
-              <div className="text-center">
-                <div className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 mb-2 ${flow.color.replace("text-", "border-").replace("-400", "-500/40")} bg-zinc-900/50`}>
-                  <span className={`font-mono text-[10px] font-bold uppercase tracking-wider ${flow.color}`}>{currentStep?.label}</span>
-                </div>
-                <p className="font-mono text-xs text-zinc-400">{currentStep?.hint}</p>
-                {currentStep?.count > 1 && (
-                  <div className="mt-2 flex items-center justify-center gap-1">
-                    {Array.from({ length: currentStep.count }).map((_, i) => (
-                      <div key={i} className={`h-1.5 w-6 rounded-full transition-all ${i < stepProgress ? "bg-primary" : "bg-zinc-700"}`} />
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Scene */}
-              <div className="rounded-xl border border-zinc-800 bg-zinc-950/60 p-3 sm:p-4">
-                <RepairScene
-                  scene={flow.scene}
-                  phase={phase}
-                  stepProgress={stepProgress}
-                  scanning={false}
-                  scanDone={true}
-                  brokenPart={brokenPart}
-                  currentTarget={currentStep?.target}
-                  testing={testing}
-                  testPassed={testPassed}
-                  sparks={sparks}
-                  onTargetClick={handleTargetClick}
-                />
-              </div>
-
-              {/* Test button — for the final test step */}
-              {currentStep?.target === "test" && !testing && !testPassed && (
-                <button onClick={() => handleTargetClick("test", 160, 120)} className="w-full rounded-lg bg-primary/20 border border-primary/40 py-3 font-mono text-sm font-bold text-primary uppercase tracking-wider hover:bg-primary/30 transition-all flex items-center justify-center gap-2">
-                  <Power className="h-4 w-4" /> Run Test
-                </button>
-              )}
-
-              {/* Tool bar */}
-              {currentStep && (
-                <div className="flex items-center justify-center gap-2 flex-wrap">
-                  <span className="font-mono text-[9px] text-zinc-500 uppercase tracking-wider mr-1">Tool:</span>
-                  {tools.map(t => {
-                    const isRequired = t.id === currentStep.tool;
-                    const isActive = activeTool === t.id;
-                    return (
-                      <button key={t.id} onClick={() => setActiveTool(t.id)}
-                        className={`relative flex flex-col items-center gap-0.5 rounded-lg border px-2.5 py-1.5 transition-all ${
-                          isActive ? "border-primary bg-primary/20" : isRequired ? "border-yellow-500/60 bg-yellow-500/10 animate-pulse" : "border-zinc-700 bg-zinc-900/50 hover:border-zinc-600"
-                        }`}>
-                        <t.icon className={`h-4 w-4 ${isActive ? "text-primary" : isRequired ? "text-yellow-400" : "text-zinc-500"}`} />
-                        <span className={`font-mono text-[8px] uppercase ${isActive ? "text-primary" : isRequired ? "text-yellow-400" : "text-zinc-600"}`}>{t.label}</span>
-                        {isRequired && !isActive && <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-yellow-400 animate-ping" />}
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Complete */}
-          {isComplete && (
-            <div className="space-y-4">
-              <div className="rounded-xl border border-green-500/30 bg-green-500/5 p-6 text-center">
-                <CheckCircle className="h-12 w-12 text-green-400 mx-auto mb-3" />
-                <div className="flex items-center justify-center gap-1 mb-2">
-                  {[1, 2, 3].map(s => (
-                    <Star key={s} className={`h-7 w-7 ${s <= stars ? "text-yellow-400 fill-yellow-400" : "text-zinc-700"}`} />
-                  ))}
-                </div>
-                <div className="font-mono text-sm font-bold text-white uppercase tracking-wider">
-                  {stars === 3 ? "PERFECT REPAIR" : stars === 2 ? "GOOD REPAIR" : "REPAIR COMPLETE"}
-                </div>
-                <div className="flex items-center justify-center gap-4 mt-3 font-mono text-[10px] text-zinc-400">
-                  <span><Clock className="h-3 w-3 inline mr-1" />{fmtTime(elapsed)}</span>
-                  <span><AlertTriangle className="h-3 w-3 inline mr-1" />{mistakes} mistakes</span>
-                  {bonusRep > 0 && <span className="text-yellow-400"><Sparkles className="h-3 w-3 inline mr-1" />+{bonusRep} REP bonus</span>}
-                </div>
-              </div>
-              <button onClick={() => onComplete(bonusRep)} className="w-full rounded-lg bg-green-600 hover:bg-green-500 py-3 font-mono text-sm font-bold text-white uppercase tracking-wider transition-colors flex items-center justify-center gap-2">
-                <CheckCircle className="h-4 w-4" /> Complete Repair
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Inspection modal */}
-      {inspecting && failInfo && (
-        <div className="absolute inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-30 p-4" onClick={() => setInspecting(false)}>
-          <div className="rounded-xl border border-red-500/40 bg-zinc-900 p-5 max-w-sm w-full" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center gap-2 mb-3">
-              <Microscope className="h-5 w-5 text-cyan-400" />
-              <h3 className="font-mono text-sm font-bold text-white uppercase tracking-wider">Component Inspection</h3>
-            </div>
-            <div className="space-y-2.5 font-mono text-[10px]">
-              <div className="flex items-center justify-between rounded-lg bg-red-500/10 border border-red-500/30 px-3 py-2">
-                <span className="text-zinc-500">Fault Code</span>
-                <span className="text-red-400 font-bold">{failInfo.code}</span>
-              </div>
-              <div className="rounded-lg bg-zinc-800/50 p-3 space-y-1.5">
-                <div><span className="text-zinc-500">Component: </span><span className="text-foreground">{brokenPart?.part}</span></div>
-                <div><span className="text-zinc-500">Cause: </span><span className="text-yellow-400">{failInfo.cause}</span></div>
-                <div><span className="text-zinc-500">Effect: </span><span className="text-red-400">{failInfo.effect}</span></div>
-                <div className="flex items-center gap-1.5 pt-1 border-t border-zinc-700">
-                  <AlertTriangle className="h-3 w-3 text-red-400" />
-                  <span className="text-red-400 font-bold uppercase">Severity: {failInfo.severity}</span>
-                </div>
-              </div>
-            </div>
-            <button onClick={() => setInspecting(false)} className="w-full mt-4 rounded-lg bg-zinc-800 hover:bg-zinc-700 py-2.5 font-mono text-xs font-bold text-zinc-300 uppercase tracking-wider transition-colors">Close</button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
+const TOOL_ET={wrench:'Mutrivõti',allen:'Kuuskantvõti',pliers:'Tangid',driver:'Kruvikeeraja',drill:'Akutrell',levers:'Rehviheeblid',welder:'Keevitus',grinder:'Lihvija',brush:'Traathari',hands:'Käed',paste:'Termopasta'};
+const STEP_ET={jack:'Tõsta sõiduk alusele',axle:'Eemalda teljemutter',pull:'Eemalda ratas',tire:'Võta vana rehv maha',newtire:'Paigalda uus rehv',mount:'Paigalda ratas',tighten:'Pinguta kinnitused',lower:'Langeta sõiduk',phase1:'Ühenda mootorijuhtmed lahti',reconnect:'Ühenda pistikud tagasi',bolt1:'Vabasta klambripoldid',clean:'Puhasta kahjustatud pind',tack:'Tee kolm punktkeevitust',weld:'Keevita ühendus',grind:'Viimistle keevis',screws:'Vabasta platvormi kruvid',panel:'Tõsta platvormi kaas',cables:'Ühenda pistikud lahti',vscrews:'Vabasta kontrolleri kinnitused',paste:'Kanna termopasta pinnale',vscrew2:'Pinguta kontrolleri kinnitused',panel2:'Sulge platvormi kaas',screws2:'Pinguta platvormi kruvid',bms:'Ühenda aku pistik lahti',bscrews:'Vabasta aku kinnitused',bscrew2:'Pinguta aku kinnitused',escrews:'Vabasta mooduli kinnitused',escrew2:'Pinguta mooduli kinnitused'};
+const PART_ET={wheel:'ratas',motor:'mootor',controller:'kontroller',battery:'aku',damper:'amort',chassis:'raam',electronics:'elektroonika'};
+export function repairSteps(part){
+ const steps=getRepairFlow(part).steps.filter(s=>s.id!=='test').map(s=>({...s,tool:['cables','bms'].includes(s.target)?'hands':s.tool}));
+ if(part==='controller'){const index=steps.findIndex(s=>s.id==='paste');const [paste]=steps.splice(index,1);steps.splice(steps.findIndex(s=>s.id==='install'),0,paste);}
+ return steps;
 }
+const isTightening=s=>['tighten','vscrew2','bscrew2','escrew2','screws2'].includes(s?.id);
+const isAlignment=s=>s?.tool==='hands'&&['install','mount','reconnect','panel2'].includes(s.id);
 
-function getToolsForStep(requiredTool) {
-  const all = [
-    { id: "wrench",  label: "Wrench",     icon: Wrench },
-    { id: "allen",   label: "Allen",      icon: Settings },
-    { id: "pliers",  label: "Pliers",     icon: Zap },
-    { id: "driver",  label: "Driver",     icon: Cog },
-    { id: "drill",   label: "Drill",      icon: Cog },
-    { id: "levers",  label: "Levers",     icon: Disc },
-    { id: "welder",  label: "Welder",     icon: Zap },
-    { id: "grinder", label: "Grinder",    icon: Disc },
-    { id: "brush",   label: "Brush",      icon: Activity },
-    { id: "hands",   label: "Hands",      icon: Power },
-    { id: "paste",   label: "Paste",      icon: Droplet },
-  ];
-  // Show the required tool + 2 random distractors
-  const required = all.find(t => t.id === requiredTool);
-  const distractors = all.filter(t => t.id !== requiredTool).sort(() => Math.random() - 0.5).slice(0, 2);
-  return [required, ...distractors].sort(() => Math.random() - 0.5);
+export default function RepairGame({brokenPart,vehicleName,repairCost,onComplete,onCancel}){
+ const {language}=useLanguage();const text=(en,et)=>language==='et'?et:en;
+ const part=brokenPart?.part||'electronics',steps=repairSteps(part),stepCount=steps.length;
+ const [stage,setStage]=useState('diagnose'),[index,setIndex]=useState(0),[tool,setTool]=useState(null),[done,setDone]=useState([]),[mistakes,setMistakes]=useState(0),[progress,setProgress]=useState(0),[adjust,setAdjust]=useState(0),[checks,setChecks]=useState([]),[message,setMessage]=useState('');
+ const holding=useRef(null),timer=useRef(null),completed=useRef(false),doneRef=useRef([]);
+ const step=steps[index],tight=isTightening(step),align=isAlignment(step),count=step?.count||1;
+ const stop=()=>{clearInterval(timer.current);timer.current=null;holding.current=null;setProgress(0);};
+ useEffect(()=>{const cancel=()=>{clearInterval(timer.current);timer.current=null;holding.current=null;setProgress(0);};const hidden=()=>{if(document.hidden)cancel();};window.addEventListener('blur',cancel);document.addEventListener('visibilitychange',hidden);return()=>{clearInterval(timer.current);window.removeEventListener('blur',cancel);document.removeEventListener('visibilitychange',hidden);};},[]);
+ useEffect(()=>{const escape=e=>{if(e.key==='Escape'){clearInterval(timer.current);onCancel();}};window.addEventListener('keydown',escape);return()=>window.removeEventListener('keydown',escape);},[onCancel]);
+ const error=()=>{setMistakes(n=>n+1);setMessage(text('Check the tool or adjustment and try again.','Kontrolli tööriista või seadistust ja proovi uuesti.'));};
+ const finishTarget=id=>{if(doneRef.current.includes(id))return;const next=[...doneRef.current,id];doneRef.current=next;setDone(next);setMessage('');};
+ const startHold=(id,event)=>{
+  if(stage!=='work'||doneRef.current.includes(id)||holding.current!==null)return;
+  if(tool!==step.tool){error();return;}
+  if(tight||align){if(adjust<(tight?65:45)||adjust>(tight?78:55)){error();return;}finishTarget(id);return;}
+  if(event.pointerId!==undefined)event.currentTarget.setPointerCapture(event.pointerId);
+  holding.current=id;const started=performance.now(),duration=step.tool==='welder'?1500:step.tool==='grinder'?1100:650;
+  timer.current=setInterval(()=>{const pct=Math.min(100,(performance.now()-started)/duration*100);setProgress(pct);if(pct>=100){clearInterval(timer.current);timer.current=null;holding.current=null;setProgress(0);finishTarget(id);}},30);
+ };
+ const advance=()=>{stop();doneRef.current=[];setDone([]);setAdjust(0);setTool(null);setMessage('');if(index+1===stepCount)setStage('verify');else setIndex(n=>n+1);};
+ const vehicle=VEHICLES.find(v=>v.id===brokenPart?.vehicleId)||VEHICLES.find(v=>v.name===vehicleName)||VEHICLES[0];
+ const photo=getVehiclePhoto(vehicle),welding=stage==='work'&&['welder','grinder','brush'].includes(step.tool);
+ const fail=FAILURE_CODES.find(f=>f.code===brokenPart?.code);
+ const toolIds=[...new Set(steps.map(s=>s.tool).concat(['wrench','driver','hands']))];
+ const stars=mistakes===0?3:mistakes<=3?2:1,bonus=stars===3?Math.floor(repairCost*.5):stars===2?Math.floor(repairCost*.25):0;
+ const checkNames=part==='wheel'?[['Free wheel rotation','Ratas pöörleb vabalt'],['Tyre seated evenly','Rehv on ühtlaselt veljel'],['Fasteners secure','Kinnitused püsivad']]:part==='chassis'?[['Weld inspection','Keevise kontroll'],['Frame alignment','Raami joondus'],['Load test','Koormustest']]:[['Connections seated','Pistikud on paigas'],['Mounting check','Kinnituste kontroll'],['Function test','Töö kontroll']];
+ const [checking,setChecking]=useState(null);
+ const checkTimer=useRef(null);
+ useEffect(()=>()=>clearTimeout(checkTimer.current),[]);
+ const runCheck=id=>{if(checking!==null||checks.includes(id))return;setChecking(id);checkTimer.current=setTimeout(()=>{setChecks(prev=>prev.includes(id)?prev:[...prev,id]);setChecking(null);},850);};
+ const title=language==='et'?(step?.id==='remove'?`Eemalda vana ${PART_ET[part]||'jupp'}`:step?.id==='install'?`Paigalda uus ${PART_ET[part]||'jupp'}`:STEP_ET[step?.id]||'Ühenda pistikud'):step?.label;
+ return <div className="repair-workshop" role="dialog" aria-modal="true" aria-label={text('Repair workshop','Remonditöökoda')} data-stage={stage} data-step={index}>
+  <header><div><small>{text('WORKSHOP','TÖÖKODA')} · {brokenPart?.code}</small><h2>{vehicleName}</h2></div><button type="button" aria-label={text('Cancel repair','Katkesta remont')} onClick={()=>{stop();onCancel();}}><X size={22}/></button></header>
+  <main>
+   <div className={`repair-photo ${welding?'welding':''}`}><img src={welding?'/assets/workshop/tig-welding.jpg':photo} alt={welding?text('TIG welding reference','TIG-keevituse foto'):vehicleName}/><span>{welding?text('Welding reference','Keevituse näidis'):text('Vehicle reference','Sõiduki foto')}</span></div>
+   <div className="repair-status"><span><Wrench size={15}/>{text('Repair','Remont')}: {PART_ET[part]&&language==='et'?PART_ET[part]:part}</span><span>{repairCost} REP</span></div>
+   {stage==='diagnose'&&<section><h3>{text('Diagnose the fault','Kontrolli riket')}</h3><p>{fail?.name||brokenPart?.code} · {text('Inspect the damaged part before starting.','Kontrolli kahjustatud juppi enne töö alustamist.')}</p><button className="repair-primary" onClick={()=>setStage('isolate')}>{text('Inspect & start','Kontrolli ja alusta')}</button></section>}
+   {stage==='isolate'&&<section><h3><Power size={18}/>{text('Power isolation','Toite väljalülitamine')}</h3><p>{text('The game vehicle must be switched off before repair.','Mängu sõiduk peab remondi ajaks olema välja lülitatud.')}</p><button className="repair-primary" onClick={()=>setStage('work')}>{text('Switch off & isolate','Lülita välja ja eralda toide')}</button></section>}
+   {stage==='work'&&<section>
+    <small>{text('STEP','SAMM')} {index+1} / {stepCount}</small><h3>{title}</h3><progress max={stepCount} value={index} aria-label={text('Repair progress','Remondi edenemine')}/>
+    <div className="repair-tools" aria-label={text('Tools','Tööriistad')}>{toolIds.map(id=><button type="button" key={id} data-tool={id} aria-pressed={tool===id} onClick={()=>{stop();setTool(id);setMessage('');}}>{language==='et'?TOOL_ET[id]:REPAIR_TOOLS.find(t=>t.id===id)?.label}</button>)}</div>
+    <p>{tight?text('Set tightening in the green band (65–78%).','Sea pingutus rohelisse vahemikku (65–78%).'):align?text('Align the part in the centre (45–55%).','Joonda jupp keskele (45–55%).'):text('Select the tool, then hold each work point until finished.','Vali tööriist ja hoia iga tööpunkti all kuni töö on tehtud.')}</p>
+    {(tight||align)&&<label className="repair-adjust">{tight?text('Tightening','Pingutus'):text('Alignment','Joondus')} · {adjust}%<div className={`repair-adjust-track ${tight?'tight':''}`}><input type="range" min="0" max="100" value={adjust} aria-label={tight?'Tightening':'Alignment'} onChange={e=>setAdjust(Number(e.target.value))}/></div></label>}
+    <div className="repair-workpoints">{Array.from({length:count},(_,id)=><button type="button" key={`${index}-${id}`} data-point={id} disabled={done.includes(id)} aria-label={`${text('Work point','Tööpunkt')} ${id+1}`} onPointerDown={e=>startHold(id,e)} onPointerUp={stop} onPointerCancel={stop} onLostPointerCapture={stop} onKeyDown={e=>{if((e.key===' '||e.key==='Enter')&&!e.repeat){e.preventDefault();startHold(id,e);}}} onKeyUp={e=>{if(e.key===' '||e.key==='Enter')stop();}} onBlur={stop}>{done.includes(id)?<CheckCircle size={20}/>:<Wrench size={20}/>}<span>{id+1}</span>{holding.current===id&&<progress max="100" value={progress}/>}</button>)}</div>
+    <p className="repair-feedback" role="status">{message||`${done.length} / ${count} ${text('complete','valmis')}`}</p>
+    <button className="repair-primary" disabled={done.length!==count} onClick={advance}>{text('Next step','Järgmine samm')}</button>
+   </section>}
+   {stage==='verify'&&<section><h3><ShieldCheck size={20}/>{text('Final checks','Lõppkontroll')}</h3><p>{text('Run every check before returning to the road.','Tee kõik kontrollid enne sõidu jätkamist.')}</p><div className="repair-checks">{checkNames.map(([en,et],id)=><button key={id} disabled={checks.includes(id)||checking!==null} onClick={()=>runCheck(id)} data-check={id}><span>{text(en,et)}</span><strong>{checks.includes(id)?'✓':checking===id?'…':'→'}</strong></button>)}</div><button className="repair-primary" disabled={checks.length!==3} onClick={()=>setStage('complete')}>{text('Finish inspection','Lõpeta kontroll')}</button></section>}
+   {stage==='complete'&&<section><h3>{text('Repair complete','Remont valmis')} · {'★'.repeat(stars)}</h3><p>{text('Mistakes','Eksimusi')}: {mistakes} · {text('Quality bonus','Kvaliteediboonus')}: +{bonus} REP</p><button className="repair-primary" onClick={()=>{if(completed.current)return;completed.current=true;onComplete(bonus);}}>{text('Save repair & return','Salvesta remont ja tagasi')}</button></section>}
+  </main>
+ </div>;
 }

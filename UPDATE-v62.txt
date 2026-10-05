@@ -1,0 +1,21 @@
+KuKirin Tuner v62
+
+Wraps:
+- Actual carbon weave, woodland camouflage and NASA galaxy textures, bundled for offline play.
+- Material swatches, fitted stem/deck surfaces, retained lighting, tyres and trim.
+- Distinct matte/chrome finishes; selecting a wrap sets its matching base colour.
+- Persistent selection and undo; Full black removes any patterned wrap.
+
+Repair workshop:
+- Vehicle/process reference photographs replace the drawn repair scene.
+- Manual tool selection, individual work points and press-and-hold operations.
+- Alignment and tightening bands; mistakes reduce the REP quality bonus.
+- Power isolation before work, thermal paste before controller installation.
+- Three timed final checks, once-only completion, safe timer cleanup and cancellation.
+- Phone layout and Estonian/English text; touch, mouse and keyboard controls.
+
+Validated: lint, seven complete browser repair flows at 390px, wrong-tool/short-hold/blur/cancel handling, photo-texture rendering and persistence, APK build and texture bytes, packaged Windows offline textures and Estonian keyboard repair. A physical phone has not been tested.
+
+Android: install KuKirin-Tuner-v62.apk over the existing app to keep saved progress.
+Windows: extract KuKirin-Tuner-Windows-v62.zip, then launch KuKirin Tuner.exe.
+Photo credits: public/assets/wraps/PHOTO-CREDITS.txt and public/assets/workshop/PHOTO-CREDITS.txt.
