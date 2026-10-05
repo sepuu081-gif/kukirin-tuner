@@ -1,5 +1,15 @@
 const QUEUE='kukirin_score_queue';
-export function leaderboardURL(){const saved=localStorage.getItem('kukirin_leaderboard_url');return saved==='off'?'':(saved||import.meta.env.VITE_LEADERBOARD_URL||'').replace(/\/$/,'');}
+export const DEFAULT_LEADERBOARD_URL=import.meta.env.VITE_LEADERBOARD_URL||'https://kukirin-leaderboard.sepuu081-kukirin.workers.dev';
+export function leaderboardURL(){
+ let saved=localStorage.getItem('kukirin_leaderboard_url');
+ if(localStorage.getItem('kukirin_cloud_server_v60')!=='true'){
+  // Upgrade the earlier local test-server address; keep custom servers and
+  // an explicit disconnect unchanged. Players no longer need to host a PC.
+  if(!saved||['http://127.0.0.1:8787','http://localhost:8787'].includes(saved.replace(/\/$/,''))){saved=DEFAULT_LEADERBOARD_URL;localStorage.setItem('kukirin_leaderboard_url',saved);}
+  localStorage.setItem('kukirin_cloud_server_v60','true');
+ }
+ return saved==='off'?'':(saved||DEFAULT_LEADERBOARD_URL).replace(/\/$/,'');
+}
 function serverOrigin(url){let u;try{u=new URL(url.trim());}catch{throw new Error('invalid_url');}if(u.username||u.password||u.search||u.hash||!['/','/health','/scores'].includes(u.pathname)||u.protocol!=='https:'&&!(u.protocol==='http:'&&['localhost','127.0.0.1'].includes(u.hostname)))throw new Error('invalid_url');return u.origin;}
 export function setLeaderboardURL(url){localStorage.setItem('kukirin_leaderboard_url',serverOrigin(url));}
 export function disconnectLeaderboard(){localStorage.setItem('kukirin_leaderboard_url','off');}

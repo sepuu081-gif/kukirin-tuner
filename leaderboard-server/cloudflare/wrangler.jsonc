@@ -6,6 +6,6 @@
   "d1_databases": [{
     "binding": "DB",
     "database_name": "kukirin-scores",
-    "database_id": "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+    "database_id": "4e3d0d8b-3204-48b0-8d4f-c8fb8e186db5"
   }]
 }

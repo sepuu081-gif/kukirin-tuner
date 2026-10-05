@@ -1,6 +1,6 @@
 # Shared leaderboard server
 
-This is a real shared API backed by SQLite. It is not hosted yet. Run it on a persistent Node.js 24 server or Docker host with HTTPS. All players must use the same public URL, configured on the game's leaderboard page or with VITE_LEADERBOARD_URL at build time.
+This is a real shared API backed by SQLite. The live server is https://kukirin-leaderboard.sepuu081-kukirin.workers.dev, hosted on Cloudflare Workers with persistent D1 storage. New game installs connect automatically. The Node.js variant below is optional for self-hosting. Run it on a persistent Node.js 24 server or Docker host with HTTPS. All players must use the same public URL, configured on the game's leaderboard page or with VITE_LEADERBOARD_URL at build time.
 
 ```sh
 npm start

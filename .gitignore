@@ -45,3 +45,6 @@ android/app/src/main/assets/
 __pycache__/
 
 leaderboard-server/data/
+
+.wrangler/
+.deploy/

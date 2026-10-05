@@ -1,6 +1,6 @@
 # Public leaderboard on Cloudflare Workers + D1
 
-The game does not include a fake public server address. A Cloudflare account must own the deployment. Workers and D1 have free plans with usage limits. This option preserves results in D1 when the Worker restarts; unlike a free Render web service's ephemeral filesystem, it does not keep SQLite in a temporary app directory.
+The live game server is https://kukirin-leaderboard.sepuu081-kukirin.workers.dev. v60 connects automatically. The following steps are only for deploying your own separate server. A Cloudflare account must own the deployment. Workers and D1 have free plans with usage limits. This option preserves results in D1 when the Worker restarts; unlike a free Render web service's ephemeral filesystem, it does not keep SQLite in a temporary app directory.
 
 Official instructions: https://developers.cloudflare.com/d1/get-started/
 
@@ -8,7 +8,7 @@ From this directory:
 
 1. `npx wrangler login` — sign in with your own Cloudflare account. Do not send passwords or API secrets in chat.
 2. `npx wrangler d1 create kukirin-scores`
-3. Copy the returned database ID into `wrangler.jsonc`, replacing `REPLACE_WITH_YOUR_D1_DATABASE_ID`. This database ID is not a secret.
+3. Copy the returned database ID into `wrangler.jsonc`, replacing the existing `database_id` value with your own ID. This database ID is not a secret.
 4. `npx wrangler d1 execute kukirin-scores --remote --file=schema.sql`
 5. `npx wrangler deploy`
 

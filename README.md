@@ -59,3 +59,8 @@ The homepage has a labelled Leaderboard button. Shared leaderboards still requir
 ## v59
 
 Leaderboard now has a visible server connection card: checks the API before saving, shows connection state and pending score count, remembers the address, and supports disconnecting. The server has its own web leaderboard with a copy-address button. Node/Docker hosting is retained; an optional Cloudflare Workers + D1 server and deployment guide are included. No public hosting account or default public server is configured yet.
+## v60 — public cloud leaderboard
+
+The shared leaderboard is deployed at https://kukirin-leaderboard.sepuu081-kukirin.workers.dev. Cloudflare Workers serves the API and web leaderboard; D1 persists results. No player's PC has to stay on or host the server.
+
+New installs connect automatically. Earlier localhost:8787 settings migrate once to the cloud server. Custom server addresses and an explicit Disconnect remain unchanged. Offline scores remain queued and retry when connected.
