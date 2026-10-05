@@ -56,3 +56,6 @@ The ride camera follows your scooter while photo scenery and road texture move p
 Build Shop > Appearance > Rider now offers motocross, open-face and full-face helmets. Each vehicle saves its own helmet shape and colour, and the rider preview shows the helmet before riding.
 
 The homepage has a labelled Leaderboard button. Shared leaderboards still require a hosted HTTPS leaderboard-server; no public server is configured by this update.
+## v59
+
+Leaderboard now has a visible server connection card: checks the API before saving, shows connection state and pending score count, remembers the address, and supports disconnecting. The server has its own web leaderboard with a copy-address button. Node/Docker hosting is retained; an optional Cloudflare Workers + D1 server and deployment guide are included. No public hosting account or default public server is configured yet.

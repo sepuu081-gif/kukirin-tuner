@@ -1,0 +1,28 @@
+const {chromium}=require('C:/Users/sebas/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const assert=require('node:assert/strict');
+(async()=>{const browser=await chromium.launch({channel:'chrome',headless:true});try{
+ const alice=await browser.newContext({viewport:{width:390,height:844}}),bob=await browser.newContext({viewport:{width:360,height:800}});
+ await alice.addInitScript(()=>{localStorage.setItem('kukirin_rider_name','Alice V59');localStorage.setItem('kukirin_language','en');});
+ await bob.addInitScript(()=>{localStorage.setItem('kukirin_rider_name','Bob V59');localStorage.setItem('kukirin_language','en');});
+ const a=await alice.newPage(),b=await bob.newPage(),errors=[];a.on('pageerror',e=>errors.push(e.message));
+ await a.goto('http://127.0.0.1:5173/#/leaderboard');
+ await a.evaluate(async()=>{const m=await import('/src/lib/leaderboard.js');m.submitScore('drag',8.123,'G2');});
+ await a.reload();await a.getByText('1 results waiting to upload.',{exact:true}).waitFor();
+ await a.route('https://wrong.test/health',route=>route.fulfill({json:{ok:true},headers:{'Access-Control-Allow-Origin':'*'}}));
+ await a.getByLabel('Server address',{exact:true}).fill('https://wrong.test');await a.getByRole('button',{name:'Check & connect'}).click();
+ await a.getByRole('alert').filter({hasText:'not a compatible'}).waitFor();
+ assert.equal(await a.evaluate(()=>localStorage.getItem('kukirin_leaderboard_url')),null);
+ assert.equal(await a.evaluate(()=>JSON.parse(localStorage.getItem('kukirin_score_queue')).length),1);
+ await a.getByLabel('Server address',{exact:true}).fill('http://127.0.0.1:8787');await a.getByRole('button',{name:'Check & connect'}).click();
+ await a.getByText('Connected',{exact:true}).waitFor();await a.getByText('Alice V59',{exact:false}).waitFor();
+ assert.equal(await a.evaluate(()=>JSON.parse(localStorage.getItem('kukirin_score_queue')).length),0);
+ await a.screenshot({path:'../../outputs/v59-connected.png'});
+ await b.goto('http://127.0.0.1:5173/#/leaderboard');await b.getByLabel('Server address',{exact:true}).fill('http://127.0.0.1:8787');await b.getByRole('button',{name:'Check & connect'}).click();await b.getByText('Alice V59',{exact:false}).waitFor();
+ await b.evaluate(async()=>{const m=await import('/src/lib/leaderboard.js');m.submitScore('drag',7.55,'G4');await m.syncScores();});
+ await a.getByRole('button',{name:'Refresh',exact:true}).click();await a.getByText('Bob V59',{exact:false}).waitFor();
+ await a.reload();await a.getByText('Connected',{exact:true}).waitFor();assert.equal(await a.getByLabel('Server address',{exact:true}).inputValue(),'http://127.0.0.1:8787');
+ await a.getByRole('button',{name:'Disconnect',exact:true}).click();await a.getByText('Not connected',{exact:true}).waitFor();await a.reload();await a.getByText('Not connected',{exact:true}).waitFor();
+ assert(await a.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));assert(await b.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+ const home=await browser.newPage();await home.goto('http://127.0.0.1:8787');await home.getByText('Bob V59',{exact:true}).waitFor();assert.equal(await home.getByLabel('Serveri aadress',{exact:true}).inputValue(),'http://127.0.0.1:8787');
+ assert.deepEqual(errors,[]);console.log('PASS wrong-server rejection, retained queue, health-checked connect, two-player shared scores, saved URL, disconnect, server homepage, mobile widths');
+}finally{await browser.close();}})().catch(e=>{console.error(e);process.exit(1)});

@@ -1,0 +1,20 @@
+import assert from 'node:assert/strict';
+import {DatabaseSync} from 'node:sqlite';
+import {readFileSync} from 'node:fs';
+import worker from './worker.mjs';
+const database=new DatabaseSync(':memory:');database.exec(readFileSync(new URL('schema.sql',import.meta.url),'utf8'));
+function statement(sql,args=[]){return {bind(...values){return statement(sql,values);},async all(){return {results:database.prepare(sql).all(...args)};},async run(){return database.prepare(sql).run(...args);}};}
+const env={DB:{prepare:sql=>statement(sql)}};
+const request=(path,options={},bindings=env)=>worker.fetch(new Request('https://leaderboard.example'+path,options),bindings);
+assert.deepEqual(await (await request('/health')).json(),{ok:true,service:'kukirin-leaderboard',apiVersion:1});
+assert.equal((await request('/health',{},{})).status,503);
+assert.equal((await request('/scores?mode=invalid')).status,400);
+const row={id:crypto.randomUUID(),name:'Worker Test',vehicle:'G2',mode:'drag',value:8};
+for(let i=0;i<2;i++)assert.equal((await request('/scores',{method:'POST',body:JSON.stringify(row)})).status,201);
+const scores=await (await request('/scores?mode=drag')).json();assert.equal(scores.length,1);assert.equal(scores[0].value,8);
+assert.equal((await request('/scores',{method:'POST',body:JSON.stringify({...row,value:1})})).status,400);
+assert.equal((await request('/scores',{method:'POST',body:'x'.repeat(9000)})).status,413);
+assert.equal((await request('/scores',{method:'DELETE'})).status,405);
+assert.equal((await request('/scores',{method:'OPTIONS'})).status,204);
+assert.match(await (await request('/')).text(),/Kopeeri aadress/);
+database.close();console.log('PASS Worker handler with real SQLite queries, health, duplicate IDs, modes, body size, invalid score, CORS and homepage. Cloudflare deployment not tested.');
