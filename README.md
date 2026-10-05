@@ -48,3 +48,11 @@ Asset credits are included beside the media in `public/assets`, including the vi
 Full-body paint across riding modes, full-black preset, optional fender removal, live career/drag preview, Estonian police van photograph, first-launch rider name, and Uber Eats style in-game deliveries with a saved euro wallet. The private fender code is intentionally excluded from the displayed code list and UNLOCKALL.
 
 The shared leaderboard client and SQLite server are included in `leaderboard-server`. No public server has been deployed yet. Configure a persistent HTTPS server URL on the leaderboard screen. Results queue offline and send when configured; no fake global scores are shown.
+
+## v58
+
+The ride camera follows your scooter while photo scenery and road texture move past at different speeds. Motion follows actual speed and pauses at a stop. Longer rides cycle through downtown, Tallinn suburbs and Ruhnu forest; City Ride scenery follows the district. All scenery assets are bundled for offline use; credits are in Settings and public/assets/scenery/CREDITS.txt.
+
+Build Shop > Appearance > Rider now offers motocross, open-face and full-face helmets. Each vehicle saves its own helmet shape and colour, and the rider preview shows the helmet before riding.
+
+The homepage has a labelled Leaderboard button. Shared leaderboards still require a hosted HTTPS leaderboard-server; no public server is configured by this update.

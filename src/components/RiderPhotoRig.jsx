@@ -11,7 +11,7 @@ function Limb({points,leg=false,far=false}){
    {!leg&&<circle cx={end[0]} cy={end[1]} r="1.8" fill="#101820" stroke="#70818e" strokeWidth=".4"/>}
  </g>;
 }
-export default function RiderPhotoRig({helmet='#38bdf8',grips=null,layout,wheelieAngle=0,trick='normal',moto=false,braking=false,posture='upright',turn=0}){
+export default function RiderPhotoRig({helmet='#38bdf8',helmetType='fullface',grips=null,layout,wheelieAngle=0,trick='normal',moto=false,braking=false,posture='upright',turn=0}){
  const id=useId().replace(/:/g,'');
  const pose=getRiderPose(layout,{pitch:wheelieAngle,trick,moto,braking,posture,turn,grips});
  const {hip,shoulder,head,arms,legs,bodyAngle}=pose;
@@ -29,12 +29,22 @@ export default function RiderPhotoRig({helmet='#38bdf8',grips=null,layout,wheeli
    </g>
    <Limb points={arms[0]}/>
    <path d={line([shoulder,head])} stroke="#b39177" strokeWidth="2.5"/>
-   <g transform={`translate(${head.join(' ')}) rotate(${bodyAngle})`}>
+   <g data-helmet={helmetType} transform={`translate(${head.join(' ')}) rotate(${bodyAngle})`}>
+     {helmetType==='half'?<>
+       <path d="M-4 -2 L4 -2 L4 2 L1 5 L-2 4 L-3 1 L-5 0Z" fill="#bb957b" stroke="#684d40" strokeWidth=".4"/>
+       <path d="M-5 -2 Q-5 -7 1 -6 Q6 -5 5 -1 L2 0 L-4 -1Z" fill={`url(#${id}-helmet)`} stroke="#0a1825" strokeWidth=".6"/>
+       <path d="M-4 -1 L-1 -1" stroke="#122333" strokeWidth="1"/><path d="M3 0 L1 4 L-2 3" fill="none" stroke="#142436" strokeWidth=".7"/>
+     </>:helmetType==='moto'?<>
+       <path d="M-5 -3 Q-4 -7 1 -6 Q6 -5 5 1 L3 4 L-6 4 L-7 2 L-3 1 L-5 0Z" fill={`url(#${id}-helmet)`} stroke="#0a1825" strokeWidth=".6"/>
+       <path d="M-8 -4 L2 -5 L4 -4 L-7 -3Z" fill={helmet} stroke="#0a1825" strokeWidth=".5"/>
+       <path d="M-5 -2 L0 -2 L-1 1 L-5 1Z" fill="#061520" stroke="#d5e7ef" strokeWidth=".7"/><path d="M-5 3 L0 3" stroke="#152330" strokeWidth=".7"/>
+     </>:<>
      <path d="M-5 -3 Q-4 -7 1 -6 Q6 -5 5 1 L3 4 L-2 5 L-5 2Z" fill={`url(#${id}-helmet)`} stroke="#0a1825" strokeWidth=".6"/>
      <path d="M-5 -2.5 L1 -2 L0 1.1 L-4.5 1Z" fill="#07141e" stroke="#b3d4e2" strokeWidth=".5"/>
      <path d="M-4 2 L0 2 L-1 4 L-3 4Z" fill="#25333e"/>
      <path d="M0 -5 L3 -4 M1 2 L3 1" stroke="#07141e" strokeWidth=".7"/>
      <path d="M-2 -5 Q1 -6 3 -4" fill="none" stroke="#e7f5fa" strokeOpacity=".7" strokeWidth=".5"/>
+     </>}
    </g>
  </svg>;
 }

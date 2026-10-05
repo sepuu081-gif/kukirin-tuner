@@ -21,6 +21,7 @@ export const DEFAULT_APPEARANCE = {
   stickerColor:'#e0f2fe',
   wrap: null, // wrap id or null
   riderHelmetColor: "#f97316",
+  riderHelmetType: 'fullface',
 };
 
 export function createStockBuild(vehicleId) {

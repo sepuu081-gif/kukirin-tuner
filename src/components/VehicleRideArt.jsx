@@ -19,11 +19,11 @@ function Wheels({ rear = 38, front = 157, radius = 20, color }) {
   </>;
 }
 
-function Rider({ helmet, moto = false, trick = 'normal' }) {
-  return <RiderPhotoRig vector helmet={helmet} trick={trick} layout={moto ? [0,0,0,0,0,18,28,76] : [0,0,0,0,0,34,28,88]} />;
+function Rider({ helmet, helmetType, moto = false, trick = 'normal' }) {
+  return <RiderPhotoRig vector helmet={helmet} helmetType={helmetType} trick={trick} layout={moto ? [0,0,0,0,0,18,28,76] : [0,0,0,0,0,34,28,88]} />;
 }
 
-function G2Art({ accent, wheel, helmet, subtype, trick }) {
+function G2Art({ accent, wheel, helmet, helmetType, subtype, trick }) {
   const pro = subtype === 'pro';
   const max = subtype === 'max';
   const master = subtype === 'master';
@@ -38,11 +38,11 @@ function G2Art({ accent, wheel, helmet, subtype, trick }) {
     <path className="vehicle-bar" d="M132 21 L160 21" />
     <path className="vehicle-light" d="M145 29 L153 32" />
     {!pro && <path className="vehicle-spring" d="M124 62 L135 77" />}
-    <Rider helmet={helmet} trick={trick} />
+    <Rider helmet={helmet} helmetType={helmetType} trick={trick} />
   </>;
 }
 
-function G3Art({ accent, wheel, helmet, pro, trick }) {
+function G3Art({ accent, wheel, helmet, helmetType, pro, trick }) {
   return <>
     <Wheels rear={34} front={162} radius={pro ? 22 : 20} color={wheel} />
     <path className="vehicle-deck heavy" d="M46 57 L129 57 L147 77 L43 77 L34 68Z" style={{ fill: accent }} />
@@ -51,11 +51,11 @@ function G3Art({ accent, wheel, helmet, pro, trick }) {
     <path className="vehicle-stem-accent" d="M132 55 L144 22" style={{ stroke: accent }} />
     <path className="vehicle-bar" d="M134 18 L165 18" />
     {pro ? <><path className="vehicle-fork-double" d="M143 50 L157 83 M150 47 L166 81"/><path className="vehicle-tail" d="M40 57 L22 49 L29 43"/></> : <path className="vehicle-tpu" d="M50 57 L39 74 M57 58 L47 75"/>}
-    <Rider helmet={helmet} trick={trick} />
+    <Rider helmet={helmet} helmetType={helmetType} trick={trick} />
   </>;
 }
 
-function G4Art({ accent, wheel, helmet, max, trick }) {
+function G4Art({ accent, wheel, helmet, helmetType, max, trick }) {
   return <>
     <Wheels rear={34} front={164} radius={max ? 25 : 23} color={wheel} />
     <path className="vehicle-deck g4-deck" d="M48 53 L126 53 L145 73 L45 76 L31 66Z" style={{ fill: accent }} />
@@ -65,22 +65,22 @@ function G4Art({ accent, wheel, helmet, max, trick }) {
     <path className="vehicle-bar" d="M137 17 L169 17" />
     <path className="vehicle-swingarm" d="M34 84 L55 58 M164 84 L145 63" />
     {max && <><path className="vehicle-fork-double" d="M145 54 L158 84 M151 51 L168 82"/><path className="vehicle-spring" d="M48 56 L37 75 M58 57 L46 77"/></>}
-    <Rider helmet={helmet} trick={trick} />
+    <Rider helmet={helmet} helmetType={helmetType} trick={trick} />
   </>;
 }
 
-function XiaomiArt({ accent, wheel, helmet, trick }) {
+function XiaomiArt({ accent, wheel, helmet, helmetType, trick }) {
   return <>
     <Wheels rear={40} front={153} radius={17} color={wheel} />
     <path className="vehicle-deck slim" d="M45 65 L129 65 L145 77 L49 77Z" style={{ fill: accent }} />
     <path className="vehicle-stem slim" d="M130 66 L143 21" />
     <path className="vehicle-bar" d="M132 20 L157 20" />
     <path className="vehicle-fender" d="M29 75 Q40 59 52 75 M142 72 Q153 58 165 73" />
-    <Rider helmet={helmet} trick={trick} />
+    <Rider helmet={helmet} helmetType={helmetType} trick={trick} />
   </>;
 }
 
-function EmotoArt({ accent, wheel, helmet, subtype, trick }) {
+function EmotoArt({ accent, wheel, helmet, helmetType, subtype, trick }) {
   const stark = subtype === 'stark';
   const ultra = subtype === 'ultra';
   const rear = stark ? 35 : 39;
@@ -95,7 +95,7 @@ function EmotoArt({ accent, wheel, helmet, subtype, trick }) {
     <path className="vehicle-moto-swing" d={`M99 69 L${rear} 85`} />
     <path className="vehicle-chain" d={`M98 72 L${rear} 87`} />
     {stark && <path className="vehicle-stark-panel" d="M80 39 L113 38 L121 55 L102 66 L83 59Z" style={{ fill: accent }} />}
-    <Rider helmet={helmet} moto trick={trick} />
+    <Rider helmet={helmet} helmetType={helmetType} moto trick={trick} />
   </>;
 }
 
@@ -227,7 +227,7 @@ export default function VehicleRideArt({ build, showRider = true, wheelieAngle =
     {scraping && <div className="photo-contact-effects" style={{left:`${layout[2]}%`,top:`${layout[3]}%`,transform:`rotate(-${wheelieAngle||0}deg)`}}><div className="scrape-sparks" style={{top:`${(layout[8]||layout[4])/2}cqw`}}>{Array.from({length:7},(_,i)=><i key={i} style={{'--spark':i}}/>)}</div></div>}
     <PhotoTuningOverlay appearance={appearance} layout={layout} g2={vehicle.id === 'g2_2026' || getVehiclePhotoInfo(vehicle)?.base === 'g2_2026'} />
     <InstalledPartsArt vehicle={vehicle} layout={layout} build={build} wheelieBarFactor={wheelieBarFactor}/>
-    {showRider && <RiderPhotoRig grips={getVehicleHandGrips(vehicle,layout)} wheelieAngle={wheelieAngle||0} moto={vehicle?.vehicleType === 'emoto'} braking={braking} turn={turn} helmet={helmet} layout={layout} trick={trick} posture={posture} />}
+    {showRider && <RiderPhotoRig grips={getVehicleHandGrips(vehicle,layout)} wheelieAngle={wheelieAngle||0} moto={vehicle?.vehicleType === 'emoto'} braking={braking} turn={turn} helmet={helmet} helmetType={appearance?.riderHelmetType} layout={layout} trick={trick} posture={posture} />}
   </div>;
   return <svg
     className={`ride-scooter ride-model-art ride-family-${family} ride-subtype-${subtype} ${family === 'emoto' ? 'ride-emoto' : ''} ${moving ? 'is-model-moving' : ''} ${isWheelying ? 'is-wheelie' : ''} ${compact ? 'is-compact' : ''}`}
@@ -237,7 +237,7 @@ export default function VehicleRideArt({ build, showRider = true, wheelieAngle =
   >
     <g className="ride-scooter-moving">
       {wheelieBarFactor > 0 && <g className="ride-wheelie-bar"><path d="M34 78 L10 100 L3 100"/><circle cx="3" cy="100" r="5"/></g>}
-      <Art accent={accent} wheel={wheel} helmet={helmet} trick={trick} subtype={subtype} pro={subtype === 'pro'} max={subtype === 'max'} />
+      <Art accent={accent} wheel={wheel} helmet={helmet} helmetType={appearance?.riderHelmetType} trick={trick} subtype={subtype} pro={subtype === 'pro'} max={subtype === 'max'} />
     </g>
   </svg>;
 }

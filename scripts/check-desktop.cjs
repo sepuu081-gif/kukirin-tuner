@@ -13,6 +13,7 @@ const launchOptions = { executablePath, env: {...process.env, KUKIRIN_TEST_PROFI
     page.on('pageerror', e => errors.push(e.message));
     await page.waitForFunction(() => document.body.innerText.length > 100);
     await page.context().route(/^https?:\/\//, route => route.abort());
+    if (await page.locator('.first-name-screen').count()) { await page.locator('.first-name-screen input').fill('Desktop Tester'); await page.locator('.first-name-screen button').click(); }
     await page.evaluate(() => { localStorage.setItem('kukirin_rider_name','Desktop Tester');localStorage.setItem('kukirin_name_started','true');localStorage.setItem('kukirin_language', 'en'); localStorage.setItem('desktop_smoke', 'saved'); });
     await page.goto('kukirin://game/#/telemetry/g2_2026?stock=1&practice=training');
     await page.getByRole('button', { name: /ENGAGE/ }).click();

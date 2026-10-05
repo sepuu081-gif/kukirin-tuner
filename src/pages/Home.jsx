@@ -24,7 +24,7 @@ export function addRespect(n) {
 const TABS = ["garage", "failures", "codes", "maintenance", "profile"];
 
 export default function Home() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [activeTab, setActiveTab]       = useState("garage");
   useEffect(() => {
     const back = (event) => {
@@ -113,7 +113,7 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-2">
             <Link to="/settings" className="back-touch text-primary" aria-label={t('Settings')}><Settings className="h-5 w-5" /></Link>
-            <Link to="/leaderboard" className="text-xs text-sky-300">🏆</Link><LanguageToggle compact />
+            <Link to="/leaderboard" className="leaderboard-shortcut"><Trophy size={16}/><span>{language === "et" ? "Edetabel" : "Leaderboard"}</span></Link><LanguageToggle compact />
             <div className="hidden sm:flex items-center gap-2 rounded-md border border-border/50 bg-card px-2.5 py-1.5">
               <Trophy className="h-3.5 w-3.5 text-yellow-400" />
               <span className={`font-mono text-[10px] font-bold ${respectColor}`}>{respect} REP</span>

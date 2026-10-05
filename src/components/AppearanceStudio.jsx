@@ -18,15 +18,20 @@ export default function AppearanceStudio({ appearance, onChange, vehicle, build,
   const parts=[['stemColor','Stem Colour'],['deckColor','Deck Colour'],['accentColor','Accent colour'],['wheelColor','Wheel Colour'],['riderHelmetColor','Helmet Colour']];
   const wraps=localStorage.getItem('kukirin_unlock_wrapdrop')==='true'?WRAPS:WRAPS.slice(0,8);
   return <div className="appearance-studio">
-    <div className="tuning-showroom" aria-label="Live tuning preview">
+    <div className={`tuning-showroom ${section==='rider'?'has-rider':''}`} aria-label="Live tuning preview">
       <div className="tuning-showroom-title"><strong>{vehicle?.name}</strong><span>{t('Saved automatically')}</span></div>
-      <VehicleRideArt build={build} showRider={false} vehicle={vehicle} appearance={ap} moving={false} speed={0}/>
+      <VehicleRideArt build={build} showRider={section==='rider'} vehicle={vehicle} appearance={ap} moving={false} speed={0}/>
     </div>
     <div className="studio-editor">
       <div className="studio-sections" aria-label={text('Appearance tools','Välimuse tööriistad')}>
-        { [['paint','Paint','Värv'],['lights','Lights','Tuled'],['decals','Stickers','Kleebised'],['bodywork','Bodywork','Keretööd']].map(([id,en,et])=><button type="button" key={id} aria-pressed={section===id} onClick={()=>setSection(id)}>{text(en,et)}</button>) }
+        { [['paint','Paint','Värv'],['lights','Lights','Tuled'],['decals','Stickers','Kleebised'],['bodywork','Bodywork','Keretööd'],['rider','Rider','Sõitja']].map(([id,en,et])=><button type="button" key={id} aria-pressed={section===id} onClick={()=>setSection(id)}>{text(en,et)}</button>) }
       </div>
       <div className="studio-panel">
+        {section==='rider'&&<>
+          <label className="appearance-select">{text('Helmet type','Kiivri tüüp')}<select aria-label={text('Helmet type','Kiivri tüüp')} value={ap.riderHelmetType} onChange={e=>set('riderHelmetType',e.target.value)}><option value="moto">{text('Motocross helmet','Motokiiver')}</option><option value="half">{text('Open-face helmet','Avatud kiiver')}</option><option value="fullface">{text('Full-face helmet','Täiskiiver')}</option></select></label>
+          <ColourControl label={t('Helmet Colour')} value={ap.riderHelmetColor} onChange={colour=>set('riderHelmetColor',colour)}/>
+          <p className="studio-hint">{text('Saved for this vehicle and visible in every ride.','Salvestatakse selle sõiduki jaoks ja on nähtav kõigis sõitudes.')}</p>
+        </>}
         {section==='bodywork'&&<><BodyworkWorkshop build={build} vehicle={vehicle} onBuildChange={onBuildChange}/>{localStorage.getItem('kukirin_unlock_fenders')==='true'&&<label className="appearance-toggle"><span>{text('Remove fenders','Eemalda porilauad')}</span><input type="checkbox" aria-label={text('Remove fenders','Eemalda porilauad')} checked={!!ap.fendersRemoved} onChange={e=>set('fendersRemoved',e.target.checked)}/></label>}</>}
         {section==='paint'&&<>
           <label className="appearance-select">{text('Paint part','Värvitav osa')}<select aria-label={text('Paint part','Värvitav osa')} value={part} onChange={e=>setPart(e.target.value)}>{parts.map(([key,label])=><option key={key} value={key}>{t(label)}</option>)}</select></label>

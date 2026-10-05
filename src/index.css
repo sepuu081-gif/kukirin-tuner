@@ -1095,7 +1095,7 @@ a {
 /* Local product photography, composited without altering the source photographs. */
 .ride-real-city { background:#172431; }
 .ride-photo-city { position:absolute; z-index:0; inset:-5%; background:url('/assets/ride-city-day-v27.png') center 57%/cover no-repeat; transform:scale(1.04); transform-origin:center 72%; filter:saturate(.86) contrast(1.03) brightness(.8); transition:filter .5s ease; }
-.ride-real-city.is-moving .ride-photo-city { animation:ride-city-camera 1.8s ease-in-out infinite alternate; }
+.ride-real-city.is-moving .ride-photo-city { animation:none; }
 .ride-real-city .ride-city,.ride-real-city .ride-road { display:none; }
 .ride-real-city::after { content:""; position:absolute; z-index:1; inset:48% 0 0; pointer-events:none; background:linear-gradient(180deg,transparent,#06101b18 55%,#02070db8); }
 .ride-real-city.is-moving::after { background:repeating-linear-gradient(172deg,transparent 0 18px,#ffffff09 19px 20px),linear-gradient(180deg,transparent,#06101b18 55%,#02070db8); animation:real-road-texture var(--road-duration) linear infinite; }
@@ -1513,3 +1513,11 @@ a {
 @media(max-height:650px){.city-live-ride{bottom:35%}.city-road>.city-street{top:65%;height:35%}.city-live-ride .ride-record{font-size:8px}}
 
 .ride-police{top:auto;bottom:18%;height:auto}.city-road>.police-chase{top:auto;bottom:9px;left:auto;right:9px;width:190px;height:auto}.city-road>.wanted-meter{top:39px;left:auto;right:9px}.city-road:has(.police-chase)>.city-district-chip{bottom:62px}
+/* Camera-follow scenery: the rider stays anchored and the world passes by. */
+.ride-real-city .ride-photo-city{inset:0;transform:none;background:none;pointer-events:none;}
+.ride-environment{display:block;width:100%;height:100%;}
+.ride-real-city.is-moving::after{animation:none;background:linear-gradient(180deg,transparent,#06101b18 55%,#02070d70);}
+.studio-sections{grid-template-columns:repeat(5,minmax(0,1fr));}
+.leaderboard-shortcut{display:flex;align-items:center;gap:5px;min-height:44px;padding:0 9px;border:1px solid #24506b;border-radius:10px;color:#7dd3fc;font:600 11px system-ui;}
+@media(max-width:370px){.leaderboard-shortcut{padding:0 5px;gap:3px;font-size:10px;}.app-header .max-w-6xl{padding-left:8px;padding-right:8px;}.studio-sections{grid-template-columns:repeat(3,minmax(0,1fr));}}.tuning-showroom.has-rider .ride-scooter.ride-photo-art{width:260px!important;height:260px!important;bottom:18px;}
+@media(min-width:800px){.tuning-showroom.has-rider .ride-scooter.ride-photo-art{width:340px!important;height:340px!important;}}

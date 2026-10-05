@@ -1,6 +1,7 @@
 import { BatteryCharging, Navigation, Radio, Thermometer } from "lucide-react";
 import { useLanguage } from "../lib/i18n";
 import PoliceVan from './PoliceVan';
+import RideEnvironment from './RideEnvironment';
 import RideDashboard from "./RideDashboard";
 import WheelieBalanceBar from './WheelieBalanceBar';
 import ParkScene from './ParkScene';
@@ -17,6 +18,7 @@ function formatRideTime(seconds) {
 
 export default function RideRoadPreview({
   park=null,parkZone="wheelie",wheelieVelocity=0,
+  environment=null,
   sessionLabel = null,
   sessionSeconds = null,
   balance = 0,
@@ -65,7 +67,7 @@ export default function RideRoadPreview({
       aria-label="Live ride preview"
     >
       {park&&<ParkScene state={park} zone={parkZone}/>}
-      <div className="ride-photo-city" aria-hidden="true" />
+      {!park&&<RideEnvironment speed={speed} distance={distance} environment={environment} killed={killed}/>}
       <div className="ride-sky-glow" />
       <div className="ride-cloud ride-cloud-one" />
       <div className="ride-cloud ride-cloud-two" />
