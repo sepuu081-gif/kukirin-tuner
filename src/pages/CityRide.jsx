@@ -130,7 +130,7 @@ export default function CityRide() {
     setMission(selected); setSpeed(0); setBattery(charge); setLane(1); setDistance(0); setSecondsLeft(selected.time);
     wantedRef.current = 0; policeDistanceRef.current = 0; weatherRef.current = CITY_WEATHERS[0];
     setTraffic([]); setCollisions(0); setFine(0); setLight('green'); setCityHour(17.5); setWeather(CITY_WEATHERS[0]); setWanted(0); setPoliceDistance(0); setBusted(false); setDistrictIndex(0); setRadar(null); setRoadblock(null); setResult(null); setToast(''); setScreen('ride');
-    setVehicleCharge(vehicle.id, charge, false); startEngineSound(vehicle); playSound('start');
+    setVehicleCharge(vehicle.id, charge, false); startEngineSound(vehicle, stats); playSound('start');
   };
 
   useEffect(() => {
@@ -282,7 +282,7 @@ export default function CityRide() {
   const district = DISTRICTS[districtIndex];
   const continueAfterBust = () => {
     wantedRef.current = 0; policeDistanceRef.current = 0; simRef.current.busted = false; simRef.current.collisionUntil = Date.now() + 2000; simRef.current.roadblock = null;
-    setWanted(0); setPoliceDistance(0); setBusted(false); setRoadblock(null); setToast(et ? 'Trahv makstud. Sõit jätkub.' : 'Fine paid. Ride continues.'); startEngineSound(vehicle);
+    setWanted(0); setPoliceDistance(0); setBusted(false); setRoadblock(null); setToast(et ? 'Trahv makstud. Sõit jätkub.' : 'Fine paid. Ride continues.'); startEngineSound(vehicle, stats);
   };
 
   if (screen === 'ride') return <div className="city-ride-screen">

@@ -1,0 +1,914 @@
+{
+  "inmotion_rs_lite": {
+    "file": "/assets/sounds/vehicles/xb8Atnkbxjc.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=xb8Atnkbxjc",
+    "title": "Inmotion RS Lite Electric Scooter POV | Ride to Work Commute (Part 1)",
+    "creator": "Charged Garage ⚡",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 158.0,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "inmotion_rs_lite",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 0.0002358122305436568,
+      "loopStartWithinClip": 8.0,
+      "rms": 0.024448450654745102,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "inmotion_air_pro": {
+    "file": "/assets/sounds/vehicles/hgnZNRzBhMg.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=hgnZNRzBhMg",
+    "title": "Inmotion Air Pro night ride and range test",
+    "creator": "Hyper ZoneZ",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 159.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "inmotion_air_pro",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 0.00011934958239819141,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.043372537940740585,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "m4_legacy": {
+    "file": "/assets/sounds/vehicles/4DHDvtY3_W4.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=4DHDvtY3_W4",
+    "title": "2019 KUGOO M4 Scooter - POV TEST DRIVE",
+    "creator": "FP Driving",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 154.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "m4_legacy",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 1.7916902582696143e-05,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.0578690730035305,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "m4_pro_2024": {
+    "file": "/assets/sounds/vehicles/CLwvo1sET_I.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=CLwvo1sET_I",
+    "title": "KUGOO M4 Pro POV Driving | ASMR Driving | Test Drive",
+    "creator": "KIVark",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 159.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "m4_pro_2024",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 2.5326742770824025e-05,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.07853694260120392,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "m4_pro_2026": {
+    "file": "/assets/sounds/vehicles/mVxEUI9PGe4.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=mVxEUI9PGe4",
+    "title": "Riding My Kugoo M4 Pro Electric Scooter On UK Streets (Close Calls!)",
+    "creator": "Billy Reeves",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 151.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "m4_pro_2026",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 0.008120787587571652,
+      "loopStartWithinClip": 1.5,
+      "rms": 0.09788412600755692,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "m4_max": {
+    "file": "/assets/sounds/vehicles/A9Oy-nyTMHk.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=A9Oy-nyTMHk",
+    "title": "KuKirin M4 Max - Top Speed, Acceleration & Speed Modes",
+    "creator": "Zsinor Motors",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 103.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "m4_max",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 0.00035129582628290706,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.008972786366939545,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "g2_2026": {
+    "file": "/assets/sounds/vehicles/NuaZ1v54cho.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=NuaZ1v54cho",
+    "title": "Kukirin g2 drive to nowhere (no talk)",
+    "creator": "CXNTURION",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 159.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "g2_2026",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 2.4732440075975782e-05,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.24707086384296417,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "g2_pro_2023": {
+    "file": "/assets/sounds/vehicles/NwIFnomVXLw.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=NwIFnomVXLw",
+    "title": "KUKIRIN G2 PRO FAST POV RIDING | DJI ACTION 4",
+    "creator": "NickOnScoot",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 155.0,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "g2_pro_2023",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 0.0065440919628755295,
+      "loopStartWithinClip": 5.0,
+      "rms": 0.22106771171092987,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "g2_pro_2026": {
+    "file": "/assets/sounds/vehicles/NwIFnomVXLw.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=NwIFnomVXLw",
+    "title": "KUKIRIN G2 PRO FAST POV RIDING | DJI ACTION 4",
+    "creator": "NickOnScoot",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 155.0,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "g2_pro_2023",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 0.0065440919628755295,
+      "loopStartWithinClip": 5.0,
+      "rms": 0.22106771171092987,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "g2_max": {
+    "file": "/assets/sounds/vehicles/w5Q7g5UX1o0.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=w5Q7g5UX1o0",
+    "title": "Kukirin G2 Max POV Night Ride + Skatepark | 4K",
+    "creator": "KasKaTa",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 109.0,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "g2_max",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 7.665587619026714e-05,
+      "loopStartWithinClip": 9.0,
+      "rms": 0.13986101746559143,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "g2_master": {
+    "file": "/assets/sounds/vehicles/6geG18Bcr8U.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=6geG18Bcr8U",
+    "title": "Kukirin G2 master POV riding at -17°C",
+    "creator": "SkyRider",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 99.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "g2_master",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 2.268923723951299e-05,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.07662276923656464,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "g2_ultra": {
+    "file": "/assets/sounds/vehicles/MHPQunrQTPw.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=MHPQunrQTPw",
+    "title": "KuKirin G2 Ultra - Top Speed, Acceleration & Speed Modes",
+    "creator": "Zsinor Motors",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 139.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "g2_ultra",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 0.00024177799833581803,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.02295585721731186,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "g3": {
+    "file": "/assets/sounds/vehicles/3wYUFMvQSMU.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=3wYUFMvQSMU",
+    "title": "Kukirin g3 night ride NO MUSIC, UNCUT",
+    "creator": "Squeeze Puch",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 159.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "g3",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 1.64342370439083e-05,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.29563239216804504,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "g3_pro": {
+    "file": "/assets/sounds/vehicles/45Tr8uNRLBs.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=45Tr8uNRLBs",
+    "title": "Kukirin G3 Pro: Epic Night Ride POV [4K Ultra HD]",
+    "creator": "AndreyScoots 🛴",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 159.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "g3_pro",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 3.842232709235333e-05,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.30985912680625916,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "sebius_g2_wrapped": {
+    "file": "/assets/sounds/vehicles/NuaZ1v54cho.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=NuaZ1v54cho",
+    "title": "Kukirin g2 drive to nowhere (no talk)",
+    "creator": "CXNTURION",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 159.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "g2_2026",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 2.4732440075975782e-05,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.24707086384296417,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "g2_vmp": {
+    "file": "/assets/sounds/vehicles/NuaZ1v54cho.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=NuaZ1v54cho",
+    "title": "Kukirin g2 drive to nowhere (no talk)",
+    "creator": "CXNTURION",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 159.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "g2_2026",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 2.4732440075975782e-05,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.24707086384296417,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "g2_dgt": {
+    "file": "/assets/sounds/vehicles/NuaZ1v54cho.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=NuaZ1v54cho",
+    "title": "Kukirin g2 drive to nowhere (no talk)",
+    "creator": "CXNTURION",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 159.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "g2_2026",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 2.4732440075975782e-05,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.24707086384296417,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "s1_max": {
+    "file": "/assets/sounds/vehicles/-rxgamYpKRc.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=-rxgamYpKRc",
+    "title": "KuKirin S1 Max - Top Speed, Acceleration & Speed Modes",
+    "creator": "Zsinor Motors",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 77.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "s1_max",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 0.00039999752758658507,
+      "loopStartWithinClip": 6.5,
+      "rms": 0.008215850219130516,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "a1": {
+    "file": "/assets/sounds/vehicles/LrDsMs-wHb4.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=LrDsMs-wHb4",
+    "title": "KuKirin A1 - Top Speed, Acceleration & Speed Modes",
+    "creator": "Zsinor Motors",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 87.0,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "a1",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 0.001338532264219886,
+      "loopStartWithinClip": 8.0,
+      "rms": 0.002396931638941169,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "c1_pro": {
+    "file": "/assets/sounds/vehicles/A74rmE_9z4Q.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=A74rmE_9z4Q",
+    "title": "KuKirin C1 Pro RAW Unedited City Ride Part 2",
+    "creator": "TechTronic9000",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 159.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "c1_pro",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 8.866729888510197e-05,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.06592205911874771,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "x1": {
+    "file": "/assets/sounds/vehicles/ecUIsqTf-ks.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=ecUIsqTf-ks",
+    "title": "KuKirin X1 - Top Speed, Acceleration & Speed Modes",
+    "creator": "Zsinor Motors",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 81.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "x1",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 8.848182698513599e-05,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.06172189489006996,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "wish01": {
+    "file": "/assets/sounds/vehicles/Pe5C07_HnxU.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=Pe5C07_HnxU",
+    "title": "Day 2 Sunset ride (kugoo wish 01)",
+    "creator": "KugooRides",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 155.0,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "wish01",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 0.0003634232250764408,
+      "loopStartWithinClip": 5.0,
+      "rms": 0.005487784743309021,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "surron_light_bee_x": {
+    "file": "/assets/sounds/vehicles/4wtOdVj6iVQ.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=4wtOdVj6iVQ",
+    "title": "POV Ride | Surron Light Bee X | Wheelies",
+    "creator": "unfazedeagle",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 155.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "surron_light_bee_x",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 6.400143846552422e-05,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.18507875502109528,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "stark_varg_mx": {
+    "file": "/assets/sounds/vehicles/rqaF9qyGOsY.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=rqaF9qyGOsY",
+    "title": "STARK VARG PURE SOUND!",
+    "creator": "Mauro",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 159.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "stark_varg_mx",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 0.00018860431427651262,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.17713946104049683,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "dt_thunder3": {
+    "file": "/assets/sounds/vehicles/GXOyiLS370U.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=GXOyiLS370U",
+    "title": "Dualtron Thunder 3 POV Full Throttle Ride",
+    "creator": "yussufaayd",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 159.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "dt_thunder3",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 2.6786263952863978e-05,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.19512110948562622,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "dt_sonic_alien": {
+    "file": "/assets/sounds/vehicles/gdcdUiVuWZQ.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=gdcdUiVuWZQ",
+    "title": "Dualtron Sonic Alien Ride #20",
+    "creator": "초급킥라니",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 151.0,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "dt_sonic_alien",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 0.00012776096236897025,
+      "loopStartWithinClip": 1.0,
+      "rms": 0.16540807485580444,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "nb_max_g2": {
+    "file": "/assets/sounds/vehicles/yGIkH9ir10Y.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=yGIkH9ir10Y",
+    "title": "Ninebot MAX G2 - POV Test Ride 4K",
+    "creator": "ERideHero",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 110.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "nb_max_g2",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 7.904257546079919e-05,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.040136683732271194,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "xm_s2_pro2": {
+    "file": "/assets/sounds/vehicles/lSJk0wXEZrQ.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=lSJk0wXEZrQ",
+    "title": "XIAOMI PRO 2 POV CITY RIDE - 20 minutes from work to home. Warm fall day. 4k",
+    "creator": "Chloro",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 159.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "xm_s2_pro2",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 2.130913607617642e-05,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.12740623950958252,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "rion_apex": {
+    "file": "/assets/sounds/vehicles/lyuiorHsYFY.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=lyuiorHsYFY",
+    "title": "Rion Apex Hyper Scooter - POV Ride",
+    "creator": "Apex Rides",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 67.0,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "rion_apex",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 0.0009507334487323455,
+      "loopStartWithinClip": 8.0,
+      "rms": 0.0018146688817068934,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "nami_burne2": {
+    "file": "/assets/sounds/vehicles/R_ISM-SLq-A.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=R_ISM-SLq-A",
+    "title": "Nami Burn-E 2 Max | Night Ride | 8/8/23",
+    "creator": "Electric Pastime",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 159.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "nami_burne2",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 7.553462018357947e-05,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.32563626766204834,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "xm_mi3": {
+    "file": "/assets/sounds/vehicles/rP23QwL0uFg.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=rP23QwL0uFg",
+    "title": "Xiaomi Mi Electric Scooter 3 - Istanbul Ride Early In The Morning (Environment Sound Only) 4K",
+    "creator": "ozandoganbey",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 159.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "xm_mi3",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 2.2693992929255707e-05,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.09272346645593643,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "xm_5": {
+    "file": "/assets/sounds/vehicles/Ngpu_yIpnIk.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=Ngpu_yIpnIk",
+    "title": "Xiaomi Electric Scooter 5 Acceleration 0-25 km/h",
+    "creator": "MPA",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 26.0,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "xm_5",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 0.0011699118397452614,
+      "loopStartWithinClip": 4.0,
+      "rms": 0.005184092093259096,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "nb_f30": {
+    "file": "/assets/sounds/vehicles/iO8fPL6TvIg.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=iO8fPL6TvIg",
+    "title": "Late night ride and test of range on Segway Ninebot F30 electric scooter",
+    "creator": "Jose Blanco",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 159.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "nb_f30",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 7.656169064501499e-05,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.04172229394316673,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "nb_gt2": {
+    "file": "/assets/sounds/vehicles/DgfhVh1quKI.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=DgfhVh1quKI",
+    "title": "another pov ride on the Segway GT2",
+    "creator": "yussufaayd",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 159.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "nb_gt2",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 3.345469211010223e-05,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.1346537321805954,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "kaabo_wolf_warrior": {
+    "file": "/assets/sounds/vehicles/60svROOyeVM.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=60svROOyeVM",
+    "title": "FAST FPV RIDE - KAABO WOLF WARRIOR 11+ eScooter",
+    "creator": "Wrong Way!",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 159.0,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "kaabo_wolf_warrior",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 5.804599925158496e-05,
+      "loopStartWithinClip": 9.0,
+      "rms": 0.36570459604263306,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "kaabo_mantis8": {
+    "file": "/assets/sounds/vehicles/IooqOKhQpac.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=IooqOKhQpac",
+    "title": "Kaabo Mantis Mini / Mantis 8 // RAW Riding Footage (No Edit / No Music)",
+    "creator": "Charge and Scoot",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 159.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "kaabo_mantis8",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 0.000292098268549493,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.021593451499938965,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "kaabo_mantis10": {
+    "file": "/assets/sounds/vehicles/00CDZlL_bjs.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=00CDZlL_bjs",
+    "title": "Kaabo Mantis 10 Pro Night Run | RAW unedited",
+    "creator": "LouieLouie702",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 159.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "kaabo_mantis10",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 7.677490406848015e-05,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.06436893343925476,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "kaabo_wolf_gt": {
+    "file": "/assets/sounds/vehicles/lHwjxmmvccE.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=lHwjxmmvccE",
+    "title": "Kaabo Wolf King GT aggressive riding",
+    "creator": "yussufaayd",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 159.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "kaabo_wolf_gt",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 9.612834199945978e-06,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.1163085326552391,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "dt_mini": {
+    "file": "/assets/sounds/vehicles/iLu48i9gi2A.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=iLu48i9gi2A",
+    "title": "Dualtron Mini Special Electric Scooter - Istanbul Test Ride (Environment Sound Only) 4K",
+    "creator": "ozandoganbey",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 140.0,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "dt_mini",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 1.62438594083735e-05,
+      "loopStartWithinClip": 9.0,
+      "rms": 0.0963626429438591,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "dt_eagle_pro": {
+    "file": "/assets/sounds/vehicles/6F6Z2ouzQXQ.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=6F6Z2ouzQXQ",
+    "title": "Dualtron Eagle Pro POV ride",
+    "creator": "GreenteasWorld",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 159.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "dt_eagle_pro",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 1.4666547166540268e-05,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.29707908630371094,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "dt_thunder": {
+    "file": "/assets/sounds/vehicles/vjTzDOIBGWo.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=vjTzDOIBGWo",
+    "title": "Dualtron Thunder chill ride and wheelies",
+    "creator": "Ewtiz",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 158.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "dt_thunder",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 0.0014065733932434245,
+      "loopStartWithinClip": 8.5,
+      "rms": 0.023050252348184586,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "rion_re": {
+    "file": "/assets/sounds/vehicles/XisQy0YKGAc.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=XisQy0YKGAc",
+    "title": "RION RE 60 #pure #ride",
+    "creator": "Jarin Krtek",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 74.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "rion_re",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 2.2299429203601592e-05,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.19235824048519135,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "sebius_g2pro_wrapped": {
+    "file": "/assets/sounds/vehicles/NwIFnomVXLw.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=NwIFnomVXLw",
+    "title": "KUKIRIN G2 PRO FAST POV RIDING | DJI ACTION 4",
+    "creator": "NickOnScoot",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 155.0,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "g2_pro_2023",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 0.0065440919628755295,
+      "loopStartWithinClip": 5.0,
+      "rms": 0.22106771171092987,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "sebius_g3_wrapped": {
+    "file": "/assets/sounds/vehicles/3wYUFMvQSMU.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=3wYUFMvQSMU",
+    "title": "Kukirin g3 night ride NO MUSIC, UNCUT",
+    "creator": "Squeeze Puch",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 159.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "g3",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 1.64342370439083e-05,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.29563239216804504,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "sebius_redbull_g2": {
+    "file": "/assets/sounds/vehicles/NuaZ1v54cho.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=NuaZ1v54cho",
+    "title": "Kukirin g2 drive to nowhere (no talk)",
+    "creator": "CXNTURION",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 159.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "g2_2026",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 2.4732440075975782e-05,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.24707086384296417,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "g4": {
+    "file": "/assets/sounds/vehicles/LgdyNOc4CQ4.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=LgdyNOc4CQ4",
+    "title": "KuKirin G4 Full Send",
+    "creator": "EnzoOnWheels",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 158.0,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "g4",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 4.729517003431677e-05,
+      "loopStartWithinClip": 8.0,
+      "rms": 0.07868088781833649,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "surron_ultra_bee": {
+    "file": "/assets/sounds/vehicles/nyx7cTu93fY.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=nyx7cTu93fY",
+    "title": "Night Cruise on the Surron Ultra Bee Supermoto | Raw Handlebar POV",
+    "creator": "CJ",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 159.5,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "surron_ultra_bee",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 3.860700637736219e-05,
+      "loopStartWithinClip": 9.5,
+      "rms": 0.2032318264245987,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  },
+  "g4_max": {
+    "file": "/assets/sounds/vehicles/Vtg_iaMv93o.mp3",
+    "sourceUrl": "https://www.youtube.com/watch?v=Vtg_iaMv93o",
+    "title": "KuKirin G4 Max Riding Video",
+    "creator": "KugooKirin Electric Scooter",
+    "license": "Not declared by source",
+    "sourceStartSeconds": 11.0,
+    "processing": "6-second mechanical loop; filtered, normalized, crossfaded during playback",
+    "auditioned": false,
+    "referenceModel": "g4_max",
+    "screening": {
+      "accepted": true,
+      "speechFrameFraction": 0.0,
+      "meanSpeechProbability": 6.443262100219727e-05,
+      "loopStartWithinClip": 8.0,
+      "rms": 0.5410422682762146,
+      "method": "Silero VAD; conservative automatic screening, not human listening"
+    }
+  }
+}

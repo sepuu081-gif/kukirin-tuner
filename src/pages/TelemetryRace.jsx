@@ -846,10 +846,10 @@ export default function TelemetryRace() {
   }, [deployed, vehicleId, isTrial]);
 
   useEffect(() => {
-    if (deployed && !crashed) startEngineSound(vehicle);
+    if (deployed && !crashed) startEngineSound(vehicle, stats);
     else stopEngineSound();
     return () => stopEngineSound();
-  }, [deployed, crashed, vehicle]);
+  }, [deployed, crashed, vehicle, stats?.watts, stats?.motorCount]);
 
   useEffect(() => {
     if (deployed && !crashed) updateEngineSound(speed, Math.min(1, phaseAmps / Math.max(1, stats?.maxAmps || 80)), keys.current.s || touchInputs.current.brake);

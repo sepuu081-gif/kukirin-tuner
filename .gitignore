@@ -48,3 +48,7 @@ leaderboard-server/data/
 
 .wrangler/
 .deploy/
+audio-research/raw/
+audio-research/*.html
+audio-research/python-tools/
+audio-research/*.onnx

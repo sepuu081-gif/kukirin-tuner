@@ -64,3 +64,10 @@ Leaderboard now has a visible server connection card: checks the API before savi
 The shared leaderboard is deployed at https://kukirin-leaderboard.sepuu081-kukirin.workers.dev. Cloudflare Workers serves the API and web leaderboard; D1 persists results. No player's PC has to stay on or host the server.
 
 New installs connect automatically. Earlier localhost:8787 settings migrate once to the cloud server. Custom server addresses and an explicit Disconnect remain unchanged. Offline scores remain queued and retry when connected.
+## v61 — model recordings and electric drive audio
+
+41 distinct short riding recordings cover 48 vehicle entries, including shared donor recordings for wrapped and regulatory variants. The remaining 37 entries retain an explicit generic sample; they are not labelled as recorded models. Provenance is in public/assets/sounds/vehicles/SOURCES.txt and src/lib/vehicleAudioManifest.json. Automatic Silero speech screening rejected speech-heavy or silent clips; this is not a human listening or music-free guarantee.
+
+Decoded samples have a blended loop seam, speed-dependent rate and load-dependent level. Motor upgrades affect the torque layer. Stationary vehicles are silent, gas/brake buttons no longer beep, and the petrol-like starting effect is removed. The same audio system is active in telemetry, city rides and AI/career/online drag races. Rapid restart and mute/unmute no longer kill the next ride’s audio.
+
+Validation: 390px phone ride produced a non-silent output signal; every included recording decoded and started offline from local assets. Restart, mute/unmute, stationary silence and drag audio were checked in Chrome. Subjective audio fidelity has not been independently auditioned.

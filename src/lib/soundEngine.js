@@ -1,21 +1,11 @@
+import { getVehicleSoundProfile } from './vehicleSoundProfiles';
+
 let audioContext = null;
 let engine = null;
 let policeSiren = null;
 
-function engineProfile(vehicle) {
-  const id = typeof vehicle === "string" ? vehicle : vehicle?.id || "";
-  if (id === "stark_varg_mx") return { id, pitch: 1.32, motor: 1.35, wheel: 0.35, chain: 0.58, gear: 1.7, dual: 0.03 };
-  if (id === "surron_ultra_bee") return { id, pitch: 0.72, motor: 1.18, wheel: 0.65, chain: 1.15, gear: 1.1, dual: 0.018 };
-  if (id === "surron_light_bee_x") return { id, pitch: 0.82, motor: 1.0, wheel: 0.7, chain: 1.0, gear: 0.9, dual: 0.014 };
-  if (id.includes("g4")) return { id, pitch: 0.78, motor: 1.08, wheel: 1.25, chain: 0.08, gear: 0.62, dual: id.includes("max") || id.includes("pro") ? 0.04 : 0 };
-  if (id.includes("g3_pro") || id.includes("g2_master") || id.includes("g2_ultra")) return { id, pitch: 1.04, motor: 1.22, wheel: 1.05, chain: 0.08, gear: 0.72, dual: 0.05 };
-  if (id.includes("g3")) return { id, pitch: 0.94, motor: 1.02, wheel: 1.08, chain: 0.06, gear: 0.62, dual: 0 };
-  if (id.includes("g2_pro") || id.includes("g2pro")) return { id, pitch: 1.16, motor: 0.82, wheel: 0.82, chain: 0.04, gear: 0.5, dual: 0 };
-  if (id.includes("g2_max") || id.includes("g2max")) return { id, pitch: 0.88, motor: 1.02, wheel: 1.18, chain: 0.06, gear: 0.58, dual: 0 };
-  if (id.includes("g2")) return { id, pitch: 1.0, motor: 0.95, wheel: 1.0, chain: 0.05, gear: 0.55, dual: 0 };
-  if (id.startsWith("xm_")) return { id, pitch: 1.28, motor: 0.62, wheel: 0.58, chain: 0.02, gear: 0.38, dual: 0 };
-  return { id, pitch: 1, motor: 1, wheel: 1, chain: 0.05, gear: 0.55, dual: 0 };
-}
+const buffers = new Map();
+let requestedRide = null;
 
 export function isSoundEnabled() {
   return localStorage.getItem("kukirin_sound") !== "off";
@@ -24,8 +14,10 @@ export function isSoundEnabled() {
 export function setSoundEnabled(enabled) {
   localStorage.setItem("kukirin_sound", enabled ? "on" : "off");
   if (!enabled) {
-    stopEngineSound();
+    stopEngineSound(false);
     stopPoliceSiren();
+  } else if (requestedRide) {
+    startEngineSound(requestedRide.vehicle, requestedRide.stats);
   }
 }
 
@@ -58,10 +50,7 @@ function tone({ frequency = 440, duration = 0.08, volume = 0.025, type = "sine",
 export function playSound(name = "tap") {
   if (!isSoundEnabled()) return;
   if (name === "tap") tone({ frequency: 720, endFrequency: 540, duration: 0.045, volume: 0.022, type: "sine" });
-  if (name === "throttle") {
-    tone({ frequency: 260, endFrequency: 390, duration: 0.09, volume: 0.012, type: "sine" });
-  }
-  if (name === "brake") tone({ frequency: 410, endFrequency: 260, duration: 0.1, volume: 0.012, type: "sine" });
+  // Gas and brake are mechanical controls, not UI beeps.
   if (name === "scrape") {
     tone({frequency:1300,endFrequency:230,duration:.3,volume:.045,type:'sawtooth'});
     navigator.vibrate?.(35);
@@ -72,8 +61,7 @@ export function playSound(name = "tap") {
     navigator.vibrate?.([55, 25, 80]);
   }
   if (name === "start") {
-    tone({ frequency: 95, endFrequency: 210, duration: 0.24, volume: 0.07, type: "sawtooth" });
-    setTimeout(() => tone({ frequency: 210, endFrequency: 340, duration: 0.16, volume: 0.045, type: "square" }), 110);
+    tone({ frequency: 1050, endFrequency: 1050, duration: 0.045, volume: 0.008 });
   }
   if (name === "success") {
     tone({ frequency: 520, duration: 0.12, volume: 0.025 });
@@ -90,133 +78,150 @@ export function playSound(name = "tap") {
   }
 }
 
-export function startEngineSound(vehicle) {
-  const ctx = context();
-  if (!ctx || engine) return;
-  const profile = engineProfile(vehicle);
-  const master = ctx.createGain();
-  const output = ctx.createDynamicsCompressor();
-  const filter = ctx.createBiquadFilter();
-  const windFilter = ctx.createBiquadFilter();
-  const roadFilter = ctx.createBiquadFilter();
-  const windGain = ctx.createGain();
-  const roadGain = ctx.createGain();
-  const scooterGain = ctx.createGain();
-  const whirGain = ctx.createGain();
-  const chainFilter = ctx.createBiquadFilter();
-  const chainGain = ctx.createGain();
-  const gear = ctx.createOscillator();
-  const gearGain = ctx.createGain();
-  const regen = ctx.createOscillator();
-  const regenGain = ctx.createGain();
-  const low = ctx.createOscillator();
-  const high = ctx.createOscillator();
-  const noise = ctx.createBufferSource();
-  const noiseBuffer = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
-  const noiseData = noiseBuffer.getChannelData(0);
-  for (let i = 0; i < noiseData.length; i++) noiseData[i] = Math.random() * 2 - 1;
-  noise.buffer = noiseBuffer;
-  noise.loop = true;
-  low.type = "sine";
-  high.type = "sine";
-  filter.type = "lowpass";
-  filter.frequency.value = 420;
-  windFilter.type = "highpass";
-  windFilter.frequency.value = 700;
-  roadFilter.type = "lowpass";
-  roadFilter.frequency.value = 190;
-  chainFilter.type = "bandpass";
-  chainFilter.frequency.value = 1350;
-  chainFilter.Q.value = 4.5;
-  master.gain.value = 0.0001;
-  windGain.gain.value = 0.0001;
-  roadGain.gain.value = 0.0001;
-  scooterGain.gain.value = 0.0001;
-  whirGain.gain.value = 0.0001;
-  chainGain.gain.value = 0.0001;
-  gearGain.gain.value = 0.0001;
-  regenGain.gain.value = 0.0001;
-  gear.type = "sine";
-  gear.frequency.value = 160;
-  regen.type = "triangle";
-  regen.frequency.value = 340;
-  output.threshold.value = -18;
-  output.knee.value = 14;
-  output.ratio.value = 3;
-  output.attack.value = 0.008;
-  output.release.value = 0.18;
-  output.connect(ctx.destination);
-  low.connect(filter);
-  high.connect(filter);
-  filter.connect(master).connect(output);
-  noise.connect(windFilter).connect(windGain).connect(output);
-  noise.connect(roadFilter).connect(roadGain).connect(output);
-  noise.connect(chainFilter).connect(chainGain).connect(output);
-  gear.connect(gearGain).connect(output);
-  regen.connect(regenGain).connect(output);
-  const scooterAudio = new Audio("/assets/sounds/electric-scooter-wheel.mp3");
-  const whirAudio = new Audio("/assets/sounds/electric-motor-whir.mp3");
-  for (const audio of [scooterAudio, whirAudio]) {
-    audio.loop = true;
-    audio.preload = "auto";
-    audio.crossOrigin = "anonymous";
-    audio.preservesPitch = false;
-    audio.webkitPreservesPitch = false;
+// Blend the end into the beginning once after decoding; no repeating MP3 seam.
+function loopBuffer(ctx, input) {
+  const fade = Math.min(Math.floor(ctx.sampleRate * .22), Math.floor(input.length / 8));
+  const length = input.length - fade;
+  const loop = ctx.createBuffer(input.numberOfChannels, length, input.sampleRate);
+  for (let ch = 0; ch < input.numberOfChannels; ch++) {
+    const src = input.getChannelData(ch), dst = loop.getChannelData(ch);
+    dst.set(src.subarray(fade));
+    for (let i = 0; i < fade; i++) {
+      const t = i / fade;
+      dst[length - fade + i] = src[input.length - fade + i] * (1 - t) + src[i] * t;
+    }
   }
-  const scooterSource = ctx.createMediaElementSource(scooterAudio);
-  const whirSource = ctx.createMediaElementSource(whirAudio);
-  scooterSource.connect(scooterGain).connect(output);
-  whirSource.connect(whirGain).connect(output);
-  low.start();
-  high.start();
-  noise.start();
-  gear.start();
-  regen.start();
-  scooterAudio.play().catch(() => {});
-  whirAudio.play().catch(() => {});
-  engine = { master, output, filter, low, high, noise, windFilter, windGain, roadGain, scooterAudio, whirAudio, scooterGain, whirGain, chainFilter, chainGain, gear, gearGain, regen, regenGain, profile };
+  return loop;
+}
+
+function loadLoop(ctx, url) {
+  if (!buffers.has(url)) {
+    const promise = fetch(url).then(response => {
+      if (!response.ok) throw new Error('Audio asset unavailable');
+      return response.arrayBuffer();
+    }).then(data => ctx.decodeAudioData(data)).then(buffer => loopBuffer(ctx, buffer));
+    buffers.set(url, promise);
+    promise.catch(() => buffers.delete(url));
+  }
+  return buffers.get(url);
+}
+
+async function attachRecording(current) {
+  const ctx = audioContext;
+  let buffer;
+  try {
+    buffer = await loadLoop(ctx, current.profile.file);
+  } catch {
+    if (current.stopped) return;
+    current.profile.recorded = false;
+    current.profile.file = '/assets/sounds/electric-scooter-wheel.mp3';
+    try { buffer = await loadLoop(ctx, current.profile.file); } catch { return; }
+  }
+  if (current.stopped || engine !== current) return;
+  const sample = ctx.createBufferSource();
+  sample.buffer = buffer;
+  sample.loop = true;
+  sample.connect(current.sampleFilter);
+  current.sample = sample;
+  sample.playbackRate.value = current.rate;
+  sample.start();
+}
+
+export function startEngineSound(vehicle, stats) {
+  requestedRide = { vehicle, stats };
+  const ctx = context();
+  if (!ctx) return;
+  const profile = getVehicleSoundProfile(vehicle, stats);
+  if (engine?.profile.key === profile.key) return;
+  if (engine) stopEngineSound(false);
+  const bus = ctx.createGain();
+  const output = ctx.createDynamicsCompressor();
+  output.threshold.value = -12;
+  output.ratio.value = 3;
+  output.attack.value = .012;
+  output.release.value = .2;
+  bus.gain.value = 1;
+  bus.connect(output).connect(ctx.destination);
+  const sampleFilter = ctx.createBiquadFilter();
+  const sampleGain = ctx.createGain();
+  sampleFilter.type = 'lowpass';
+  sampleFilter.frequency.value = profile.motorcycle ? 2400 : 1900;
+  sampleGain.gain.value = 0;
+  sampleFilter.connect(sampleGain).connect(bus);
+  const motorGain = ctx.createGain();
+  motorGain.gain.value = 0;
+  const low = ctx.createOscillator(), high = ctx.createOscillator();
+  low.type = high.type = 'sine';
+  low.frequency.value = 90; high.frequency.value = 180;
+  low.connect(motorGain); high.connect(motorGain); motorGain.connect(bus);
+  const noise = ctx.createBufferSource();
+  const noiseBuffer = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
+  const data = noiseBuffer.getChannelData(0);
+  for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+  noise.buffer = noiseBuffer; noise.loop = true;
+  const windFilter = ctx.createBiquadFilter(), roadFilter = ctx.createBiquadFilter();
+  const windGain = ctx.createGain(), roadGain = ctx.createGain();
+  windFilter.type = 'highpass'; windFilter.frequency.value = 1000;
+  roadFilter.type = 'lowpass'; roadFilter.frequency.value = 180;
+  windGain.gain.value = roadGain.gain.value = 0;
+  noise.connect(windFilter).connect(windGain).connect(bus);
+  noise.connect(roadFilter).connect(roadGain).connect(bus);
+  const regen = ctx.createOscillator(), regenGain = ctx.createGain();
+  regen.type = 'sine'; regen.frequency.value = 200; regenGain.gain.value = 0;
+  regen.connect(regenGain).connect(bus);
+  const current = { profile, bus, output, sampleFilter, sampleGain, motorGain, low, high,
+    noise, windFilter, windGain, roadGain, regen, regenGain, sample: null, rate: .85, stopped: false };
+  engine = current;
+  low.start(); high.start(); noise.start(); regen.start();
+  void attachRecording(current);
 }
 
 export function updateEngineSound(speed = 0, load = 0, braking = false) {
-  if (!engine || !audioContext) return;
-  const now = audioContext.currentTime;
-  const profile = engine.profile;
-  const base = (145 + Math.min(150, speed) * 4.2) * profile.pitch;
-  engine.low.frequency.setTargetAtTime(base, now, 0.04);
-  engine.high.frequency.setTargetAtTime(base * (2.03 + profile.dual), now, 0.04);
-  engine.filter.frequency.setTargetAtTime(520 + speed * 14 + load * 650, now, 0.06);
-  engine.master.gain.setTargetAtTime((0.0015 + load * 0.007) * profile.motor, now, 0.05);
-  const speedRatio = Math.min(1, Math.max(0, speed / 100));
-  engine.windFilter.frequency.setTargetAtTime(650 + speed * 18, now, 0.08);
-  engine.windGain.gain.setTargetAtTime(speed < 8 ? 0.0001 : 0.003 + Math.pow(speedRatio, 1.55) * 0.038, now, 0.12);
-  engine.roadGain.gain.setTargetAtTime(speed < 1 ? 0.0001 : (0.009 + speedRatio * 0.026) * profile.wheel, now, 0.08);
-  engine.scooterAudio.playbackRate = Math.min(1.9, (0.68 + speedRatio * 0.82 + load * 0.22) * Math.max(.72, profile.pitch));
-  engine.whirAudio.playbackRate = Math.min(2.15, (0.62 + speedRatio * 1.02 + load * 0.2) * profile.pitch);
-  engine.scooterGain.gain.setTargetAtTime(speed < 0.5 ? 0.0001 : (0.026 + speedRatio * 0.035) * profile.wheel, now, 0.06);
-  engine.whirGain.gain.setTargetAtTime(speed < 0.5 ? 0.0001 : (0.005 + speedRatio * 0.018 + load * 0.026) * profile.motor, now, 0.06);
-  engine.chainFilter.frequency.setTargetAtTime(900 + speed * 15 + load * 350, now, 0.05);
-  engine.chainGain.gain.setTargetAtTime(speed < 2 ? 0.0001 : (0.003 + speedRatio * 0.021 + load * 0.012) * profile.chain, now, 0.05);
-  engine.gear.frequency.setTargetAtTime(105 + speed * 5.2 * profile.pitch, now, 0.05);
-  engine.gearGain.gain.setTargetAtTime(speed < 1 ? 0.0001 : (0.001 + speedRatio * 0.004 + load * 0.004) * profile.gear, now, 0.06);
-  engine.regen.frequency.setTargetAtTime(280 + speed * 6.5 * profile.pitch, now, 0.04);
-  engine.regenGain.gain.setTargetAtTime(braking && speed > 3 ? 0.018 + speedRatio * 0.026 : 0.0001, now, 0.035);
+  if (!engine || !audioContext || !isSoundEnabled()) return;
+  const e = engine, now = audioContext.currentTime, p = e.profile;
+  speed = Math.max(0, Number.isFinite(speed) ? speed : 0);
+  load = Math.max(0, Math.min(1, Number.isFinite(load) ? load : 0));
+  const spin = Math.min(1, speed / 6);
+  const cruise = Math.min(2, speed / p.topSpeed);
+  const wheelHz = speed / 3.6 / (Math.PI * p.wheel * .0254);
+  const motorHz = Math.min(2400, 85 + wheelHz * (p.motorcycle ? 22 : 14));
+  e.low.frequency.setTargetAtTime(motorHz, now, .09);
+  e.high.frequency.setTargetAtTime(motorHz * (p.motors > 1 ? 1.016 : 2.02), now, .09);
+  // The real recording is dominant. A faint torque tone follows RPM and upgrades.
+  e.motorGain.gain.setTargetAtTime(spin * load * .0025 * p.power, now, .08);
+  e.rate = Math.max(.62, Math.min(1.6, (.72 + cruise * .3 + load * .045) * p.pitch));
+  e.sample?.playbackRate.setTargetAtTime(e.rate, now, .12);
+  e.sampleGain.gain.setTargetAtTime(spin * (.55 + load * .25 * p.power) * (p.recorded ? 1 : .32), now, .1);
+  e.sampleFilter.frequency.setTargetAtTime((p.motorcycle ? 1900 : 1350) + load * 500, now, .12);
+  const wind = Math.min(1.5, speed / 100);
+  e.windGain.gain.setTargetAtTime(speed < 8 ? 0 : Math.pow(wind, 1.65) * .025, now, .2);
+  e.roadGain.gain.setTargetAtTime(spin * (.001 + Math.min(1, cruise) * .003), now, .16);
+  e.regen.frequency.setTargetAtTime(100 + wheelHz * 12, now, .1);
+  e.regenGain.gain.setTargetAtTime(braking && speed > 3 ? Math.min(.006, wheelHz * .00035) : 0, now, .07);
 }
 
-export function stopEngineSound() {
+export function stopEngineSound(clearRequest = true) {
+  if (clearRequest) requestedRide = null;
   if (!engine || !audioContext) return;
   const current = engine;
+  engine = null; // Allow a new ride immediately, while only the old bus fades.
+  current.stopped = true;
   const now = audioContext.currentTime;
-  current.master.gain.setTargetAtTime(0.0001, now, 0.05);
-  current.scooterGain?.gain.setTargetAtTime(0.0001, now, 0.05);
-  current.whirGain?.gain.setTargetAtTime(0.0001, now, 0.05);
-  current.chainGain?.gain.setTargetAtTime(0.0001, now, 0.05);
-  current.gearGain?.gain.setTargetAtTime(0.0001, now, 0.05);
-  current.regenGain?.gain.setTargetAtTime(0.0001, now, 0.05);
+  current.bus.gain.cancelScheduledValues(now);
+  current.bus.gain.setTargetAtTime(0, now, .035);
   setTimeout(() => {
-    try { current.low.stop(); current.high.stop(); current.noise.stop(); current.gear?.stop(); current.regen?.stop(); } catch {}
-    try { current.scooterAudio.pause(); current.whirAudio.pause(); } catch {}
-    if (engine === current) engine = null;
+    for (const node of [current.low, current.high, current.noise, current.regen, current.sample]) {
+      try { node?.stop(); node?.disconnect(); } catch { /* Already stopped. */ }
+    }
+    current.bus.disconnect(); current.output.disconnect();
   }, 180);
+}
+
+// Runtime diagnostics used by offline playback checks; not persisted in player saves.
+export function getEngineSoundState() {
+  return engine ? { vehicleId: engine.profile.id, file: engine.profile.file,
+    recorded: engine.profile.recorded, loaded: Boolean(engine.sample),
+    rate: engine.rate, sampleGain: engine.sampleGain.gain.value } : null;
 }
 
 export function updatePoliceSiren(active, proximity = 0) {
@@ -249,6 +254,7 @@ export function updatePoliceSiren(active, proximity = 0) {
 export function stopPoliceSiren() {
   if (!policeSiren || !audioContext) return;
   const current = policeSiren;
+  policeSiren = null;
   current.gain.gain.setTargetAtTime(0.0001, audioContext.currentTime, 0.08);
   setTimeout(() => {
     try { current.carrier.stop(); current.lfo.stop(); } catch {}

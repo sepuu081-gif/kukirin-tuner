@@ -8,6 +8,7 @@ import { getAllBuilds, calcBuildStats, getBuild } from "../lib/buildState";
 import { ArrowLeft, Flag, Wifi, Users, Copy, Loader2 } from "lucide-react";
 import { useLanguage } from "../lib/i18n";
 import { CAREER_EVENTS, completeCareerRace, getCareer } from "../lib/careerState";
+import { startEngineSound, updateEngineSound, stopEngineSound } from '../lib/soundEngine';
 
 function getRespect() { try { return parseInt(localStorage.getItem("kukirin_respect") || "0"); } catch { return 0; } }
 function addRespect(n) { localStorage.setItem("kukirin_respect", String(getRespect() + n)); }
@@ -191,9 +192,20 @@ export default function DragRace() {
   }, [selectedVehicleId, sendOnline, stats.topSpeed, stats.voltage, stats.watts, vehicle.name]);
 
   const startRace = () => {
+    startEngineSound(vehicle, stats);
     resetRaceState();
     if (raceMode === "online") sendOnline({ type: "start" });
   };
+
+  useEffect(() => {
+    if (phase === 'racing' || phase === 'countdown') startEngineSound(vehicle, stats);
+    else stopEngineSound();
+    return () => stopEngineSound();
+  }, [phase, vehicle, stats.watts, stats.motorCount]);
+
+  useEffect(() => {
+    if (phase === 'racing') updateEngineSound(playerSpeed, keys.current.w ? 1 : .05);
+  }, [phase, playerSpeed]);
 
   // Countdown
   useEffect(() => {
@@ -333,12 +345,14 @@ export default function DragRace() {
   }, [playerTime, aiTime]);
 
   useEffect(() => {
-    if (phase !== "racing") return;
-    const down = (e) => { if (e.key === "w" || e.key === "W") keys.current.w = true; };
+    if (phase !== "racing" && phase !== "countdown") { keys.current.w = false; return; }
+    const down = (e) => { if (e.key === "w" || e.key === "W") { e.preventDefault(); keys.current.w = true; } };
     const up   = (e) => { if (e.key === "w" || e.key === "W") keys.current.w = false; };
+    const blur = () => { keys.current.w = false; };
     window.addEventListener("keydown", down);
     window.addEventListener("keyup", up);
-    return () => { window.removeEventListener("keydown", down); window.removeEventListener("keyup", up); };
+    window.addEventListener("blur", blur);
+    return () => { window.removeEventListener("keydown", down); window.removeEventListener("keyup", up); window.removeEventListener("blur", blur); };
   }, [phase]);
 
   const playerPct = Math.min((playerPos / TRACK_DISTANCE) * 100, 100);
