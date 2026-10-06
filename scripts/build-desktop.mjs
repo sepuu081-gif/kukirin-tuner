@@ -8,7 +8,7 @@ await mkdir(stage, { recursive: true });
 await cp('dist', path.join(stage, 'dist'), { recursive: true });
 await cp('desktop/main.cjs', path.join(stage, 'main.cjs'));
 await writeFile(path.join(stage, 'package.json'), JSON.stringify({
-  name: 'kukirin-tuner-desktop', productName: 'KuKirin Tuner', version: '1.0.63', main: 'main.cjs',
+  name: 'kukirin-tuner-desktop', productName: 'KuKirin Tuner', version: '1.0.64', main: 'main.cjs',
 }));
 const builds = await packager({ dir: stage, out: 'desktop-release', name: 'KuKirin Tuner',
   platform: 'win32', arch: 'x64', electronVersion: require('electron/package.json').version,

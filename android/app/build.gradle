@@ -7,8 +7,8 @@ android {
         applicationId "ee.kukirin.tuner"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 63
-        versionName "1.0.63"
+        versionCode 64
+        versionName "1.0.64"
         buildConfigField "boolean", "STARTIO_TEST_ADS", providers.gradleProperty('startioTestAds').getOrElse('false')
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {

@@ -30,6 +30,9 @@ export function getVehiclePhotoLayout(vehicle, legacyLayouts = {}) {
 // Hide deployed display kickstands while the photographed vehicle is riding.
 export function getVehiclePhotoMask(vehicle) {
   return {
+    c1_pro:[[65,88],[72,88],[72,97],[65,97]],
+    s3_pro:[[48,83],[53,83],[53,92],[48,92]],
+    kaabo_wolf_warrior:[[73,75],[82,75],[82,90],[73,90]],
     dt_thunder3:[[59,81],[69,81],[69,95],[59,95]],
     dt_victor_limited:[[59,81],[69,81],[69,95],[59,95]],
     dt_city:[[60,80],[68,80],[68,93],[60,93]],

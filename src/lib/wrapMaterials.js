@@ -1,4 +1,5 @@
 export const WRAP_MATERIALS = {
+  redbull_racing:{color:'#101b38',finish:'satin'},
   carbon_black:{color:'#24282d',finish:'carbon',texture:'/assets/wraps/carbon-weave.jpg'},
   carbon_orange:{color:'#dd671f',finish:'carbon',texture:'/assets/wraps/carbon-weave.jpg'},
   camo_green:{color:'#718347',finish:'print',texture:'/assets/wraps/woodland.png'},

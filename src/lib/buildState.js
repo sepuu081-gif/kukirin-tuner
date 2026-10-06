@@ -1,6 +1,7 @@
 import {STUNT_BAR} from './stuntBar.js';
 import { BLUE_G2_STYLE } from './appearanceTuning.js';
 import { getMotorDriveSpec, getMotorCount, solveRoadSpeed } from './drivePhysics.js';
+import { VEHICLES } from './vehicleData.js';
 
 const KEY = "kukirin_builds";
 
@@ -25,6 +26,8 @@ export const DEFAULT_APPEARANCE = {
 };
 
 export function createStockBuild(vehicleId) {
+  const vehicle=VEHICLES.find(v=>v.id===vehicleId);
+  const factoryStyle=vehicle?.wrap?{customEnabled:true,wrap:vehicle.wrap,deckColor:'#101b38',stemColor:'#101b38',accentColor:'#d9233e'}:{};
   return {
     vehicleId,
     weldCount: 0,
@@ -45,7 +48,7 @@ export function createStockBuild(vehicleId) {
     },
     bodywork: {},
     bms: null,
-    appearance: { ...DEFAULT_APPEARANCE },
+    appearance: { ...DEFAULT_APPEARANCE, ...factoryStyle },
     notes: [],
   };
 }
@@ -63,6 +66,10 @@ export function getBuild(vehicleId) {
   if (all[vehicleId]) {
     // Ensure appearance exists on old saves
     all[vehicleId].appearance = { ...DEFAULT_APPEARANCE, ...all[vehicleId].appearance };
+    if(vehicleId==='sebius_redbull_g2'&&!all[vehicleId].appearance.customEnabled){
+      all[vehicleId].appearance=createStockBuild(vehicleId).appearance;
+      saveBuild(all[vehicleId]);
+    }
     if (!all[vehicleId].bms) all[vehicleId].bms = null;
     return all[vehicleId];
   }

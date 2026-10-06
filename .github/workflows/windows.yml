@@ -26,13 +26,10 @@ jobs:
           path: KuKirin-Tuner-Windows.zip
       - name: Assemble original Android APK
         shell: pwsh
-        run: python -c "from pathlib import Path; import hashlib; p=Path('downloads'); data=(p/'KuKirin-Tuner-v63.apk.part1').read_bytes()+(p/'KuKirin-Tuner-v63.apk.part2').read_bytes(); assert hashlib.sha256(data).hexdigest()==(p/'KuKirin-Tuner-v63.apk.sha256').read_text().strip(); (p/'KuKirin-Tuner-v63.apk').write_bytes(data)"
+        run: python -c "from pathlib import Path; import hashlib; p=Path('downloads'); data=(p/'KuKirin-Tuner-v64.apk.part1').read_bytes()+(p/'KuKirin-Tuner-v64.apk.part2').read_bytes(); assert hashlib.sha256(data).hexdigest()==(p/'KuKirin-Tuner-v64.apk.sha256').read_text().strip(); (p/'KuKirin-Tuner-v64.apk').write_bytes(data)"
       - name: Publish download
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
         run: >-
-          gh release create "windows-${{ github.run_number }}" 'KuKirin-Tuner-Windows.zip' 'downloads/KuKirin-Tuner-v63.apk' --target '${{ github.sha }}' --title 'KuKirin Tuner v63 - Android and Windows' --notes 'Android: install KuKirin-Tuner-v63.apk. Profile has optional Start.io rewarded videos (+500 REP). Production video playback remains unverified. Windows: portable 64-bit app. Extract the ZIP and launch KuKirin Tuner.exe. W = throttle, S = rear brake, Space = wheelie, F11 = fullscreen. Offline riding supported.'
-
-
-
+          gh release create "windows-${{ github.run_number }}" 'KuKirin-Tuner-Windows.zip' 'downloads/KuKirin-Tuner-v64.apk' --target '${{ github.sha }}' --title 'KuKirin Tuner v64 - Android and Windows' --notes 'Tester visual fixes: real S3 Pro, seated C1 Pro, Dualtron Eagle Pro, Thunder and Kaabo Wolf Warrior 11 photos. G2 Max Custom 52V correctly labelled; Red Bull G2 livery restored. Android: install KuKirin-Tuner-v64.apk over your existing app. Windows: extract the ZIP and launch KuKirin Tuner.exe. W = throttle, S = rear brake, Space = wheelie. Optional Start.io production video playback remains unverified.'

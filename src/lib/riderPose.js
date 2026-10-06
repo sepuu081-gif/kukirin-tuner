@@ -32,13 +32,14 @@ export function solveDownwardArm(start,target,pitch){
  return candidates.sort((a,b)=>rotate(b[1],pitch*Math.PI/180)[1]-rotate(a[1],pitch*Math.PI/180)[1])[0];
 }
 
-export function getRiderPose(layout,{pitch=0,trick='normal',moto=false,braking=false,posture='upright',turn=0,grips=null}={}){
+export function getRiderPose(layout,{pitch=0,trick='normal',moto=false,braking=false,posture='upright',turn=0,grips=null,seat=null,footrests=null}={}){
  const [, , , , ,hx,hy,deck]=layout;
  const angle=0;
  const local=(v)=>rotate(v,-angle);
  let hip=[60-10*Math.sin(angle)-(braking?3:0),deck-(moto?23:48)+8*Math.sin(angle)];
  let feet=[[54,deck-1],[66,deck-1]];
  if(moto)feet=[[58,deck+7],[66,deck+7]];
+ if(seat){hip=[seat[0],seat[1]-2];feet=footrests||[[54,deck-1],[66,deck-1]];}
  if(trick==='knee-knock')hip=[58,deck-22];
  if(trick==='seat-stand'){hip=[72,deck-43];feet=[[73,deck-2],[80,deck-2]];}
  let body=posture==='tuck'?[-15,-26]:[-6+turn*2,-Math.sqrt(900-(-6+turn*2)**2)];

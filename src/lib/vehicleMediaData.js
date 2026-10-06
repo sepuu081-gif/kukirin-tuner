@@ -315,13 +315,31 @@ export const VEHICLE_MEDIA = {
     "kind": "illustration"
   },
   "s3_pro": {
-    "file": "render-s3-pro-v39.png",
-    "kind": "illustration"
-  },
+  "file": "ride-s3-pro-v64.png",
+  "kind": "photo",
+  "cutout": true,
+  "source": "https://www.kugookirineu.com/products/kugoo-s3-pro-electric-scooter"
+},
   "c1_pro": {
-    "file": "render-c1-pro-v39.png",
-    "kind": "illustration"
-  },
+  "file": "ride-c1-pro-v64.png",
+  "kind": "photo",
+  "cutout": true,
+  "source": "https://www.kukirin-escooters.com/products/kukirin-c1-pro",
+  "seat": [
+    63.49722222222222,
+    49.013888888888886
+  ],
+  "footrests": [
+    [
+      44.625,
+      77.08333333333334
+    ],
+    [
+      53.58333333333333,
+      77.08333333333334
+    ]
+  ]
+},
   "xm_s2_pro2": {
     "file": "render-xm-s2-pro2-v39.png",
     "kind": "illustration"
@@ -350,22 +368,25 @@ export const VEHICLE_MEDIA = {
     "file": "render-kukirin-g4pro-v39.png",
     "kind": "illustration"
   },
-  "kukirin_g2max_pro": {
-    "file": "render-kukirin-g2max-pro-v39.png",
-    "kind": "illustration"
-  },
+  "kukirin_g2max_pro": {"file": "ride-g2-max.png", "kind": "base-photo", "base": "g2_max"},
   "kaabo_wolf_warrior": {
-    "file": "render-kaabo-wolf-warrior-v39.png",
-    "kind": "illustration"
-  },
+  "file": "ride-kaabo-wolf-warrior-v64.png",
+  "kind": "photo",
+  "cutout": true,
+  "source": "https://www.kaabo.com/wolf-11/"
+},
   "dt_eagle_pro": {
-    "file": "render-dt-eagle-pro-v39.png",
-    "kind": "illustration"
-  },
+  "file": "ride-dt-eagle-pro-v64.png",
+  "kind": "photo",
+  "cutout": true,
+  "source": "https://www.minimotors.ph/product/dualtron-eagle-pro-electric-kick-scooter/"
+},
   "dt_thunder": {
-    "file": "render-dt-thunder-v39.png",
-    "kind": "illustration"
-  },
+  "file": "ride-dt-thunder-v64.png",
+  "kind": "photo",
+  "cutout": true,
+  "source": "https://www.minimotors.ph/product/dualtron-thunder-electric-kick-scooter/"
+},
   "nami_climber": {
     "file": "render-nami-climber-v39.png",
     "kind": "illustration"
@@ -843,28 +864,8 @@ export const VEHICLE_MEDIA_LAYOUTS = {
     74.15,
     14.43
   ],
-  "s3_pro": [
-    23.01,
-    86.27,
-    76.99,
-    86.27,
-    11.55,
-    35.8,
-    19.61,
-    74.15,
-    11.55
-  ],
-  "c1_pro": [
-    17.33,
-    84.83,
-    82.67,
-    84.83,
-    14.43,
-    35.8,
-    19.61,
-    74.15,
-    14.43
-  ],
+  "s3_pro": [29.360000000000003, 84.078, 78.38, 77.628, 14.276, 39.25, 21.04, 82.788, 12.47],
+  "c1_pro": [20.13888888888889, 81.38333333333334, 76.27777777777777, 81.38333333333334, 20.544444444444444, 29.694444444444446, 33.24722222222222, 78.27777777777777, 20.544444444444444],
   "xm_s2_pro2": [
     19.89,
     84.83,
@@ -942,50 +943,10 @@ export const VEHICLE_MEDIA_LAYOUTS = {
     74.15,
     15.88
   ],
-  "kukirin_g2max_pro": [
-    17.05,
-    84.83,
-    82.95,
-    84.83,
-    14.43,
-    35.8,
-    19.61,
-    74.15,
-    14.43
-  ],
-  "kaabo_wolf_warrior": [
-    10.8,
-    84.11,
-    89.2,
-    84.11,
-    15.88,
-    35.8,
-    19.61,
-    74.15,
-    15.88
-  ],
-  "dt_eagle_pro": [
-    13.64,
-    84.83,
-    86.36,
-    84.83,
-    14.43,
-    35.8,
-    14.5,
-    71.88,
-    14.43
-  ],
-  "dt_thunder": [
-    11.65,
-    84.11,
-    88.35,
-    84.11,
-    15.88,
-    35.8,
-    14.5,
-    71.88,
-    15.88
-  ],
+  "kukirin_g2max_pro": [16.3,86.5,85.7,85.7,17.2,32,8,77],
+  "kaabo_wolf_warrior": [33.720000000000006, 81.94666666666667, 70.97333333333333, 71.82666666666668, 17.306666666666665, 41.64, 14.333333333333343, 72.41333333333334, 15.693333333333332],
+  "dt_eagle_pro": [17.439999999999994, 85.86999999999999, 82.22999999999999, 85.86999999999999, 17.6, 28.659999999999997, 10.519999999999989, 79.27, 17.6],
+  "dt_thunder": [24.204999999999995, 84.55, 76.89500000000001, 80.15, 19.800000000000004, 40.485, 11.83999999999999, 75.19999999999999, 16.5],
   "nami_climber": [
     11.93,
     84.11,

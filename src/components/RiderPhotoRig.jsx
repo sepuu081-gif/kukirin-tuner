@@ -11,12 +11,12 @@ function Limb({points,leg=false,far=false}){
    {!leg&&<circle cx={end[0]} cy={end[1]} r="1.8" fill="#101820" stroke="#70818e" strokeWidth=".4"/>}
  </g>;
 }
-export default function RiderPhotoRig({helmet='#38bdf8',helmetType='fullface',grips=null,layout,wheelieAngle=0,trick='normal',moto=false,braking=false,posture='upright',turn=0}){
+export default function RiderPhotoRig({helmet='#38bdf8',helmetType='fullface',grips=null,layout,wheelieAngle=0,trick='normal',moto=false,braking=false,posture='upright',turn=0,seat=null,footrests=null}){
  const id=useId().replace(/:/g,'');
- const pose=getRiderPose(layout,{pitch:wheelieAngle,trick,moto,braking,posture,turn,grips});
+ const pose=getRiderPose(layout,{pitch:wheelieAngle,trick,moto,braking,posture,turn,grips,seat,footrests});
  const {hip,shoulder,head,arms,legs,bodyAngle}=pose;
  const bootAngle=0;
- return <svg className={`photo-rider rider-anatomical trick-${trick}`} viewBox="0 0 100 100" overflow="visible" aria-label="Rider wearing helmet and protective clothing" data-trick={trick} data-rider-state={moto?'seated':braking?'braking':turn?'leaning':'standing'} data-rig="fixed-bones">
+ return <svg className={`photo-rider rider-anatomical trick-${trick}`} viewBox="0 0 100 100" overflow="visible" aria-label="Rider wearing helmet and protective clothing" data-trick={trick} data-rider-state={moto||seat?'seated':braking?'braking':turn?'leaning':'standing'} data-rig="fixed-bones">
    <defs><linearGradient id={`${id}-coat`}><stop stopColor="#182330"/><stop offset=".45" stopColor="#455361"/><stop offset="1" stopColor="#1b2733"/></linearGradient><linearGradient id={`${id}-helmet`} x2=".8" y2="1"><stop stopColor="#d7e9ef"/><stop offset=".22" stopColor={helmet}/><stop offset="1" stopColor="#142436"/></linearGradient></defs>
    <Limb points={legs[1]} leg far/><Limb points={arms[1]} far/>
    <Limb points={legs[0]} leg/>

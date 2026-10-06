@@ -1,0 +1,4 @@
+KuKirin Tuner v64 — tester visual fixes
+S3 Pro, C1 Pro, Dualtron Eagle Pro, original Thunder and Kaabo Wolf Warrior 11 use sourced offline product photos. C1 Pro has 14-inch wheels, 48V 25Ah stock battery, 45 km/h specification and seated rider with model-specific seat/foot contacts. Legacy G2 Max Pro slot retains saves but is now explicitly G2 Max (Custom 52V), using G2 Max chassis photo. Red Bull G2 applies its factory fan livery and sourced wordmark; untouched legacy appearance migrates, custom saved paint stays intact.
+Validated: ESLint, seven phone-width offline previews, two loaded wheel images per vehicle, seat/foot contact, factory-wrap migration and custom-save preservation; screenshots inspected.
+Source reference pages: public/assets/vehicles/PHOTO-CREDITS-v64.json. Android gameplay on a physical device and production ad playback remain unverified.

@@ -219,7 +219,8 @@ export default function VehicleRideArt({ build, showRider = true, wheelieAngle =
   const wheel = appearance?.wheelColor || '#17202a';
   const helmet = appearance?.riderHelmetColor || accent;
   const layout = getVehiclePhotoLayout(vehicle, photoWheelLayouts);
-  const pose = getRiderPose(layout,{grips:getVehicleHandGrips(vehicle,layout),moto:vehicle?.vehicleType==='emoto',trick,posture,braking,turn});
+  const media=getVehiclePhotoInfo(vehicle);
+  const pose = getRiderPose(layout,{grips:getVehicleHandGrips(vehicle,layout),moto:vehicle?.vehicleType==='emoto',trick,posture,braking,turn,seat:media?.seat,footrests:media?.footrests});
   const centerShift=photoCenterShift(layout,showRider?pose:null,isWheelying?(wheelieAngle||0):0);
   const Art = family === 'g4' ? G4Art : family === 'g3' ? G3Art : family === 'xiaomi' ? XiaomiArt : family === 'emoto' ? EmotoArt : G2Art;
   if (photo && failedPhoto !== photo) return <div
@@ -231,7 +232,7 @@ export default function VehicleRideArt({ build, showRider = true, wheelieAngle =
     {scraping && <div className="photo-contact-effects" style={{left:`${layout[2]}%`,top:`${layout[3]}%`,transform:`rotate(-${wheelieAngle||0}deg)`}}><div className="scrape-sparks" style={{top:`${(layout[8]||layout[4])/2}cqw`}}>{Array.from({length:7},(_,i)=><i key={i} style={{'--spark':i}}/>)}</div></div>}
     <PhotoTuningOverlay appearance={appearance} layout={layout} g2={vehicle.id === 'g2_2026' || getVehiclePhotoInfo(vehicle)?.base === 'g2_2026'} />
     <InstalledPartsArt vehicle={vehicle} layout={layout} build={build} wheelieBarFactor={wheelieBarFactor}/>
-    {showRider && <RiderPhotoRig grips={getVehicleHandGrips(vehicle,layout)} wheelieAngle={wheelieAngle||0} moto={vehicle?.vehicleType === 'emoto'} braking={braking} turn={turn} helmet={helmet} helmetType={appearance?.riderHelmetType} layout={layout} trick={trick} posture={posture} />}
+    {showRider && <RiderPhotoRig seat={media?.seat} footrests={media?.footrests} grips={getVehicleHandGrips(vehicle,layout)} wheelieAngle={wheelieAngle||0} moto={vehicle?.vehicleType === 'emoto'} braking={braking} turn={turn} helmet={helmet} helmetType={appearance?.riderHelmetType} layout={layout} trick={trick} posture={posture} />}
   </div>;
   return <svg
     className={`ride-scooter ride-model-art ride-family-${family} ride-subtype-${subtype} ${family === 'emoto' ? 'ride-emoto' : ''} ${moving ? 'is-model-moving' : ''} ${isWheelying ? 'is-wheelie' : ''} ${compact ? 'is-compact' : ''}`}
