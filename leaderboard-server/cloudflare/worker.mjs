@@ -1,10 +1,12 @@
 import {HEALTH,HOME,MODES,validScore,scoreQuery} from '../protocol.mjs';
+import appAds from './appAds.mjs';
 const requests=new Map();let reset=0;
 export default {async fetch(request,env){
  const headers={'Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'GET, POST, OPTIONS','Access-Control-Allow-Headers':'Content-Type','Content-Type':'application/json','Cache-Control':'no-store'};
  const send=(status,data)=>Response.json(data,{status,headers});
  if(request.method==='OPTIONS')return new Response(null,{status:204,headers});
  const url=new URL(request.url);
+ if(url.pathname==='/app-ads.txt'&&['GET','HEAD'].includes(request.method))return new Response(request.method==='HEAD'?null:appAds,{headers:{'Content-Type':'text/plain; charset=utf-8','Cache-Control':'public, max-age=300'}});
  if(url.pathname==='/'&&request.method==='GET')return new Response(HOME,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store'}});
  if(!['/scores','/health'].includes(url.pathname))return send(404,{error:'Not found'});
  if(!env.DB)return send(503,{error:'Database not configured'});

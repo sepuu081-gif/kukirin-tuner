@@ -6,6 +6,10 @@ const database=new DatabaseSync(':memory:');database.exec(readFileSync(new URL('
 function statement(sql,args=[]){return {bind(...values){return statement(sql,values);},async all(){return {results:database.prepare(sql).all(...args)};},async run(){return database.prepare(sql).run(...args);}};}
 const env={DB:{prepare:sql=>statement(sql)}};
 const request=(path,options={},bindings=env)=>worker.fetch(new Request('https://leaderboard.example'+path,options),bindings);
+const appAds=await request('/app-ads.txt',{},{});
+assert.equal(appAds.status,200);assert.match(appAds.headers.get('Content-Type'),/^text\/plain/);
+assert.equal(await appAds.text(),readFileSync(new URL('../../public/app-ads.txt',import.meta.url),'utf8'));
+const appAdsHead=await request('/app-ads.txt',{method:'HEAD'},{});assert.equal(appAdsHead.status,200);assert.equal(await appAdsHead.text(),'');
 assert.deepEqual(await (await request('/health')).json(),{ok:true,service:'kukirin-leaderboard',apiVersion:1});
 assert.equal((await request('/health',{},{})).status,503);
 assert.equal((await request('/scores?mode=invalid')).status,400);

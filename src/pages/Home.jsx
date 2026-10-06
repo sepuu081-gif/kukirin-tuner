@@ -13,6 +13,8 @@ import { isSoundEnabled, setSoundEnabled } from "../lib/soundEngine";
 import LanguageToggle from "../components/LanguageToggle";
 import { useLanguage } from "../lib/i18n";
 import { getUnlockedCodes, redeemSecretCode } from '../lib/codeRewards';
+import RewardedAdsCard from '../components/RewardedAdsCard';
+import { recoverAdRewards } from '../lib/rewardedAds';
 
 export function getRespect() {
   try { const value = Number(localStorage.getItem("kukirin_respect")); return Number.isFinite(value) ? Math.max(0, value) : 0; } catch { return 0; }
@@ -65,7 +67,9 @@ export default function Home() {
   useEffect(() => {
     const onFocus = () => setRespect(getRespect());
     window.addEventListener("focus", onFocus);
-    return () => window.removeEventListener("focus", onFocus);
+    window.addEventListener('kukirin:rep-updated', onFocus);
+    recoverAdRewards().then(onFocus).catch(() => {});
+    return () => {window.removeEventListener("focus", onFocus);window.removeEventListener('kukirin:rep-updated', onFocus);};
   }, []);
 
   const isUnlocked = (key) => localStorage.getItem(key) === "true";
@@ -355,6 +359,7 @@ export default function Home() {
         {/* ── PROFILE ── */}
         {activeTab === "profile" && (
           <div className="space-y-5 max-w-lg mx-auto">
+            <RewardedAdsCard />
             <div className="rounded-xl border border-sky-800 bg-sky-950/30 p-3 text-sky-200">{t('Best trick score')}: {Number(localStorage.getItem('kukirin_best_trick_score')) || 0}</div>
             <div className="flex items-center gap-2 mb-4">
               <Star className="h-5 w-5 text-yellow-400" />

@@ -1,0 +1,14 @@
+KuKirin Tuner v63 - Start.io Android rewarded videos
+App ID: 209307351; SDK pinned to 5.3.1.
+Profile > Video bonus: optional video gives 500 REP only after native video-completed callback.
+Ad preferences also appear in Settings. No automatic splash, return or driving ads.
+SDK initialization is deferred until an eligible player opts in and requests a video.
+Under-16/unknown-age users cannot request ads. Non-personalised ads only; advertising-ID, Wi-Fi, Topics and boot permissions removed.
+Completed native receipts survive restart; wallet transactions and duplicate guards prevent repeated payment.
+Production APK: test-ad flag false. Development: android/gradlew.bat -p android assembleDebug testDebugUnitTest -PstartioTestAds=true.
+Validated: lint; 3 native callback state tests; browser native-bridge simulation for full/early close/no fill/offline/double tap/duplicate receipt/transaction recovery; 390px layout; packaged offline Windows fallback; Android compile and merged manifest.
+Not verified: actual rewarded video playback on Android. Emulator failed to start due to missing acceleration and failed software fallback. Production ad availability and revenue are not proven.
+Publisher file supplied by user: 144 validated records including start.io publisher 194751889. Public app-ads.txt deployed and byte-verified at https://kukirin-leaderboard.sepuu081-kukirin.workers.dev/app-ads.txt. Remaining portal step: register this URL in Start.io and wait for their verification. Account verification/ad serving not independently confirmed.
+APK available on Google Drive: https://drive.google.com/file/d/1CIxHeHsGpIX_Bc05yalkc0iFfnn3uIPH/view
+Official integration: https://support.start.io/hc/en-us/articles/360014774799-Integration-via-Maven
+Official out-of-store app-ads.txt guide: https://support.start.io/hc/en-us/articles/360007601619-How-to-Add-App-ads-txt-to-Your-Website

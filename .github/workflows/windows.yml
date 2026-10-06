@@ -24,9 +24,14 @@ jobs:
         with:
           name: KuKirin-Tuner-Windows
           path: KuKirin-Tuner-Windows.zip
+      - name: Assemble original Android APK
+        shell: pwsh
+        run: python -c "from pathlib import Path; import hashlib; p=Path('downloads'); data=(p/'KuKirin-Tuner-v63.apk.part1').read_bytes()+(p/'KuKirin-Tuner-v63.apk.part2').read_bytes(); assert hashlib.sha256(data).hexdigest()==(p/'KuKirin-Tuner-v63.apk.sha256').read_text().strip(); (p/'KuKirin-Tuner-v63.apk').write_bytes(data)"
       - name: Publish download
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "windows-${{ github.run_number }}" 'KuKirin-Tuner-Windows.zip' --target '${{ github.sha }}' --title 'KuKirin Tuner Windows v62' --notes 'Portable Windows 64-bit app. Extract the ZIP and launch KuKirin Tuner.exe. W = throttle, S = rear brake, Space = wheelie, F11 = fullscreen. Offline riding supported.'
+        run: gh release create "windows-${{ github.run_number }}" 'KuKirin-Tuner-Windows.zip' 'downloads/KuKirin-Tuner-v63.apk' --target '${{ github.sha }}' --title 'KuKirin Tuner v63 - Android and Windows' --notes 'Android: install KuKirin-Tuner-v63.apk. Profile has optional Start.io rewarded videos (+500 REP). Production video playback remains unverified. Windows: portable 64-bit app. Extract the ZIP and launch KuKirin Tuner.exe. W = throttle, S = rear brake, Space = wheelie, F11 = fullscreen. Offline riding supported.'
+
+
 

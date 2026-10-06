@@ -5,6 +5,7 @@ import { getGameSettings, saveGameSettings } from '../lib/gameSettings';
 import { isSoundEnabled, setSoundEnabled } from '../lib/soundEngine';
 import { useLanguage } from '../lib/i18n';
 import LanguageToggle from '../components/LanguageToggle';
+import RewardedAdsCard from '../components/RewardedAdsCard';
 
 export default function Settings() {
   const { language } = useLanguage();
@@ -21,6 +22,7 @@ export default function Settings() {
       <Setting icon={ShieldCheck} title={et ? 'Osade purunemine' : 'Component damage'} description={settings.damageEnabled ? (et ? 'Sees · osad kuluvad aeglaselt ja võivad suure koormusega puruneda.' : 'On · parts wear slowly and can fail under heavy load.') : (et ? 'Väljas · uusi rikkeid ei teki ja olemasolevad rikked ei takista sõitmist.' : 'Off · no new failures; existing damage does not block riding.')} checked={settings.damageEnabled} onChange={() => setSettings(saveGameSettings({ damageEnabled: !settings.damageEnabled }))} />
       <Setting icon={Volume2} title={et ? 'Mänguhelid' : 'Game sounds'} description={et ? 'Mootor, sõidumüra ja nuppude helid.' : 'Motor, road and button sounds.'} checked={sound} onChange={() => { setSoundEnabled(!sound); setSound(!sound); }} />
       <section className="setting-row"><Languages/><div><h2>{et ? 'Keel' : 'Language'}</h2><p>Eesti / English</p></div><LanguageToggle /></section>
+      <RewardedAdsCard preferencesOnly />
       <p className="settings-note">{et ? 'Aku tühjenemine ja temperatuurist sõltuv võimsus töötavad mõlemas režiimis.' : 'Battery drain and temperature-based power limits remain active in both modes.'}</p>
     <p className="settings-note">Politseifoto: Estonian.em · <a href="https://commons.wikimedia.org/wiki/File:Mercedes_Sprinter_Estonian_police_van.png" target="_blank" rel="noreferrer">Wikimedia Commons</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noreferrer">CC BY-SA 4.0</a></p><p className="settings-note">Taustafotod: <a href="https://commons.wikimedia.org/wiki/File:Vee_street.JPG" target="_blank" rel="noreferrer">Tallinn · Dmitry G · public domain</a>; <a href="https://commons.wikimedia.org/wiki/File:Forest_path,_Ruhnu,_Estonia.jpg" target="_blank" rel="noreferrer">Ruhnu · KalervoK</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noreferrer">CC BY-SA 4.0</a>. Fotod kuvatakse kärbitult ja liikuva taustana.</p></main>
   </div>;
