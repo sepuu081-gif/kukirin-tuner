@@ -1,8 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
-import { X, Wrench, CheckCircle, Power, ShieldCheck } from 'lucide-react';
+import { X, Wrench, Power, ShieldCheck } from 'lucide-react';
 import { VEHICLES, FAILURE_CODES } from '../lib/vehicleData';
 import { getRepairFlow, REPAIR_TOOLS } from '../lib/repairData';
-import { getVehiclePhoto } from '../lib/vehiclePhotos';
+import VehicleRideArt from './VehicleRideArt';
+import ComponentScene from './workshop/ComponentScene';
+import ComponentThumbnail from './workshop/ComponentThumbnail';
+import {getBuild} from '../lib/buildState';
+import {FAULTS,normalizeFault} from '../lib/workshopDiagnostics';
+import {mountFor} from '../lib/workshopParts';
+import '../styles/workshop.css';
 import { useLanguage } from '../lib/i18n';
 
 const TOOL_ET={wrench:'Mutrivõti',allen:'Kuuskantvõti',pliers:'Tangid',driver:'Kruvikeeraja',drill:'Akutrell',levers:'Rehviheeblid',welder:'Keevitus',grinder:'Lihvija',brush:'Traathari',hands:'Käed',paste:'Termopasta'};
@@ -18,9 +24,11 @@ const isAlignment=s=>s?.tool==='hands'&&['install','mount','reconnect','panel2']
 
 export default function RepairGame({brokenPart,vehicleName,repairCost,onComplete,onCancel}){
  const {language}=useLanguage();const text=(en,et)=>language==='et'?et:en;
- const part=brokenPart?.part||'electronics',steps=repairSteps(part),stepCount=steps.length;
+ const normalized=normalizeFault(brokenPart||{}),part=normalized.component||brokenPart?.part||'electronics',steps=repairSteps(part),stepCount=steps.length;
  const [stage,setStage]=useState('diagnose'),[index,setIndex]=useState(0),[tool,setTool]=useState(null),[done,setDone]=useState([]),[mistakes,setMistakes]=useState(0),[progress,setProgress]=useState(0),[adjust,setAdjust]=useState(0),[checks,setChecks]=useState([]),[message,setMessage]=useState('');
  const holding=useRef(null),timer=useRef(null),completed=useRef(false),doneRef=useRef([]);
+ useEffect(()=>{const old=document.body.style.overflow;document.body.style.overflow='hidden';return()=>{document.body.style.overflow=old;};},[]);
+ useEffect(()=>{document.querySelector('.repair-workshop')?.scrollTo({top:0,behavior:'instant'});},[stage]);
  const step=steps[index],tight=isTightening(step),align=isAlignment(step),count=step?.count||1;
  const stop=()=>{clearInterval(timer.current);timer.current=null;holding.current=null;setProgress(0);};
  useEffect(()=>{const cancel=()=>{clearInterval(timer.current);timer.current=null;holding.current=null;setProgress(0);};const hidden=()=>{if(document.hidden)cancel();};window.addEventListener('blur',cancel);document.addEventListener('visibilitychange',hidden);return()=>{clearInterval(timer.current);window.removeEventListener('blur',cancel);document.removeEventListener('visibilitychange',hidden);};},[]);
@@ -37,7 +45,15 @@ export default function RepairGame({brokenPart,vehicleName,repairCost,onComplete
  };
  const advance=()=>{stop();doneRef.current=[];setDone([]);setAdjust(0);setTool(null);setMessage('');if(index+1===stepCount)setStage('verify');else setIndex(n=>n+1);};
  const vehicle=VEHICLES.find(v=>v.id===brokenPart?.vehicleId)||VEHICLES.find(v=>v.name===vehicleName)||VEHICLES[0];
- const photo=getVehiclePhoto(vehicle),welding=stage==='work'&&['welder','grinder','brush'].includes(step.tool);
+ const build=getBuild(vehicle.id),kind=normalized.component||part;
+ const replacementChoices=[kind,...(kind==='pads'?['rotor','bearings']:kind==='controller'?['bms','throttle']:['pads','hall','tyre'].filter(k=>k!==kind))].slice(0,3);
+ const [turn,setTurn]=useState(0),[zoom,setZoom]=useState(1),[before,setBefore]=useState(false),[replacement,setReplacement]=useState(kind);
+ const model={...(build.parts?.[FAULTS[kind]?.part||part]||{}),id:'repair-'+kind,visualKind:kind,name:FAULTS[kind]?.[language==='et'?'et':'en']||part};
+ const mount=mountFor(kind,vehicle);
+ const motion=['remove','pull','tire'].includes(step?.id)?'remove':['install','mount','newtire'].includes(step?.id)?'install':'inspect';
+ const fraction=Math.min(1,(done.length+progress/100)/count),sceneAction=stage==='work'?motion:'inspect';
+ const initialCondition=Number(brokenPart.condition??12),installed=steps.slice(0,index).some(s=>s.id==='install');
+ const condition=before||['diagnose','isolate'].includes(stage)?initialCondition:stage==='work'?initialCondition+(index/stepCount)*(100-initialCondition):100;
  const fail=FAILURE_CODES.find(f=>f.code===brokenPart?.code);
  const toolIds=[...new Set(steps.map(s=>s.tool).concat(['wrench','driver','hands']))];
  const stars=mistakes===0?3:mistakes<=3?2:1,bonus=stars===3?Math.floor(repairCost*.5):stars===2?Math.floor(repairCost*.25):0;
@@ -46,25 +62,31 @@ export default function RepairGame({brokenPart,vehicleName,repairCost,onComplete
  const checkTimer=useRef(null);
  useEffect(()=>()=>clearTimeout(checkTimer.current),[]);
  const runCheck=id=>{if(checking!==null||checks.includes(id))return;setChecking(id);checkTimer.current=setTimeout(()=>{setChecks(prev=>prev.includes(id)?prev:[...prev,id]);setChecking(null);},850);};
- const title=language==='et'?(step?.id==='remove'?`Eemalda vana ${PART_ET[part]||'jupp'}`:step?.id==='install'?`Paigalda uus ${PART_ET[part]||'jupp'}`:STEP_ET[step?.id]||'Ühenda pistikud'):step?.label;
+ const title=language==='et'?(step?.et|| (step?.id==='remove'?`Eemalda vana ${PART_ET[part]||'jupp'}`:step?.id==='install'?`Paigalda uus ${PART_ET[part]||'jupp'}`:STEP_ET[step?.id]||'Ühenda pistikud')):step?.label;
  return <div className="repair-workshop" role="dialog" aria-modal="true" aria-label={text('Repair workshop','Remonditöökoda')} data-stage={stage} data-step={index}>
   <header><div><small>{text('WORKSHOP','TÖÖKODA')} · {brokenPart?.code}</small><h2>{vehicleName}</h2></div><button type="button" aria-label={text('Cancel repair','Katkesta remont')} onClick={()=>{stop();onCancel();}}><X size={22}/></button></header>
   <main>
-   <div className={`repair-photo ${welding?'welding':''}`}><img src={welding?'/assets/workshop/tig-welding.jpg':photo} alt={welding?text('TIG welding reference','TIG-keevituse foto'):vehicleName}/><span>{welding?text('Welding reference','Keevituse näidis'):text('Vehicle reference','Sõiduki foto')}</span></div>
+   <div className="repair-stage-grid"><div className="repair-visual">
+    <div className="workshop-vehicle"><div className="workshop-scooter-square"><VehicleRideArt vehicle={vehicle} build={build} appearance={build.appearance} showRider={false} speed={0} moving={false}/><span className="workshop-mount" style={{left:mount[0]+'%',top:mount[1]+'%'}}/></div><small>{vehicle.name} · {text('Component location','Komponendi asukoht')}</small></div>
+    <ComponentScene key={kind} part={model} action={sceneAction} progress={fraction} wear={before?100-initialCondition:motion==='install'||installed?0:100-condition} tool={tool} test={['verify','complete'].includes(stage)&&!before} cutaway={['hall','motor_sensor','controller','winding','cell_balance'].includes(kind)} turn={turn} onRotate={setTurn} onZoom={setZoom} zoom={zoom} pointCount={stage==='work'?count:0} onHold={startHold} onRelease={stop}/>
+    <div className="workshop-camera"><button onClick={()=>setTurn(v=>v-30)} aria-label="Rotate left">↶</button><button onClick={()=>setTurn(v=>v+30)} aria-label="Rotate right">↷</button><button onClick={()=>setZoom(v=>Math.min(1.8,v+.15))}>＋</button><button onClick={()=>setZoom(v=>Math.max(.65,v-.15))}>−</button><button onClick={()=>setBefore(v=>!v)}>{before?text('After','Pärast'):text('Before','Enne')}</button></div>
+    <div className="repair-before-after"><span>{text('Before','Enne')} · {Math.round(initialCondition)}%</span><strong>{text('Condition','Seisukord')} · {Math.round(condition)}%</strong><span>{text('After','Pärast')} · 100%</span></div>
+    <small className="workshop-game-only">{text('Virtual repair simulation; internal parts are game models.','Virtuaalne remondisimulatsioon; sisemised detailid on mängumudelid.')}</small>
+   </div><div className="repair-instructions">
    <div className="repair-status"><span><Wrench size={15}/>{text('Repair','Remont')}: {PART_ET[part]&&language==='et'?PART_ET[part]:part}</span><span>{repairCost} REP</span></div>
-   {stage==='diagnose'&&<section><h3>{text('Diagnose the fault','Kontrolli riket')}</h3><p>{fail?.name||brokenPart?.code} · {text('Inspect the damaged part before starting.','Kontrolli kahjustatud juppi enne töö alustamist.')}</p><button className="repair-primary" onClick={()=>setStage('isolate')}>{text('Inspect & start','Kontrolli ja alusta')}</button></section>}
+   {stage==='diagnose'&&<section><h3>{text('Diagnose the fault','Kontrolli riket')}</h3><p>{FAULTS[kind]?.[language==='et'?'et':'en']||fail?.name||brokenPart?.code} · {text('Inspect the damaged part before starting.','Kontrolli kahjustatud juppi enne töö alustamist.')}</p><div className="repair-replacements" aria-label={text('Select replacement','Vali varuosa')}>{replacementChoices.map(k=><button key={k} type="button" data-replacement={k} aria-pressed={replacement===k} onClick={()=>{setReplacement(k);setMessage('');}}><ComponentThumbnail part={{id:'replacement-'+k,visualKind:k,name:FAULTS[k]?.[language==='et'?'et':'en']||k}}/><span>{FAULTS[k]?.[language==='et'?'et':'en']||k}</span></button>)}</div><p role="status">{message}</p><button className="repair-primary" onClick={()=>{if(replacement!==kind){error();return;}setStage('isolate');}}>{text('Inspect & start','Kontrolli ja alusta')}</button></section>}
    {stage==='isolate'&&<section><h3><Power size={18}/>{text('Power isolation','Toite väljalülitamine')}</h3><p>{text('The game vehicle must be switched off before repair.','Mängu sõiduk peab remondi ajaks olema välja lülitatud.')}</p><button className="repair-primary" onClick={()=>setStage('work')}>{text('Switch off & isolate','Lülita välja ja eralda toide')}</button></section>}
    {stage==='work'&&<section>
     <small>{text('STEP','SAMM')} {index+1} / {stepCount}</small><h3>{title}</h3><progress max={stepCount} value={index} aria-label={text('Repair progress','Remondi edenemine')}/>
     <div className="repair-tools" aria-label={text('Tools','Tööriistad')}>{toolIds.map(id=><button type="button" key={id} data-tool={id} aria-pressed={tool===id} onClick={()=>{stop();setTool(id);setMessage('');}}>{language==='et'?TOOL_ET[id]:REPAIR_TOOLS.find(t=>t.id===id)?.label}</button>)}</div>
     <p>{tight?text('Set tightening in the green band (65–78%).','Sea pingutus rohelisse vahemikku (65–78%).'):align?text('Align the part in the centre (45–55%).','Joonda jupp keskele (45–55%).'):text('Select the tool, then hold each work point until finished.','Vali tööriist ja hoia iga tööpunkti all kuni töö on tehtud.')}</p>
     {(tight||align)&&<label className="repair-adjust">{tight?text('Tightening','Pingutus'):text('Alignment','Joondus')} · {adjust}%<div className={`repair-adjust-track ${tight?'tight':''}`}><input type="range" min="0" max="100" value={adjust} aria-label={tight?'Tightening':'Alignment'} onChange={e=>setAdjust(Number(e.target.value))}/></div></label>}
-    <div className="repair-workpoints">{Array.from({length:count},(_,id)=><button type="button" key={`${index}-${id}`} data-point={id} disabled={done.includes(id)} aria-label={`${text('Work point','Tööpunkt')} ${id+1}`} onPointerDown={e=>startHold(id,e)} onPointerUp={stop} onPointerCancel={stop} onLostPointerCapture={stop} onKeyDown={e=>{if((e.key===' '||e.key==='Enter')&&!e.repeat){e.preventDefault();startHold(id,e);}}} onKeyUp={e=>{if(e.key===' '||e.key==='Enter')stop();}} onBlur={stop}>{done.includes(id)?<CheckCircle size={20}/>:<Wrench size={20}/>}<span>{id+1}</span>{holding.current===id&&<progress max="100" value={progress}/>}</button>)}</div>
     <p className="repair-feedback" role="status">{message||`${done.length} / ${count} ${text('complete','valmis')}`}</p>
     <button className="repair-primary" disabled={done.length!==count} onClick={advance}>{text('Next step','Järgmine samm')}</button>
    </section>}
    {stage==='verify'&&<section><h3><ShieldCheck size={20}/>{text('Final checks','Lõppkontroll')}</h3><p>{text('Run every check before returning to the road.','Tee kõik kontrollid enne sõidu jätkamist.')}</p><div className="repair-checks">{checkNames.map(([en,et],id)=><button key={id} disabled={checks.includes(id)||checking!==null} onClick={()=>runCheck(id)} data-check={id}><span>{text(en,et)}</span><strong>{checks.includes(id)?'✓':checking===id?'…':'→'}</strong></button>)}</div><button className="repair-primary" disabled={checks.length!==3} onClick={()=>setStage('complete')}>{text('Finish inspection','Lõpeta kontroll')}</button></section>}
    {stage==='complete'&&<section><h3>{text('Repair complete','Remont valmis')} · {'★'.repeat(stars)}</h3><p>{text('Mistakes','Eksimusi')}: {mistakes} · {text('Quality bonus','Kvaliteediboonus')}: +{bonus} REP</p><button className="repair-primary" onClick={()=>{if(completed.current)return;completed.current=true;onComplete(bonus);}}>{text('Save repair & return','Salvesta remont ja tagasi')}</button></section>}
+   </div></div>
   </main>
  </div>;
 }

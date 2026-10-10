@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import {loadWrapTexture, WRAP_MATERIALS} from '../lib/wrapMaterials';
-import { getVehiclePhoto, getVehiclePhotoMask, getVehiclePhotoLayout, getVehiclePhotoInfo, getVehicleHandGrips } from '../lib/vehiclePhotos';
+import { getVehiclePhoto, getVehiclePhotoMask, getVehiclePhotoLayout, getVehiclePhotoInfo, getVehicleHandGrips, drawVehiclePhoto } from '../lib/vehiclePhotos';
 import { getRiderPose } from '../lib/riderPose';
 import { photoCenterShift } from '../lib/photoFraming';
 import InstalledPartsArt from './InstalledPartsArt';
@@ -137,7 +137,7 @@ const photoWheelLayouts = {
   g4_max: [14.4, 84.4, 85.2, 84.5, 18.8, 29, 8, 70],
 };
 
-function PhotoWheel({ photo, x, y, diameter, position, appearance }) {
+function PhotoWheel({ photo, vehicle, x, y, diameter, position, appearance }) {
   const ref = useRef(null);
   useEffect(() => {
     let cancelled = false;
@@ -145,11 +145,13 @@ function PhotoWheel({ photo, x, y, diameter, position, appearance }) {
     image.onload = () => {
       if (cancelled || !ref.current) return;
       const canvas = ref.current;
-      const size = image.naturalWidth * diameter / 100;
+      const normalized=document.createElement('canvas');normalized.width=normalized.height=(getVehiclePhotoInfo(vehicle)?.sourceFrame||getVehiclePhotoInfo(vehicle)?.squareFrame)?Math.max(image.naturalWidth,image.naturalHeight):image.naturalWidth;
+      drawVehiclePhoto(normalized.getContext('2d'),image,vehicle);
+      const size = normalized.width * diameter / 100;
       canvas.width = canvas.height = Math.round(size);
       const ctx = canvas.getContext('2d', { willReadFrequently: true });
-      ctx.drawImage(image, image.naturalWidth * x / 100 - size / 2,
-        image.naturalHeight * y / 100 - size / 2, size, size, 0, 0, canvas.width, canvas.height);
+      ctx.drawImage(normalized, normalized.width * x / 100 - size / 2,
+        normalized.height * y / 100 - size / 2, size, size, 0, 0, canvas.width, canvas.height);
       const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
       for (let i = 0; i < pixels.data.length; i += 4) {
         if (Math.min(pixels.data[i], pixels.data[i + 1], pixels.data[i + 2]) > 232) pixels.data[i + 3] = 0;
@@ -169,8 +171,8 @@ function PhotoWheels({ vehicle, photo, appearance }) {
   const [fx, fy, rx, ry, diameter] = layout;
   // Keep the axle and suspension stationary; only the tire annulus rotates.
   return <div className="photo-wheel-layer" aria-hidden="true">
-    <PhotoWheel photo={photo} x={fx} y={fy} diameter={diameter} position="front" appearance={appearance} />
-    <PhotoWheel photo={photo} x={rx} y={ry} diameter={layout[8] || diameter} position="rear" appearance={appearance} />
+    <PhotoWheel photo={photo} vehicle={vehicle} x={fx} y={fy} diameter={diameter} position="front" appearance={appearance} />
+    <PhotoWheel photo={photo} vehicle={vehicle} x={rx} y={ry} diameter={layout[8] || diameter} position="rear" appearance={appearance} />
   </div>;
 }
 
@@ -186,14 +188,15 @@ function OpaquePhoto({ photo, onError, name, vehicle, appearance }) {
       const wrapTexture=await loadWrapTexture(appearance?.wrap);
       if(cancelled||!canvas.current)return;
       const target = canvas.current;
-      target.width = image.naturalWidth; target.height = image.naturalHeight;
+      target.width = (getVehiclePhotoInfo(vehicle)?.sourceFrame||getVehiclePhotoInfo(vehicle)?.squareFrame)?Math.max(image.naturalWidth,image.naturalHeight):image.naturalWidth; target.height = (getVehiclePhotoInfo(vehicle)?.sourceFrame||getVehiclePhotoInfo(vehicle)?.squareFrame)?target.width:image.naturalHeight;
       const ctx = target.getContext('2d', { willReadFrequently: true });
-      ctx.drawImage(image, 0, 0);
+      drawVehiclePhoto(ctx,image,vehicle);
       const pixels = ctx.getImageData(0, 0, target.width, target.height);
       if (!getVehiclePhotoInfo(vehicle)?.cutout && getVehiclePhotoInfo(vehicle)?.kind !== 'illustration') {
         removeStudioBackdrop(pixels.data, target.width, target.height);
       }
-      paintVehiclePixels(pixels.data,target.width,target.height,appearance,getVehiclePhotoLayout(vehicle,photoWheelLayouts),{moto:vehicle.vehicleType==='emoto',wrapTexture,wrapMaterial:WRAP_MATERIALS[appearance?.wrap]});
+      const effectiveAppearance=getVehiclePhotoInfo(vehicle)?.factoryWrap===appearance?.wrap&&(!appearance?.customEnabled||(appearance?.deckColor==='#161318'&&appearance?.stemColor==='#161318'))?{...appearance,customEnabled:false}:appearance;
+      paintVehiclePixels(pixels.data,target.width,target.height,effectiveAppearance,getVehiclePhotoLayout(vehicle,photoWheelLayouts),{moto:vehicle.vehicleType==='emoto',wrapTexture,wrapMaterial:WRAP_MATERIALS[appearance?.wrap]});
       ctx.putImageData(pixels, 0, 0);
       const mask = getVehiclePhotoMask(vehicle);
       if(mask){ctx.globalCompositeOperation='destination-out';ctx.beginPath();mask.forEach(([x,y],i)=>i?ctx.lineTo(x*target.width/100,y*target.height/100):ctx.moveTo(x*target.width/100,y*target.height/100));ctx.closePath();ctx.fill();ctx.globalCompositeOperation='source-over';}
@@ -220,19 +223,20 @@ export default function VehicleRideArt({ build, showRider = true, wheelieAngle =
   const helmet = appearance?.riderHelmetColor || accent;
   const layout = getVehiclePhotoLayout(vehicle, photoWheelLayouts);
   const media=getVehiclePhotoInfo(vehicle);
-  const pose = getRiderPose(layout,{grips:getVehicleHandGrips(vehicle,layout),moto:vehicle?.vehicleType==='emoto',trick,posture,braking,turn,seat:media?.seat,footrests:media?.footrests});
+  const pose = getRiderPose(layout,{grips:getVehicleHandGrips(vehicle,layout),moto:vehicle?.vehicleType==='emoto',trick,posture,braking,turn,seat:media?.seat,footrests:media?.footrests,scale:media?.riderScale||1});
   const centerShift=photoCenterShift(layout,showRider?pose:null,isWheelying?(wheelieAngle||0):0);
   const Art = family === 'g4' ? G4Art : family === 'g3' ? G3Art : family === 'xiaomi' ? XiaomiArt : family === 'emoto' ? EmotoArt : G2Art;
   if (photo && failedPhoto !== photo) return <div
+    data-photo-model={vehicle.id} data-photo-source={photo}
     className={`ride-scooter ride-model-art ride-photo-art ride-family-${family} ride-subtype-${subtype} ${moving ? 'is-model-moving' : ''} ${isWheelying ? 'is-wheelie' : ''} ${compact ? 'is-compact' : ''}`}
     style={{ '--photo-center-shift': centerShift, '--wheelie-angle': `${wheelieAngle ?? (24 + balance * 12) * (1 - wheelieBarFactor * .65)}deg`, '--wheelie-rise': '0px', '--wheel-spin-duration': `${Math.max(.06, Math.PI * (vehicle?.tireSize || 10) * .0254 / Math.max(.1, speed / 3.6))}s`, transformOrigin: `${layout[2]}% ${layout[3]}%` }}
   >
     <OpaquePhoto appearance={appearance} photo={photo} vehicle={vehicle} name={vehicle.name} onError={() => setFailedPhoto(photo)} />
     <PhotoWheels vehicle={vehicle} photo={photo} appearance={appearance} />
     {scraping && <div className="photo-contact-effects" style={{left:`${layout[2]}%`,top:`${layout[3]}%`,transform:`rotate(-${wheelieAngle||0}deg)`}}><div className="scrape-sparks" style={{top:`${(layout[8]||layout[4])/2}cqw`}}>{Array.from({length:7},(_,i)=><i key={i} style={{'--spark':i}}/>)}</div></div>}
-    <PhotoTuningOverlay appearance={appearance} layout={layout} g2={vehicle.id === 'g2_2026' || getVehiclePhotoInfo(vehicle)?.base === 'g2_2026'} />
+    <PhotoTuningOverlay appearance={appearance} nativeWrap={media?.factoryWrap===appearance?.wrap} layout={layout} g2={vehicle.id === 'g2_2026' || getVehiclePhotoInfo(vehicle)?.base === 'g2_2026'} />
     <InstalledPartsArt vehicle={vehicle} layout={layout} build={build} wheelieBarFactor={wheelieBarFactor}/>
-    {showRider && <RiderPhotoRig seat={media?.seat} footrests={media?.footrests} grips={getVehicleHandGrips(vehicle,layout)} wheelieAngle={wheelieAngle||0} moto={vehicle?.vehicleType === 'emoto'} braking={braking} turn={turn} helmet={helmet} helmetType={appearance?.riderHelmetType} layout={layout} trick={trick} posture={posture} />}
+    {showRider && <RiderPhotoRig scale={media?.riderScale||1} seat={media?.seat} footrests={media?.footrests} grips={getVehicleHandGrips(vehicle,layout)} wheelieAngle={wheelieAngle||0} moto={vehicle?.vehicleType === 'emoto'} braking={braking} turn={turn} helmet={helmet} helmetType={appearance?.riderHelmetType} layout={layout} trick={trick} posture={posture} />}
   </div>;
   return <svg
     className={`ride-scooter ride-model-art ride-family-${family} ride-subtype-${subtype} ${family === 'emoto' ? 'ride-emoto' : ''} ${moving ? 'is-model-moving' : ''} ${isWheelying ? 'is-wheelie' : ''} ${compact ? 'is-compact' : ''}`}

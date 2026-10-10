@@ -1,3 +1,4 @@
+import {recordWorkshopUsage} from './workshopDiagnostics';
 const KEY = "kukirin_vesc_logs";
 
 export function getRideLogs(vehicleId) {
@@ -14,6 +15,7 @@ export function saveRideLog(vehicleId, log) {
   const saved = { ...log, id: `${Date.now()}`, savedAt: new Date().toISOString() };
   all[vehicleId] = [saved, ...(all[vehicleId] || [])].slice(0, 8);
   localStorage.setItem(KEY, JSON.stringify(all));
+  recordWorkshopUsage(vehicleId,saved);
   return saved;
 }
 

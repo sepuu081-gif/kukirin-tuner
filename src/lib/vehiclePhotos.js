@@ -42,6 +42,19 @@ export function getVehiclePhotoMask(vehicle) {
 
 // Hand positions on the actual visible rubber grips of the G2 product photo.
 export function getVehicleHandGrips(vehicle,layout){
+ if(VEHICLE_MEDIA[vehicle?.id]?.grips)return VEHICLE_MEDIA[vehicle.id].grips;
  if(vehicle?.id==='g2_2026'||VEHICLE_MEDIA[vehicle?.id]?.base==='g2_2026')return [[38.4,7.5],[32,7.4]];
  return [[layout[5],layout[6]],[layout[5]+1.8,layout[6]+1]];
+}
+
+// Display the untouched original through a silhouette mask, without synthesising hidden parts.
+export function drawVehiclePhoto(ctx,image,vehicle){
+ const media=VEHICLE_MEDIA[vehicle?.id];
+ if(media?.squareFrame){const side=Math.max(image.naturalWidth,image.naturalHeight);ctx.save();if(media.mirrorPhoto){ctx.translate(side,0);ctx.scale(-1,1);}ctx.drawImage(image,(side-image.naturalWidth)/2,(side-image.naturalHeight)/2);ctx.restore();return;}
+ if(!media?.sourceFrame){ctx.drawImage(image,0,0);return;}
+ const side=Math.max(image.naturalWidth,image.naturalHeight),pad=(side-image.naturalWidth)/2;
+ ctx.save();ctx.translate(pad,0);ctx.beginPath();
+ const polygons=[[[106,23],[147,19],[175,32],[166,48],[194,55],[197,75],[177,88],[145,84],[142,125],[170,148],[174,176],[148,182],[127,171],[108,291],[101,342],[109,363],[99,380],[70,384],[69,359],[77,298],[110,147],[112,101],[104,84],[100,63]],[[72,364],[96,366],[121,416],[146,456],[157,488],[126,495],[99,449],[73,418],[24,442],[0,444],[0,417],[30,395],[65,383]],[[119,462],[151,460],[325,489],[389,486],[411,493],[419,513],[401,535],[366,532],[288,578],[231,580],[147,542],[116,522]],[[285,531],[333,511],[370,529],[441,568],[441,655],[408,682],[361,677],[314,610],[274,580]],[[0,426],[24,415],[54,419],[80,431],[92,453],[42,451]],[[332,510],[375,517],[425,548],[441,574],[416,576],[372,548],[325,537]]];
+ for(const points of polygons){points.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.closePath();}
+ ctx.moveTo(111,479);ctx.arc(60,479,51,0,Math.PI*2);ctx.moveTo(468,625);ctx.arc(403,625,65,0,Math.PI*2);ctx.clip();ctx.drawImage(image,0,0);ctx.restore();
 }

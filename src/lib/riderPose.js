@@ -32,12 +32,19 @@ export function solveDownwardArm(start,target,pitch){
  return candidates.sort((a,b)=>rotate(b[1],pitch*Math.PI/180)[1]-rotate(a[1],pitch*Math.PI/180)[1])[0];
 }
 
-export function getRiderPose(layout,{pitch=0,trick='normal',moto=false,braking=false,posture='upright',turn=0,grips=null,seat=null,footrests=null}={}){
+export function getRiderPose(layout,{pitch=0,trick='normal',moto=false,braking=false,posture='upright',turn=0,grips=null,seat=null,footrests=null,scale=1}={}){
+ if(scale!==1){
+  const anchor=[60,layout[7]],unscale=p=>p.map((v,i)=>anchor[i]+(v-anchor[i])/scale),map=p=>p.map((v,i)=>anchor[i]+(v-anchor[i])*scale);
+  const adjusted=[...layout],grip=unscale([layout[5],layout[6]]);adjusted[5]=grip[0];adjusted[6]=grip[1];
+  const pose=getRiderPose(adjusted,{pitch,trick,moto,braking,posture,turn,grips:grips?.map(unscale),seat:seat&&unscale(seat),footrests:footrests?.map(unscale)});
+  return {...pose,hip:map(pose.hip),shoulder:map(pose.shoulder),head:map(pose.head),arms:pose.arms.map(l=>l.map(map)),legs:pose.legs.map(l=>l.map(map)),scale};
+ }
  const [, , , , ,hx,hy,deck]=layout;
  const angle=0;
  const local=(v)=>rotate(v,-angle);
  let hip=[60-10*Math.sin(angle)-(braking?3:0),deck-(moto?23:48)+8*Math.sin(angle)];
  let feet=[[54,deck-1],[66,deck-1]];
+ if(footrests&&!moto)feet=footrests;
  if(moto)feet=[[58,deck+7],[66,deck+7]];
  if(seat){hip=[seat[0],seat[1]-2];feet=footrests||[[54,deck-1],[66,deck-1]];}
  if(trick==='knee-knock')hip=[58,deck-22];

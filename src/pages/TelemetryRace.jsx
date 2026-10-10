@@ -1,3 +1,4 @@
+import {recordFaultIncident,normalizeFault} from '../lib/workshopDiagnostics';
 import {newPark,stepPark} from '../lib/stuntPark';
 import { newWheelie, stepWheelie } from '../lib/wheeliePhysics';
 import { getCodeRideModifiers } from '../lib/codeRewards';
@@ -239,7 +240,7 @@ export default function TelemetryRace() {
   const vehicleFailures = (() => {
     try {
       return JSON.parse(localStorage.getItem("kukirin_broken_parts") || "[]")
-        .filter((failure) => failure.vehicleId === vehicleId);
+        .filter((failure) => failure.vehicleId === vehicleId && !normalizeFault(failure).diagnosticOnly);
     } catch {
       return [];
     }
@@ -276,10 +277,12 @@ export default function TelemetryRace() {
     if (logSavedRef.current || rideLogRef.current.length < 2) return lastRideLog;
     const samples = [...rideLogRef.current];
     const summary = {
+      distanceKm: tripDistanceRef.current,
       maxSpeed: Math.max(...samples.map((sample) => sample.speed)),
       maxCurrent: Math.max(...samples.map((sample) => sample.current)),
       maxSag: Math.max(...samples.map((sample) => sample.sag)),
       maxBatteryTemp: Math.max(...samples.map((sample) => sample.batteryTemp)),
+      practice: isPractice || isTrial,
       endCellVoltage: cellVoltageRef.current,
       endSoc: batteryPctRef.current,
       health: batteryProfileRef.current.health,
@@ -291,7 +294,7 @@ export default function TelemetryRace() {
     if (saved) setLastRideLog(saved);
     persistBattery();
     return saved;
-  }, [lastRideLog, persistBattery, vehicle?.name, vehicleId]);
+  }, [lastRideLog, persistBattery, vehicle?.name, vehicleId, isPractice, isTrial]);
 
   useEffect(() => {
     if (!deployed) return;
@@ -410,7 +413,8 @@ export default function TelemetryRace() {
     const modeBoost = modeRef.current === "sport" ? 1.3 : modeRef.current === "walk" ? 0.2 : 1.0;
     const modeMaxSpd = getMaxSpeed(modeRef.current);
     const tyre = tireEffects(vehicle, tiresRef.current);
-    const gripMod = w.gripMod * tyre.grip;
+    const suspensionTracking=1+((stats?.suspensionHandling||1)-1)*(1-w.gripMod);
+    const gripMod = w.gripMod * tyre.grip * suspensionTracking;
 
     // Expire temporary debuffs
     const now = Date.now();
@@ -731,9 +735,8 @@ export default function TelemetryRace() {
             setWarning({ type: failType, ...nf, time: Date.now() });
             const broken = BROKEN_PART_MAP[failType];
             if (broken) {
-              const list = JSON.parse(localStorage.getItem("kukirin_broken_parts") || "[]");
-              list.push({ ...broken, vehicleId, vehicleName: vehicle.name, date: new Date().toISOString() });
-              localStorage.setItem("kukirin_broken_parts", JSON.stringify(list));
+              const incident=recordFaultIncident({ ...broken, vehicleId, vehicleName: vehicle.name, date: new Date().toISOString() });
+              if(!incident.diagnosticOnly){
               // Accumulate wear on this part type — each failure makes future failures more likely
               const wearKey = "kukirin_wear_" + vehicleId;
               const currentWear = JSON.parse(localStorage.getItem(wearKey) || "{}");
@@ -741,6 +744,7 @@ export default function TelemetryRace() {
               localStorage.setItem(wearKey, JSON.stringify(currentWear));
               wearRef.current = currentWear;
               setWear(currentWear);
+              }
             }
           }
         }
@@ -943,9 +947,7 @@ export default function TelemetryRace() {
         // Record broken part for repair garage
         const broken = BROKEN_PART_MAP[crashType];
         if (broken && damageEnabled()) {
-          const list = JSON.parse(localStorage.getItem("kukirin_broken_parts") || "[]");
-          list.push({ ...broken, vehicleId, vehicleName: vehicle.name, date: new Date().toISOString() });
-          localStorage.setItem("kukirin_broken_parts", JSON.stringify(list));
+          recordFaultIncident({ ...broken, vehicleId, vehicleName: vehicle.name, date: new Date().toISOString() },{confirmed:true});
         }
       }
     }

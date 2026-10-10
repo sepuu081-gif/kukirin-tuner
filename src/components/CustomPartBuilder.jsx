@@ -1,220 +1,34 @@
-import { useState } from "react";
-import { Plus, Trash2, Cpu, Battery, Zap } from "lucide-react";
-
-const CUSTOM_KEY = "kukirin_custom_parts";
-
-export function getCustomParts() {
-  try { return JSON.parse(localStorage.getItem(CUSTOM_KEY) || "[]"); } catch { return []; }
+import { useState } from 'react';
+import { Trash2 } from 'lucide-react';
+import InternalBuilder from './workshop/InternalBuilder';
+import {saveInternalPart} from '../lib/internalComponents';
+import ComponentWorkbench from './workshop/ComponentWorkbench';
+import ComponentScene from './workshop/ComponentScene';
+import ComponentThumbnail from './workshop/ComponentThumbnail';
+import {assemblyRecipe} from '../lib/workshopParts';
+import {useLanguage} from '../lib/i18n';
+import '../styles/workshop.css';
+const CUSTOM_KEY='kukirin_custom_parts';
+export function getCustomParts(){try{return JSON.parse(localStorage.getItem(CUSTOM_KEY)||'[]');}catch{return [];}}
+const TYPES=[['motor','Motor','Mootor'],['controller','Controller','Kontroller'],['battery','Battery','Aku']];
+const DEFAULTS={motor:{watts:1000,voltage:48,sizeClass:3,weight:5},controller:{maxAmps:80,voltage:60,sizeClass:2,weight:1.2},battery:{voltage:52,capacity:20,sizeClass:3,weight:7}};
+export default function CustomPartBuilder({onEquip,onUpdate,vehicle,build}){
+ const {language}=useLanguage(),et=language==='et',text=(en,ee)=>et?ee:en;
+ const [internalDraft,setInternalDraft]=useState(null),[activeType,setActiveType]=useState('motor'),[parts,setParts]=useState(getCustomParts),[form,setForm]=useState({}),[draft,setDraft]=useState(null),[saved,setSaved]=useState(false),[turn,setTurn]=useState(0),[zoom,setZoom]=useState(1),[cutaway,setCutaway]=useState(true);
+ const defaults=DEFAULTS[activeType],label=TYPES.find(t=>t[0]===activeType)[et?2:1];
+ const buildPart=(final=false)=>({id:final?'custom_'+activeType+'_'+Date.now():'draft_'+activeType,name:form.name?.trim()||text('Custom ','Oma ')+label,category:activeType,...Object.fromEntries(Object.entries(defaults).map(([k,v])=>[k,Number(form[k])||v])),price:0,desc:form.desc||text('Assembled in your workshop.','Ehitatud sinu töökojas.'),custom:true});
+ const preview=buildPart();preview.id='draft_'+activeType+'_'+Object.keys(defaults).map(k=>preview[k]).join('_');const recipe=assemblyRecipe(preview);
+ const fields=Object.keys(defaults),names={watts:['Power (W)','Võimsus (W)'],voltage:['Voltage (V)','Pinge (V)'],maxAmps:['Current (A)','Vool (A)'],capacity:['Capacity (Ah)','Mahtuvus (Ah)'],sizeClass:['Size class (1–6)','Suurusklass (1–6)'],weight:['Mass (kg)','Mass (kg)']};
+ const finishAssembly=part=>{const ready=part.internalBuild?saveInternalPart(part):part;const next=[...getCustomParts().filter(p=>p.id!==part.id),ready];localStorage.setItem(CUSTOM_KEY,JSON.stringify(next));onUpdate?.(ready);setInternalDraft(null);setParts(next);setDraft(null);setForm({});setSaved(true);};
+ const remove=id=>{const next=getCustomParts().filter(p=>p.id!==id);localStorage.setItem(CUSTOM_KEY,JSON.stringify(next));setParts(next);};
+ return <div className="custom-workshop" data-custom-workshop>
+  <header><div><small>{text('CUSTOM PARTS','OMA JUPID')}</small><h2>{text('Component workshop','Juppide ehitamise töökoda')}</h2></div><p>{text('Choose a component, configure it and assemble every piece before saving.','Vali jupp, määra omadused ja pane selle osad enne salvestamist kokku.')}</p></header>
+  <div className="custom-kind-tabs" role="tablist" aria-label={text('Component type','Jupi tüüp')}>{TYPES.map(([id,en,ee])=><button key={id} role="tab" aria-selected={activeType===id} onClick={()=>{setActiveType(id);setForm({});setTurn(0);setZoom(1);setSaved(false);}}><ComponentThumbnail part={{id:'draft_'+id,category:id,...DEFAULTS[id]}}/><span>{text(en,ee)}</span></button>)}</div>
+  <div className="custom-workshop-layout"><section className="custom-stage"><ComponentScene part={preview} onSelect={key=>setInternalDraft({...buildPart(true),editorSelection:key})} cutaway={cutaway} turn={turn} zoom={zoom} onRotate={setTurn} onZoom={setZoom}/><div className="workshop-camera"><button onClick={()=>setTurn(v=>v-30)} aria-label={text('Rotate left','Pööra vasakule')}>↶</button><button onClick={()=>setTurn(v=>v+30)} aria-label={text('Rotate right','Pööra paremale')}>↷</button><button onClick={()=>setZoom(v=>Math.min(1.8,v+.15))} aria-label={text('Zoom in','Suurenda')}>＋</button><button onClick={()=>setZoom(v=>Math.max(.65,v-.15))} aria-label={text('Zoom out','Vähenda')}>−</button><button onClick={()=>{setTurn(0);setZoom(1);}}>{text('Reset','Taasta')}</button></div><label className="custom-cutaway"><input type="checkbox" checked={cutaway} onChange={e=>setCutaway(e.target.checked)}/>{text('Show internal components','Näita sisemisi komponente')}</label><p>{text('Drag to rotate · pinch to zoom','Lohista pööramiseks · suurenda kahe sõrmega')}</p></section>
+  <form className="custom-config" onSubmit={e=>{e.preventDefault();setDraft(buildPart(true));}}><h3>{text('Configure your build','Seadista oma jupp')}</h3><Field label={text('Name','Nimi')} value={form.name||''} placeholder={preview.name} onChange={v=>setForm(f=>({...f,name:v}))}/><div className="custom-fields">{fields.map(k=><Field key={k} label={names[k][et?1:0]} value={form[k]??defaults[k]} type="number" min={k==='weight'?.1:1} max={k==='sizeClass'?6:k==='voltage'?300:k==='capacity'?1000:k==='maxAmps'?2000:k==='watts'?200000:300} step={k==='weight'?.1:1} onChange={v=>setForm(f=>({...f,[k]:v}))}/>)}</div><details><summary>{text('Build notes','Ehituse märkmed')}</summary><Field label={text('Description','Kirjeldus')} value={form.desc||''} onChange={v=>setForm(f=>({...f,desc:v}))}/></details><div className="custom-recipe"><b>{text('Assembly sequence','Ehitamise etapid')} · {recipe.length}</b><ol>{recipe.slice(0,5).map((step,i)=><li key={i}>{step[et?'et':'en']||step.label||step.name||text('Component','Komponent')}</li>)}</ol>{recipe.length>5&&<small>+ {recipe.length-5} {text('more steps','järgmist etappi')}</small>}</div><button className="custom-start" type="button" onClick={()=>setInternalDraft(buildPart(true))}>{text('Edit internal components','Ehita ja vaheta sisemisi detaile')}</button><button className="custom-start" type="submit">{text('Start assembly','Alusta ehitamist')}</button>{saved&&<p role="status">{text('Assembly saved below. Select Equip to install it.','Valmis jupp on all salvestatud. Paigaldamiseks vali Paigalda.')}</p>}</form></div>
+  <section className="custom-saved"><h3>{text('Your assembled parts','Sinu valmis jupid')}</h3>{parts.length===0?<p>{text('Completed builds will appear here.','Valmis ehitused ilmuvad siia.')}</p>:parts.map(p=><article key={p.id}><ComponentThumbnail part={p}/><div><b>{p.name}</b><p>{[p.watts&&p.watts+' W',p.maxAmps&&p.maxAmps+' A',p.voltage&&p.voltage+' V',p.capacity&&p.capacity+' Ah'].filter(Boolean).join(' · ')}</p></div><button onClick={()=>setInternalDraft(p)}>{text('Edit internals','Muuda sisemisi detaile')}</button><button disabled={p.internalValid===false} onClick={()=>onEquip(p)}>{text('Equip','Paigalda')}</button><button onClick={()=>remove(p.id)} aria-label={text('Delete ','Kustuta ')+p.name}><Trash2 size={16}/></button></article>)}</section>
+  {internalDraft&&<InternalBuilder part={internalDraft} onComplete={finishAssembly} onCancel={()=>setInternalDraft(null)}/>}
+  {draft&&<ComponentWorkbench part={draft} vehicle={vehicle} build={build} mode="assembly" onComplete={finishAssembly} onCancel={()=>setDraft(null)}/>}
+ </div>;
 }
-function saveCustomParts(parts) {
-  localStorage.setItem(CUSTOM_KEY, JSON.stringify(parts));
-}
-
-const TABS = [
-  { id: "motor",      label: "Motor",      icon: Zap },
-  { id: "controller", label: "Controller", icon: Cpu },
-  { id: "battery",    label: "Battery",    icon: Battery },
-];
-
-export default function CustomPartBuilder({ onEquip }) {
-  const [activeType, setActiveType] = useState("motor");
-  const [parts, setParts]           = useState(getCustomParts);
-  const [form, setForm]             = useState({});
-  const [saved, setSaved]           = useState(false);
-
-  const setField = (k, v) => setForm(f => ({ ...f, [k]: v }));
-
-  const buildPart = () => {
-    const f = form;
-    if (activeType === "motor") {
-      return {
-        id:        `custom_motor_${Date.now()}`,
-        name:      f.name || "Custom Motor",
-        category:  "motor",
-        watts:     parseInt(f.watts) || 1000,
-        voltage:   parseInt(f.voltage) || 48,
-        sizeClass: parseInt(f.sizeClass) || 3,
-        weight:    parseFloat(f.weight) || 5,
-        price:     0,
-        desc:      f.desc || "Custom-wound motor.",
-        custom:    true,
-      };
-    }
-    if (activeType === "controller") {
-      return {
-        id:        `custom_ctrl_${Date.now()}`,
-        name:      f.name || "Custom VESC",
-        category:  "controller",
-        maxAmps:   parseInt(f.maxAmps) || 80,
-        voltage:   parseInt(f.voltage) || 60,
-        sizeClass: parseInt(f.sizeClass) || 2,
-        weight:    parseFloat(f.weight) || 1.2,
-        price:     0,
-        desc:      f.desc || "Custom controller.",
-        custom:    true,
-      };
-    }
-    if (activeType === "battery") {
-      return {
-        id:        `custom_batt_${Date.now()}`,
-        name:      f.name || "Custom Pack",
-        category:  "battery",
-        voltage:   parseInt(f.voltage) || 52,
-        capacity:  parseInt(f.capacity) || 20,
-        sizeClass: parseInt(f.sizeClass) || 3,
-        weight:    parseFloat(f.weight) || 7,
-        price:     0,
-        desc:      f.desc || "Custom battery pack.",
-        custom:    true,
-      };
-    }
-  };
-
-  const save = () => {
-    const part = buildPart();
-    const next = [...parts, part];
-    setParts(next);
-    saveCustomParts(next);
-    setForm({});
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
-  };
-
-  const remove = (id) => {
-    const next = parts.filter(p => p.id !== id);
-    setParts(next);
-    saveCustomParts(next);
-  };
-
-  const myParts = parts.filter(p => p.category === activeType);
-
-  return (
-    <div className="space-y-4">
-      {/* Type tabs */}
-      <div className="flex gap-1 bg-card border border-border rounded-lg p-1">
-        {TABS.map(({ id, label, icon: Icon }) => (
-          <button
-            key={id}
-            onClick={() => { setActiveType(id); setForm({}); }}
-            className={`flex-1 flex items-center justify-center gap-1.5 rounded-md py-2 font-mono text-[10px] uppercase tracking-wider transition-all ${
-              activeType === id ? "bg-primary text-primary-foreground font-bold" : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            <Icon className="h-3 w-3" />
-            {label}
-          </button>
-        ))}
-      </div>
-
-      {/* Form */}
-      <div className="rounded-lg border border-border bg-card p-4 space-y-3">
-        <p className="font-mono text-[10px] text-muted-foreground uppercase tracking-widest">Build Custom {activeType}</p>
-
-        <Field label="Name" value={form.name || ""} onChange={v => setField("name", v)} placeholder={`My ${activeType}`} />
-
-        {activeType === "motor" && <>
-          <Row>
-            <Field label="Watts" value={form.watts || ""} onChange={v => setField("watts", v)} placeholder="1000" type="number" />
-            <Field label="Voltage (V)" value={form.voltage || ""} onChange={v => setField("voltage", v)} placeholder="48" type="number" />
-          </Row>
-          <Row>
-            <Field label="Size Class (1-6)" value={form.sizeClass || ""} onChange={v => setField("sizeClass", v)} placeholder="3" type="number" />
-            <Field label="Weight (kg)" value={form.weight || ""} onChange={v => setField("weight", v)} placeholder="5" type="number" />
-          </Row>
-        </>}
-
-        {activeType === "controller" && <>
-          <Row>
-            <Field label="Max Amps" value={form.maxAmps || ""} onChange={v => setField("maxAmps", v)} placeholder="80" type="number" />
-            <Field label="Voltage (V)" value={form.voltage || ""} onChange={v => setField("voltage", v)} placeholder="60" type="number" />
-          </Row>
-          <Row>
-            <Field label="Size Class (1-6)" value={form.sizeClass || ""} onChange={v => setField("sizeClass", v)} placeholder="2" type="number" />
-            <Field label="Weight (kg)" value={form.weight || ""} onChange={v => setField("weight", v)} placeholder="1.2" type="number" />
-          </Row>
-        </>}
-
-        {activeType === "battery" && <>
-          <Row>
-            <Field label="Voltage (V)" value={form.voltage || ""} onChange={v => setField("voltage", v)} placeholder="52" type="number" />
-            <Field label="Capacity (Ah)" value={form.capacity || ""} onChange={v => setField("capacity", v)} placeholder="20" type="number" />
-          </Row>
-          <Row>
-            <Field label="Size Class (1-6)" value={form.sizeClass || ""} onChange={v => setField("sizeClass", v)} placeholder="3" type="number" />
-            <Field label="Weight (kg)" value={form.weight || ""} onChange={v => setField("weight", v)} placeholder="7" type="number" />
-          </Row>
-        </>}
-
-        <Field label="Description" value={form.desc || ""} onChange={v => setField("desc", v)} placeholder="Describe your build..." />
-
-        <button
-          onClick={save}
-          className={`w-full rounded-md py-2.5 font-mono text-xs font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${
-            saved
-              ? "bg-green-500/20 border border-green-500/40 text-green-400"
-              : "bg-primary/10 border border-primary/40 text-primary hover:bg-primary/20"
-          }`}
-        >
-          <Plus className="h-3.5 w-3.5" />
-          {saved ? "Saved!" : `Add Custom ${activeType}`}
-        </button>
-      </div>
-
-      {/* Saved custom parts of this type */}
-      {myParts.length > 0 && (
-        <div className="space-y-2">
-          <p className="font-mono text-[10px] text-muted-foreground uppercase tracking-widest">Your Custom {activeType}s</p>
-          {myParts.map(p => (
-            <div key={p.id} className="rounded-lg border border-border bg-card p-3 flex items-start justify-between gap-2">
-              <div>
-                <div className="font-mono text-xs font-bold text-foreground">{p.name}</div>
-                <div className="font-mono text-[10px] text-muted-foreground mt-0.5">{p.desc}</div>
-                <div className="flex gap-3 mt-1 font-mono text-[10px] text-muted-foreground/70">
-                  {p.watts && <span>{p.watts}W</span>}
-                  {p.maxAmps && <span>{p.maxAmps}A</span>}
-                  {p.voltage && <span>{p.voltage}V</span>}
-                  {p.capacity && <span>{p.capacity}Ah</span>}
-                  <span>SIZE {p.sizeClass}</span>
-                  <span>{p.weight}kg</span>
-                </div>
-              </div>
-              <div className="flex gap-2 flex-shrink-0">
-                <button
-                  onClick={() => onEquip(p)}
-                  className="rounded-md bg-primary/10 border border-primary/30 px-2.5 py-1 font-mono text-[10px] text-primary hover:bg-primary/20 transition-all"
-                >
-                  Equip
-                </button>
-                <button
-                  onClick={() => remove(p.id)}
-                  className="rounded-md bg-red-500/10 border border-red-500/20 px-2 py-1 text-red-400 hover:bg-red-500/20 transition-all"
-                >
-                  <Trash2 className="h-3 w-3" />
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function Field({ label, value, onChange, placeholder, type = "text" }) {
-  return (
-    <div>
-      <label className="block font-mono text-[9px] text-muted-foreground uppercase tracking-widest mb-1">{label}</label>
-      <input
-        type={type}
-        value={value}
-        onChange={e => onChange(e.target.value)}
-        placeholder={placeholder}
-        className="w-full rounded-md border border-border bg-background px-3 py-1.5 font-mono text-xs text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/50"
-      />
-    </div>
-  );
-}
-
-function Row({ children }) {
-  return <div className="grid grid-cols-2 gap-3">{children}</div>;
-}
+function Field({label,value,onChange,placeholder,type='text',min,max,step}){return <label className="custom-field"><span>{label}</span><input type={type} value={value} onChange={e=>onChange(e.target.value)} placeholder={placeholder} min={min} max={max} step={step}/></label>;}

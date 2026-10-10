@@ -48,7 +48,7 @@ export function createStockBuild(vehicleId) {
     },
     bodywork: {},
     bms: null,
-    appearance: { ...DEFAULT_APPEARANCE, ...factoryStyle },
+    appearance: { ...DEFAULT_APPEARANCE, ...factoryStyle, ...vehicle?.appearanceDefaults },
     notes: [],
   };
 }
@@ -64,6 +64,12 @@ export function getBuild(vehicleId) {
     return next;
   }
   if (all[vehicleId]) {
+    // Upgrade only the previous factory livery; preserve deliberately edited paint.
+    if(vehicleId==='sebius_redbull_g2'&&!all[vehicleId].sebuuPhotoV66){
+      const ap=all[vehicleId].appearance||{};
+      if(!ap.customEnabled||(ap.wrap==='redbull_racing'&&ap.deckColor==='#101b38'&&ap.stemColor==='#101b38'))all[vehicleId].appearance=createStockBuild(vehicleId).appearance;
+      all[vehicleId].sebuuPhotoV66=true;saveBuild(all[vehicleId]);
+    }
     // Ensure appearance exists on old saves
     all[vehicleId].appearance = { ...DEFAULT_APPEARANCE, ...all[vehicleId].appearance };
     if(vehicleId==='sebius_redbull_g2'&&!all[vehicleId].appearance.customEnabled){
@@ -102,7 +108,7 @@ export function getMaxFrameSize(vehicle, weldCount) {
 }
 
 export function checkPartFit(part, vehicle, weldCount) {
-  return (!part.forVehicles || part.forVehicles.includes(vehicle.id)) && (!part.forSeries || part.forSeries.includes(vehicle.series)) && part.sizeClass <= getMaxFrameSize(vehicle, weldCount);
+  return part.internalValid!==false && (!part.forVehicles || part.forVehicles.includes(vehicle.id)) && (!part.forSeries || part.forSeries.includes(vehicle.series)) && part.sizeClass <= getMaxFrameSize(vehicle, weldCount);
 }
 
 export function calcBuildStats(vehicle, build) {
@@ -177,11 +183,12 @@ export function calcBuildStats(vehicle, build) {
   const topSpeed = Math.max(0, calculatedSpeed);
   const speedLimiter = !hasPowertrainSwap ? 'factory' : roadLimitedSpeed <= rpmLimitedSpeed ? 'drag' : 'rpm';
 
-  return { voltage, watts, maxAmps, usablePower, mechanicalPower, aeroCdA, topSpeed, roadLimitedSpeed, rpmLimitedSpeed, speedLimiter, motorCount: getMotorCount(vehicle, motorPart), motorKV: motorDrive.kv, riderPosture: tucked ? 'tuck' : 'upright', batteryCurrentLimit, wheelbase, totalWeight, heatCap, durability, dampFactor, torqueFactor, bmsMaxAmps, bmsCutoff, hasBypassBms };
+  return { voltage, watts, maxAmps, usablePower, mechanicalPower, aeroCdA, topSpeed, roadLimitedSpeed, rpmLimitedSpeed, speedLimiter, motorCount: getMotorCount(vehicle, motorPart), motorKV: motorDrive.kv, suspensionHandling: parts.suspension?.handlingFactor || 1, riderPosture: tucked ? 'tuck' : 'upright', batteryCurrentLimit, wheelbase, totalWeight, heatCap, durability, dampFactor, torqueFactor, bmsMaxAmps, bmsCutoff, hasBypassBms };
 }
 
 // Wrap catalog for appearance editor
 export const WRAPS = [
+  { id: "sebuu_pink", label: "Sebuu Pink 99", preview: "#ec4899" },
   { id: "none",          label: "Stock",          preview: "#374151" },
   { id: "carbon_black",  label: "Carbon Black",   preview: "#111" },
   { id: "carbon_orange", label: "Carbon Orange",  preview: "#c2410c" },

@@ -71,3 +71,7 @@ New installs connect automatically. Earlier localhost:8787 settings migrate once
 Decoded samples have a blended loop seam, speed-dependent rate and load-dependent level. Motor upgrades affect the torque layer. Stationary vehicles are silent, gas/brake buttons no longer beep, and the petrol-like starting effect is removed. The same audio system is active in telemetry, city rides and AI/career/online drag races. Rapid restart and mute/unmute no longer kill the next ride’s audio.
 
 Validation: 390px phone ride produced a non-silent output signal; every included recording decoded and started offline from local assets. Restart, mute/unmute, stationary silence and drag audio were checked in Chrome. Subjective audio fidelity has not been independently auditioned.
+
+## Latest update: v72
+
+Custom Parts now supports selecting and swapping individual battery cells, motor internals and controller packages, with removal/install animations, comparison, undo and persistent builds. Component ratings are virtual game models. See [workshop update](UPDATE-V72-CUSTOM-BUILDER.md). This update publishes a Windows build; no new Android APK has been built or included.

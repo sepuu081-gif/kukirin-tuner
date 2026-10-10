@@ -73,7 +73,10 @@ export function createScooterModel(vehicle, motorCount, appearance = {}) {
     const pivotX=index?p.deck/2+.03:-p.deck/2-.03;
     for(const z of [-p.width/2,p.width/2]){
       if(index===0&&p.suspension==='fork'){
-        rod([x,r,z],[x+.025,.69,z],.026,black);rod([x,r+.07,z],[x+.02,.49,z],.016,silver);
+        // USD fork: larger outer cartridge at the crown, narrow slider toward axle.
+        rod([x+.025,.69,z],[x+.016,.39,z],.026,black).name='inverted-fork-outer';
+        rod([x+.016,.39,z],[x,r+.025,z],.016,silver).name='inverted-fork-slider';
+        bolt(x+.021,.56,z+Math.sign(z)*.025,.009);
       }else{
         const points=[[x-.025,r-.015],[x-.023,r+.04],[pivotX,p.height+.055],[pivotX+.025,p.height-.025]];
         const hole=p.openArm?[[x+(index?-.055:.055),r+.015],[pivotX+(index?.025:-.025),p.height+.02],[pivotX+(index?.025:-.025),p.height-.001]]:undefined;
@@ -120,7 +123,10 @@ export function createScooterModel(vehicle, motorCount, appearance = {}) {
     const m=mesh(group,new THREE.PlaneGeometry(w,h),mat,pos,'model-decal');m.rotation.z=rotation;
   };
   const modelLabel = p.brand === undefined ? `KuKirin ${p.label}` : `${p.brand} ${p.label}`.trim();
-  if(!appearance.customEnabled || appearance.sticker !== 'none') {
+  if(vehicle.id==='sebius_redbull_g2'){
+    decal('Red Bull 99',.49,.045,[0,p.height+.003,p.width/2+.006],0,'#ec4899','#161318');
+    decal('Red Bull 99',.55,.06,[-.33,.99,.038],Math.PI/2-.25,'#ec4899','#161318');
+  }else if(!appearance.customEnabled || appearance.sticker !== 'none') {
   decal(modelLabel,.49,.04,[0,p.height+.003,p.width/2+.005]);
   decal(modelLabel,.52,.05,[-.33,.99,.037],Math.PI/2-.25,appearance.customEnabled ? appearance.stickerColor : p.stem==='orange-panel'?'#13171c':p.trim,appearance.customEnabled ? appearance.stemColor : p.stem==='orange-panel'?p.trim:'#151a20');
   }
@@ -136,7 +142,7 @@ export function createScooterModel(vehicle, motorCount, appearance = {}) {
   box([.047,.015,.095],red,[p.deck/2+.115,deckTop+.105,0],'tail-light');
   rod([handle[0],handle[1],-.31],[handle[0],handle[1],.31],.015,silver);
   for(const z of [-.255,.255]){
-    rod([handle[0],handle[1],z-.052],[handle[0],handle[1],z+.052],.023,rubber);
+    rod([handle[0],handle[1],z-.052],[handle[0],handle[1],z+.052],.023,p.gripColor?material(p.gripColor,0,.9):rubber);
     rod([handle[0]-.04,handle[1]-.025,z-.038],[handle[0]-.06,handle[1]-.025,z+.025],.007,silver);
     const curve=new THREE.CatmullRomCurve3([new THREE.Vector3(handle[0]-.04,handle[1],z),new THREE.Vector3(-.49,1.05,z*.4),new THREE.Vector3(-.43,.65,.06),new THREE.Vector3(-wb/2,r+.05,.09)]);
     mesh(group,new THREE.TubeGeometry(curve,24,.0035,5,false),rubber,[0,0,0],'brake-cable');

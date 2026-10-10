@@ -152,6 +152,14 @@ export const REPAIR_FLOWS = {
   },
 };
 
+// Physical fault flows retain the established tool, accuracy and bonus rules.
+const PHYSICAL_REPAIRS={pads:['Brake pads',30,'allen','Piduriklotsid'],rotor:['Brake disc',30,'allen','Piduriketas'],bearings:['Wheel bearing',50,'wrench','Rattalaager'],throttle:['Throttle',35,'driver','Gaasinupp'],hall:['Hall sensor board',50,'driver','Hall-anduriplaat'],motor_sensor:['Motor sensor',50,'driver','Mootori andur'],cell_balance:['Virtual cell balancing module',100,'driver','Virtuaalne tasakaalustusmoodul'],fork_seal:['Suspension seal',40,'allen','Amordi tihend'],steering_bearing:['Headset bearing',60,'allen','Roolilaager'],tyre:['Tyre',30,'levers','Rehv'],charge_port:['Charging socket',35,'driver','Laadimispesa'],headlight:['Headlight',35,'allen','Esituli'],winding:['Motor winding',50,'driver','Mootorimähis'],wiring:['Wiring module',35,'driver','Juhtmestik'],kickstand:['Stand latch',60,'allen','Tugijala fiksaator']};
+for(const [kind,[label,cost,tool,et]] of Object.entries(PHYSICAL_REPAIRS))REPAIR_FLOWS[kind]={label,scene:kind,cost,steps:[
+ {id:'release',label:'Release '+label,et:'Vabasta '+et.toLowerCase(),tool,target:kind,count:2},
+ {id:'remove',label:'Remove worn '+label,et:'Eemalda vana '+et.toLowerCase(),tool:'hands',target:kind,count:1},
+ {id:'install',label:'Place replacement '+label,et:'Paigalda uus '+et.toLowerCase(),tool:'hands',target:kind,count:1},
+ {id:'tighten',label:'Secure '+label,et:'Kinnita '+et.toLowerCase(),tool,target:kind,count:2},
+ {id:'test',label:'Function test',et:'Töökatse',tool:'hands',target:kind,count:1}]};
 export function getRepairFlow(partType) {
   return REPAIR_FLOWS[partType] || REPAIR_FLOWS.electronics;
 }

@@ -7,9 +7,10 @@ android {
         applicationId "ee.kukirin.tuner"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 64
-        versionName "1.0.64"
+        versionCode 66
+        versionName "1.0.66"
         buildConfigField "boolean", "STARTIO_TEST_ADS", providers.gradleProperty('startioTestAds').getOrElse('false')
+        resValue "string", "ads_app_name", providers.gradleProperty('startioTestAds').getOrElse('false') == 'true' ? "KuKirin Tuner - Ad Test" : "KuKirin Tuner"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.

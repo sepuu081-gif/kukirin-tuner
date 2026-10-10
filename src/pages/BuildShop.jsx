@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import { VEHICLES, PARTS_CATALOG, BMS_CATALOG } from "../lib/vehicleData";
 import { getBuild, saveBuild, checkPartFit, calcBuildStats, getMaxFrameSize } from "../lib/buildState";
 import TireWorkshop from "../components/TireWorkshop";
+import ComponentWorkbench from '../components/workshop/ComponentWorkbench';
 import PartImage from '../components/PartImage';
 import PartComparison from "../components/PartComparison";
 import WeldEffect from "../components/WeldEffect";
@@ -51,6 +52,7 @@ export default function BuildShop() {
     const requested = new URLSearchParams(location.search).get('tab');
     return TABS.some(tab => tab.id === requested) ? requested : 'build';
   });
+  const [workbench,setWorkbench]=useState(null);const [workbenchMode,setWorkbenchMode]=useState('install');
   const [comparison, setComparison] = useState(null);
   const [pendingPart, setPendingPart] = useState(null);
   const [partSearch, setPartSearch] = useState("");
@@ -90,7 +92,7 @@ export default function BuildShop() {
     return [...custom, ...stock];
   };
 
-  const equip = (part) => {
+  const commitEquip = (part) => {
     if (part.id?.startsWith("bms_") || BMS_CATALOG.find(b => b.id === part.id)) {
       setBuild(b => ({ ...b, bms: part }));
       return;
@@ -98,15 +100,17 @@ export default function BuildShop() {
     if (!checkPartFit(part, vehicle, build.weldCount)) {
       setPendingPart(part); return;
     }
+    if(part.screenKit){setBuild(b=>({...b,parts:{...b.parts,screen_delete:part,rfid:{id:'rfid_kill_switch',name:'RFID Kill Switch',category:'screen_delete'},phone_mount:{id:'quad_lock_phone_mount',name:'Quad Lock Mount',category:'screen_delete'},bt_module:{id:'vesc_tool_bt_module',name:'VESC BT Module',category:'screen_delete'}},screenDeleteInstalled:true}));return;}
     setPendingPart(null);
     setBuild(b => ({ ...b, parts: { ...b.parts, [part.category]: part } }));
   };
 
+  const equip = part => {setWorkbenchMode('install');setWorkbench({...part,category:part.category||'bms'});};
   const weld = () => {
     setBuild(b => {
       const next = { ...b, weldCount: b.weldCount + 1, frameExpansion: (b.frameExpansion || 0) + 1 };
       if (pendingPart && checkPartFit(pendingPart, vehicle, next.weldCount)) {
-        next.parts = { ...next.parts, [pendingPart.category]: pendingPart };
+        setWorkbenchMode('install');setWorkbench(pendingPart);
         setPendingPart(null);
       }
       return next;
@@ -233,14 +237,7 @@ export default function BuildShop() {
                     </div>
                   ) : (
                     <button
-                      onClick={() => setBuild(b => ({ ...b,
-                        parts: { ...b.parts,
-                          screen_delete: { id: "screen_delete_full",  name: "Screen Delete Kit",  category: "screen_delete" },
-                          rfid:          { id: "rfid_kill_switch",    name: "RFID Kill Switch",   category: "screen_delete" },
-                          phone_mount:   { id: "quad_lock_phone_mount",name:"Quad Lock Mount",    category: "screen_delete" },
-                          bt_module:     { id: "vesc_tool_bt_module", name: "VESC BT Module",     category: "screen_delete" },
-                        }, screenDeleteInstalled: true
-                      }))}
+                      onClick={() => equip({id:'screen_delete_full',name:'Screen Delete Kit',category:'screen_delete',screenKit:true})}
                       className="w-full rounded-md border border-lime-500/40 bg-lime-500/10 py-2 font-mono text-[10px] font-bold text-lime-400 uppercase tracking-widest hover:bg-lime-500/20 transition-all flex items-center justify-center gap-2"
                     >
                       <Unplug className="h-3.5 w-3.5" /> CONVERT — PHONE + KILLSWITCH
@@ -275,6 +272,7 @@ export default function BuildShop() {
                 <label><Search aria-hidden="true" /><input value={partSearch} onChange={(event) => setPartSearch(event.target.value)} placeholder={tr("Search parts…")} aria-label={tr("Search parts…")} /></label>
                 <button type="button" aria-pressed={compatibleOnly} onClick={() => setCompatibleOnly((value) => !value)}><SlidersHorizontal aria-hidden="true" />{tr("Fits only")}</button>
               </div>
+              {installedPart&&<button className="part-equip-button my-2" onClick={()=>{setWorkbenchMode('uninstall');setWorkbench({...installedPart,category:activeCategory});}}>{tr('Remove')} · {installedPart.name}</button>}
               {comparison && <PartComparison vehicle={vehicle} build={build} part={comparison} isBms={activeCategory === 'bms'} installed={installedPart?.id === comparison.id} fits={activeCategory === 'bms' || checkPartFit(comparison, vehicle, build.weldCount)} onClose={() => setComparison(null)} onInstall={() => { equip(comparison); setComparison(null); }} />}
               <div className="part-catalog-list space-y-2 max-h-[70vh] overflow-y-auto pr-1">
                 {currentParts.map((part) => {
@@ -284,7 +282,8 @@ export default function BuildShop() {
                   return (
                     <div
                       key={part.id}
-                      onClick={() => setComparison(part)}
+                      role="button" tabIndex={0} onKeyDown={e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();equip(part);}}}
+                      onClick={() => equip(part)}
                       className={`part-card rounded-lg border p-3 cursor-pointer transition-all ${
                         installed
                           ? "border-green-500/40 bg-green-500/5"
@@ -347,7 +346,7 @@ export default function BuildShop() {
 
         {/* ── CUSTOM PARTS TAB ── */}
         {activeTab === "custom" && (
-          <CustomPartBuilder
+          <CustomPartBuilder onUpdate={part=>setBuild(b=>b.parts[part.category]?.id===part.id?{...b,parts:{...b.parts,[part.category]:part}}:b)} vehicle={vehicle} build={build}
             onEquip={(part) => equip(part)}
           />
         )}
@@ -375,6 +374,7 @@ export default function BuildShop() {
           </div>
         )}
       </main>
+      {workbench&&<ComponentWorkbench part={workbench} vehicle={vehicle} build={build} mode={workbenchMode} fits={workbench.category==='bms'||checkPartFit(workbench,vehicle,build.weldCount)} onNeedsWeld={p=>{setWorkbench(null);setPendingPart(p);}} onComplete={p=>{if(workbenchMode==='uninstall')setBuild(b=>p.category==='bms'?{...b,bms:null}:p.screenKit?{...b,screenDeleteInstalled:false,parts:{...b.parts,screen_delete:null,rfid:null,phone_mount:null,bt_module:null}}:{...b,parts:{...b.parts,[p.category]:null}});else commitEquip(p);setWorkbench(null);}} onCancel={()=>setWorkbench(null)}/>}
     </div>
   );
 }

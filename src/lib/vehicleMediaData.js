@@ -440,12 +440,21 @@ export const VEHICLE_MEDIA = {
     "base": "g3"
   },
   "sebius_redbull_g2": {
-    "file": "ride-g2.png",
-    "kind": "base-photo",
+    "file": "redbull-g2-competition-pink-source.png",
+    "kind": "photo",
+    "squareFrame": true,
+    "mirrorPhoto": true,
+    "source": "https://gomagcdn.ro/domains2/trotinete-ieftine.ro/files/product/original/viniluri-personalizare-kukirin-g2-competition-pink-kit-decor-protectie-premium-464426.png",
+    "factoryWrap": "sebuu_pink",
+    "originalReference": "/assets/vehicles/sebuu-g2-original.png",
+    "grips": [[35.1,11.7],[36.3,12.2]],
+    "riderScale": 0.76,
+    "footrests": [[51,76],[63,78]],
     "base": "g2_2026"
   }
 };
 export const VEHICLE_MEDIA_LAYOUTS = {
+  sebius_redbull_g2: [16.7,81.3,78.7,90.3,18.35,35.1,11.7,78,20.2],
   "a1": [
     32.6,
     89,

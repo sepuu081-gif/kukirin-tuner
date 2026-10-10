@@ -1,3 +1,4 @@
+import {recordWorkshopUsage} from '../lib/workshopDiagnostics';
 import RaceRidePreview from '../components/RaceRidePreview';
 import {submitScore} from '../lib/leaderboard';
 import { getTires, saveTires, tireEffects, wearTires } from "../lib/rideUpgrades";
@@ -7,7 +8,7 @@ import { VEHICLES } from "../lib/vehicleData";
 import { getAllBuilds, calcBuildStats, getBuild } from "../lib/buildState";
 import { ArrowLeft, Flag, Wifi, Users, Copy, Loader2 } from "lucide-react";
 import { useLanguage } from "../lib/i18n";
-import { CAREER_EVENTS, completeCareerRace, getCareer } from "../lib/careerState";
+import { CAREER_EVENTS, completeCareerRace } from "../lib/careerState";
 import { startEngineSound, updateEngineSound, stopEngineSound } from '../lib/soundEngine';
 
 function getRespect() { try { return parseInt(localStorage.getItem("kukirin_respect") || "0"); } catch { return 0; } }
@@ -307,27 +308,10 @@ export default function DragRace() {
           setCareerReward({ xp: pWon ? 30 : 10, vehicleId: null });
         }
 
-        const wearKey = `kukirin_career_wear_${vehicle.id}`;
-        const previousWear = Number(localStorage.getItem(wearKey) || 0);
-        const powerRatio = Math.max(1, stats.watts / Math.max(1, vehicle.watts));
-        const nextWear = previousWear + 0.025 + Math.min(0.04, (powerRatio - 1) * 0.004) + (pWon ? 0 : 0.015);
-        if (damageEnabled() && nextWear >= 1) {
-          localStorage.setItem(wearKey, "0");
-          const raceCount = getCareer().races;
-          const failures = [
-            { part: "motor", code: "ERR_MOTOR_BEARING" },
-            { part: "controller", code: "ERR_ESC_OVERCURRENT" },
-            { part: "wheel", code: "ERR_TIRE_BLOWOUT" },
-            { part: "battery", code: "ERR_CELL_IMBALANCE" },
-          ];
-          const failure = failures[raceCount % failures.length];
-          const list = JSON.parse(localStorage.getItem("kukirin_broken_parts") || "[]");
-          list.push({ ...failure, vehicleId: vehicle.id, vehicleName: vehicle.name, date: new Date().toISOString() });
-          localStorage.setItem("kukirin_broken_parts", JSON.stringify(list));
-          setCareerBreakdown(failure.code);
-        } else {
-          if (damageEnabled()) localStorage.setItem(wearKey, nextWear.toFixed(4));
-        }
+        // Mileage-based wear replaces the old rotating failure every few races.
+        // Career rewards, progression and race physics above are unchanged.
+        recordWorkshopUsage(vehicle.id,{id:'drag-'+Date.now(),vehicleName:vehicle.name,reason:'drag',samples:[],summary:{distanceKm:.4023}});
+
       }
 
       const entry = {
@@ -606,4 +590,3 @@ export default function DragRace() {
     </div>
   );
 }
-import { damageEnabled } from '../lib/gameSettings';

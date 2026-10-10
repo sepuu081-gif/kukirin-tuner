@@ -21,6 +21,7 @@ import java.util.UUID;
 @CapacitorPlugin(name = "StartIoAds")
 public class StartIoAdsPlugin extends Plugin {
     static final String APP_ID = "209307351";
+    static final String ACCOUNT_ID = "194751889";
     private final Handler handler = new Handler(Looper.getMainLooper());
     private PluginCall activeCall;
     private RewardSession session;
@@ -35,6 +36,13 @@ public class StartIoAdsPlugin extends Plugin {
         result.put("adult", prefs().getBoolean("adult", false));
         result.put("configured", prefs().getBoolean("configured", false));
         result.put("testAds", BuildConfig.STARTIO_TEST_ADS);
+        result.put("lastError", prefs().getString("lastError", ""));
+        result.put("lastErrorCode", prefs().getString("lastErrorCode", ""));
+        result.put("lastErrorMode", prefs().getString("lastErrorMode", ""));
+        result.put("version", BuildConfig.VERSION_NAME);
+        result.put("appId", APP_ID);
+        result.put("packageName", getContext().getPackageName());
+        result.put("sdkVersion", StartAppSDK.getVersion());
         return result;
     }
     @PluginMethod public void getStatus(PluginCall call) { call.resolve(status()); }
@@ -79,13 +87,13 @@ public class StartIoAdsPlugin extends Plugin {
                 else {
                     StartAppAd.disableSplash(); StartAppAd.disableAutoInterstitial();
                     StartAppSDK.setTestAdsEnabled(BuildConfig.STARTIO_TEST_ADS);
-                    StartAppSDK.initParams(getContext(), APP_ID).setReturnAdsEnabled(false).setCallback(() -> {
+                    StartAppSDK.initParams(getContext(), APP_ID).setAccountId(ACCOUNT_ID).setReturnAdsEnabled(false).setCallback(() -> {
                         initialized = true;
                         StartAppSDK.setUserConsent(getContext(), "pas", prefs().getLong("consentTime", System.currentTimeMillis()), false);
                         if (session == request) loadAd(request);
                     }).init();
                 }
-            } catch (Exception ex) { finish("UNAVAILABLE"); }
+            } catch (Exception ex) { finish("INIT_FAILED", ex.getClass().getSimpleName() + ": " + ex.getMessage()); }
         });
     }
     private void loadAd(RewardSession request) {
@@ -101,24 +109,36 @@ public class StartIoAdsPlugin extends Plugin {
                         handler.removeCallbacks(timeout);
                         boolean shown = ad.showAd(new AdDisplayListener() {
                             @Override public void adHidden(Ad shownAd) { if (session == request) finish(null); }
-                            @Override public void adDisplayed(Ad shownAd) { }
+                            @Override public void adDisplayed(Ad shownAd) { prefs().edit().remove("lastError").remove("lastErrorCode").remove("lastErrorMode").apply(); }
                             @Override public void adClicked(Ad shownAd) { }
-                            @Override public void adNotDisplayed(Ad failed) { if (session == request) finish("UNAVAILABLE"); }
+                            @Override public void adNotDisplayed(Ad failed) { if (session == request) finish("SHOW_FAILED", displayError()); }
                         });
-                        if (!shown && session == request) finish("UNAVAILABLE");
+                        if (!shown && session == request) finish("SHOW_FAILED", displayError());
                     });
                 }
-                @Override public void onFailedToReceiveAd(Ad failed) { if (session == request) finish("NO_AD"); }
+                @Override public void onFailedToReceiveAd(Ad failed) { if (session == request) {
+                    String detail = failed != null ? failed.getErrorMessage() : ad.getErrorMessage();
+                    finish(AdDiagnostics.code(detail), detail);
+                } }
             });
         });
     }
-    private void finish(String error) {
+    private String displayError() {
+        return ad.getNotDisplayedReason() != null ? ad.getNotDisplayedReason().toString() : ad.getErrorMessage();
+    }
+    private void finish(String error) { finish(error, error); }
+    private void finish(String error, String detail) {
         getActivity().runOnUiThread(() -> {
             if (activeCall == null || session == null || !session.end()) return;
             handler.removeCallbacks(timeout);
             PluginCall call = activeCall; boolean earned = session.earned(); String id = rewardId;
             activeCall = null; session = null; ad = null;
-            if (error != null && !earned) call.reject(error, error);
+            if (error != null && !earned) {
+                String safe = AdDiagnostics.clean(detail);
+                prefs().edit().putString("lastError", safe).putString("lastErrorCode", error)
+                    .putString("lastErrorMode", BuildConfig.STARTIO_TEST_ADS ? "test" : "production").apply();
+                call.reject(safe, error);
+            }
             else { JSObject result = new JSObject(); result.put("completed", earned); result.put("id", earned ? id : ""); call.resolve(result); }
         });
     }
