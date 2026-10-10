@@ -29,4 +29,4 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: >-
-          gh release create "windows-${{ github.run_number }}" 'KuKirin-Tuner-Windows.zip' --target '${{ github.sha }}' --title 'KuKirin Tuner v72 - Windows' --notes 'Interactive Custom Parts workshop: individual battery cells, motor internals and controller components can be selected, removed, replaced, compared and saved. Includes component-specific assembly animations, diagnostics and improved touch layout. Existing saves are preserved. No new Android APK is included in this release.'
+          gh release create "windows-${{ github.run_number }}" 'KuKirin-Tuner-Windows.zip' --target '${{ github.sha }}' --title 'KuKirin Tuner v73 - Windows' --notes 'Unique online rider names with private account keys. Custom powertrain limit is 20,000 W for regular accounts; only the verified Zepu owner account has higher custom power. Existing garage and career saves are preserved. No new Android APK is included.'

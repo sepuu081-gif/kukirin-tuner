@@ -1,39 +1,18 @@
 import {createServer} from 'node:http';
 import {DatabaseSync} from 'node:sqlite';
-import {mkdirSync} from 'node:fs';
+import {mkdirSync,readFileSync} from 'node:fs';
 import path from 'node:path';
-import {HEALTH,HOME,validScore,scoreQuery} from './protocol.mjs';
+import worker from './cloudflare/worker.mjs';
 const directory=process.env.DATA_DIR||'./data';mkdirSync(directory,{recursive:true});
-const db=new DatabaseSync(path.join(directory,'scores.sqlite'));
-db.exec('PRAGMA journal_mode=WAL; CREATE TABLE IF NOT EXISTS scores(id TEXT PRIMARY KEY,name TEXT NOT NULL,mode TEXT NOT NULL,value REAL NOT NULL,vehicle TEXT NOT NULL,time INTEGER NOT NULL)');
-const insert=db.prepare('INSERT OR IGNORE INTO scores VALUES(?,?,?,?,?,?)');
-const requests=new Map();
-setInterval(()=>requests.clear(),60000).unref();
-const allowed=process.env.ALLOWED_ORIGIN||'*';
-function send(res,status,data){res.writeHead(status,{'Content-Type':'application/json','Access-Control-Allow-Origin':allowed,'Access-Control-Allow-Methods':'GET, POST, OPTIONS','Access-Control-Allow-Headers':'Content-Type','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(JSON.stringify(data));}
-const server=createServer(async(req,res)=>{
- if(req.method==='OPTIONS'){send(res,204,null);return;}
- const url=new URL(req.url,'http://localhost');
- if(url.pathname==='/health'){send(res,200,HEALTH);return;}
- if(url.pathname==='/'&&req.method==='GET'){res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store'});res.end(HOME);return;}
- if(url.pathname!=='/scores'){send(res,404,{error:'Not found'});return;}
- const ip=req.socket.remoteAddress, count=(requests.get(ip)||0)+1;requests.set(ip,count);
- if(count>90){send(res,429,{error:'Try later'});return;}
- if(req.method==='GET'){
-  const mode=url.searchParams.get('mode')||'drag';if(!['drag','speed','delivery'].includes(mode)){send(res,400,{error:'Invalid mode'});return;}
-  // One best result per rider name and vehicle; lowest drag time wins.
-  const rows=db.prepare(scoreQuery(mode)).all(mode);
-  send(res,200,rows);return;
- }
- if(req.method!=='POST'){send(res,405,{error:'Method not allowed'});return;}
- let body='';let tooLarge=false;
- try{for await(const chunk of req){body+=chunk;if(Buffer.byteLength(body)>8192){tooLarge=true;break;}}if(tooLarge){send(res,413,{error:'Too large'});return;}
-  const row=JSON.parse(body);
-  const valid=validScore(row);
-  if(!valid){send(res,400,{error:'Invalid score'});return;}
-  insert.run(row.id,row.name.trim(),row.mode,row.value,row.vehicle,Date.now());send(res,201,{ok:true});
- }catch{send(res,400,{error:'Invalid request'});}
-});
+const db=new DatabaseSync(path.join(directory,'scores.sqlite'));db.exec('PRAGMA journal_mode=WAL;');db.exec(readFileSync(new URL('./cloudflare/schema.sql',import.meta.url),'utf8'));
+function statement(sql,args=[]){return {bind(...values){return statement(sql,values);},async all(){return {results:db.prepare(sql).all(...args)};},async run(){return db.prepare(sql).run(...args);}};}
+const env={DB:{prepare:sql=>statement(sql)}};
+const server=createServer(async(req,res)=>{try{
+ const chunks=[];let length=0;for await(const chunk of req){length+=chunk.length;if(length>8192){res.writeHead(413);res.end();return;}chunks.push(chunk);}
+ const headers={...req.headers,'CF-Connecting-IP':req.socket.remoteAddress};
+ const response=await worker.fetch(new Request('http://localhost'+req.url,{method:req.method,headers,...(['GET','HEAD'].includes(req.method)?{}:{body:Buffer.concat(chunks)})}),env);
+ const responseHeaders=Object.fromEntries(response.headers);if(process.env.ALLOWED_ORIGIN)responseHeaders['access-control-allow-origin']=process.env.ALLOWED_ORIGIN;
+ res.writeHead(response.status,responseHeaders);res.end(Buffer.from(await response.arrayBuffer()));
+ }catch{res.writeHead(503);res.end(JSON.stringify({error:'Server unavailable'}));}});
 server.listen(Number(process.env.PORT||8787),'0.0.0.0',()=>console.log('Leaderboard ready'));
-function close(){server.close(()=>{db.close();process.exit(0);});}
-process.on('SIGTERM',close);process.on('SIGINT',close);
+function close(){server.close(()=>{db.close();process.exit(0);});}process.on('SIGTERM',close);process.on('SIGINT',close);

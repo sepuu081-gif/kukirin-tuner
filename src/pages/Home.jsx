@@ -14,6 +14,8 @@ import LanguageToggle from "../components/LanguageToggle";
 import { useLanguage } from "../lib/i18n";
 import { getUnlockedCodes, redeemSecretCode } from '../lib/codeRewards';
 import RewardedAdsCard from '../components/RewardedAdsCard';
+import PlayerAccountCard from '../components/PlayerAccountCard';
+import {accountAction,savedAccount,ACCOUNT_ERRORS} from '../lib/playerAccount';
 import { recoverAdRewards } from '../lib/rewardedAds';
 
 export function getRespect() {
@@ -48,8 +50,16 @@ export default function Home() {
   const [riderBio, setRiderBio]   = useState(() => localStorage.getItem("kukirin_rider_bio") || "");
   const [riderLoc, setRiderLoc]   = useState(() => localStorage.getItem("kukirin_rider_loc") || "");
 
-  const saveProfile = () => {
-    localStorage.setItem("kukirin_rider_name", riderName);
+  const [profileError,setProfileError]=useState('');
+  const [profileBusy,setProfileBusy]=useState(false);
+  const saveProfile = async () => {
+    if(profileBusy)return;
+    if(riderName!==localStorage.getItem('kukirin_rider_name')){
+      setProfileBusy(true);
+      try{if(!savedAccount())throw new Error('invalid_account');await accountAction('rename',riderName);setProfileError('');}
+      catch(e){setProfileError(e.message);setRiderName(localStorage.getItem('kukirin_rider_name')||'');}
+      finally{setProfileBusy(false);}
+    }
     localStorage.setItem("kukirin_rider_bio", riderBio);
     localStorage.setItem("kukirin_rider_loc", riderLoc);
   };
@@ -385,7 +395,7 @@ export default function Home() {
                   value={riderName}
                   onChange={(e) => setRiderName(e.target.value)}
                   onBlur={saveProfile}
-                  placeholder="Enter your name..."
+                  disabled={profileBusy} maxLength={24} placeholder="Enter your name..."
                   className="w-full rounded-md border border-border bg-background px-3 py-2 font-mono text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50"
                 />
               </div>
@@ -414,6 +424,8 @@ export default function Home() {
               {riderBio && <p className="font-mono text-[10px] text-muted-foreground italic border-l-2 border-primary/30 pl-2">{riderBio}</p>}
             </div>
 
+            {profileError&&<p role="alert">{(ACCOUNT_ERRORS[profileError]||ACCOUNT_ERRORS.offline)[language==='et'?1:0]}</p>}
+            <PlayerAccountCard/>
             {/* Fans card */}
             <div className="rounded-xl border border-pink-500/20 bg-card p-4 flex items-center justify-between">
               <div className="flex items-center gap-3">

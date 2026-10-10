@@ -14,6 +14,7 @@ import VESCPhoneApp from "../components/VESCPhoneApp";
 import CustomPartBuilder, { getCustomParts } from "../components/CustomPartBuilder";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "../lib/i18n";
+import {customPowerAllowed,customPowerLimit} from '../lib/playerAccount';
 
 const PART_CATEGORIES = [
   { id: "motor",        label: "Motor" },
@@ -41,7 +42,7 @@ const TABS = [
 ];
 
 export default function BuildShop() {
-  const { t: tr } = useLanguage();
+  const { t: tr,language } = useLanguage();
   const { vehicleId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -105,7 +106,7 @@ export default function BuildShop() {
     setBuild(b => ({ ...b, parts: { ...b.parts, [part.category]: part } }));
   };
 
-  const equip = part => {setWorkbenchMode('install');setWorkbench({...part,category:part.category||'bms'});};
+  const equip = part => {if(!customPowerAllowed(part)){window.alert(`${language==='et'?'Konto custom-mootori võimsuspiir':'Account custom motor power limit'}: ${customPowerLimit()} W`);return;}setWorkbenchMode('install');setWorkbench({...part,category:part.category||'bms'});};
   const weld = () => {
     setBuild(b => {
       const next = { ...b, weldCount: b.weldCount + 1, frameExpansion: (b.frameExpansion || 0) + 1 };

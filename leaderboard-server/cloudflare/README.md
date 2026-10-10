@@ -23,3 +23,8 @@ This is a casual guest leaderboard. Nicknames are not authenticated identities a
 ## Publisher app-ads.txt
 
 The public `/app-ads.txt` route serves the user-supplied Start.io seller list from `appAds.mjs`, with matching source in `public/app-ads.txt`. It works without D1, supports GET/HEAD and preserves seller IDs. Register `https://kukirin-leaderboard.sepuu081-kukirin.workers.dev/app-ads.txt` in the Start.io portal. The Start.io publisher ID (194751889) differs from the native SDK App ID (209307351).
+
+
+## v73 accounts
+
+Apply schema.sql before deploying. New score submissions require an Authorization Bearer account key; the server uses the account name and rejects declared custom motor ratings above the account limit. Accounts register via /accounts/register and recover via /accounts/login. Names are case/whitespace/NFKC normalized; Zepu is reserved and can only be provisioned by the database owner. Do not put an owner credential in source code or GitHub. Account credentials identify players; ride scores remain client-reported rather than server-authoritative.

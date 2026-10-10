@@ -2,6 +2,7 @@ import {STUNT_BAR} from './stuntBar.js';
 import { BLUE_G2_STYLE } from './appearanceTuning.js';
 import { getMotorDriveSpec, getMotorCount, solveRoadSpeed } from './drivePhysics.js';
 import { VEHICLES } from './vehicleData.js';
+import {customPowerAllowed,customPowerLimit} from './playerAccount.js';
 
 const KEY = "kukirin_builds";
 
@@ -108,13 +109,17 @@ export function getMaxFrameSize(vehicle, weldCount) {
 }
 
 export function checkPartFit(part, vehicle, weldCount) {
-  return part.internalValid!==false && (!part.forVehicles || part.forVehicles.includes(vehicle.id)) && (!part.forSeries || part.forSeries.includes(vehicle.series)) && part.sizeClass <= getMaxFrameSize(vehicle, weldCount);
+  return customPowerAllowed(part) && part.internalValid!==false && (!part.forVehicles || part.forVehicles.includes(vehicle.id)) && (!part.forSeries || part.forSeries.includes(vehicle.series)) && part.sizeClass <= getMaxFrameSize(vehicle, weldCount);
 }
 
 export function calcBuildStats(vehicle, build) {
   const { parts } = build;
 
-  const motorPart = parts.motor;
+  // Keep the stored legacy build intact; apply the account limit to custom power.
+  const customPowertrain=['motor','battery','controller'].some(key=>parts[key]?.custom);
+  const motorRating=parts.motor?.watts||vehicle.watts;
+  const powerLimited=customPowertrain&&motorRating>customPowerLimit();
+  const motorPart = powerLimited?{...(parts.motor||{}),custom:true,watts:customPowerLimit(),noLoadSpeed:undefined,kv:undefined}:parts.motor;
   const battPart  = parts.battery;
   const ctrlPart  = parts.controller;
   const coolPart  = parts.cooling;
@@ -183,7 +188,7 @@ export function calcBuildStats(vehicle, build) {
   const topSpeed = Math.max(0, calculatedSpeed);
   const speedLimiter = !hasPowertrainSwap ? 'factory' : roadLimitedSpeed <= rpmLimitedSpeed ? 'drag' : 'rpm';
 
-  return { voltage, watts, maxAmps, usablePower, mechanicalPower, aeroCdA, topSpeed, roadLimitedSpeed, rpmLimitedSpeed, speedLimiter, motorCount: getMotorCount(vehicle, motorPart), motorKV: motorDrive.kv, suspensionHandling: parts.suspension?.handlingFactor || 1, riderPosture: tucked ? 'tuck' : 'upright', batteryCurrentLimit, wheelbase, totalWeight, heatCap, durability, dampFactor, torqueFactor, bmsMaxAmps, bmsCutoff, hasBypassBms };
+  return { voltage, watts, maxAmps, usablePower, mechanicalPower, aeroCdA, topSpeed, roadLimitedSpeed, rpmLimitedSpeed, speedLimiter, motorCount: getMotorCount(vehicle, parts.motor), motorKV: motorDrive.kv, suspensionHandling: parts.suspension?.handlingFactor || 1, riderPosture: tucked ? 'tuck' : 'upright', batteryCurrentLimit, wheelbase, totalWeight, heatCap, durability, dampFactor, torqueFactor, bmsMaxAmps, bmsCutoff, hasBypassBms };
 }
 
 // Wrap catalog for appearance editor

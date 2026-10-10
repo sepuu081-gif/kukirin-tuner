@@ -1,4 +1,5 @@
 import {assemblyRecipe} from './workshopParts';
+import {customPowerAllowed} from './playerAccount';
 // All ratings below are virtual workshop models, not manufacturer specifications.
 export const INTERNAL_MODELS=[
  {id:'standard',name:'Workshop Standard',maker:'Tuner Works',rating:1,capacity:1,color:'#6d93a5',price:4,format:'standard'},
@@ -60,6 +61,7 @@ export function calculateInternalPart(input){
 }
 export function saveInternalPart(part){
  const ready=calculateInternalPart(part);
+ if(!customPowerAllowed(ready))throw new Error('custom_power_limit');
  let parts;try{parts=JSON.parse(localStorage.getItem('kukirin_custom_parts')||'[]');}catch{parts=[];}
  localStorage.setItem('kukirin_custom_parts',JSON.stringify([...parts.filter(p=>p.id!==ready.id),ready]));
  let builds;try{builds=JSON.parse(localStorage.getItem('kukirin_builds')||'{}');}catch{builds={};}

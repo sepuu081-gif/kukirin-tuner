@@ -1,0 +1,28 @@
+import assert from 'node:assert/strict';
+import {DatabaseSync} from 'node:sqlite';
+import {readFileSync} from 'node:fs';
+import worker from './worker.mjs';
+import {tokenHash} from '../accounts.mjs';
+const db=new DatabaseSync(':memory:');db.exec(readFileSync(new URL('schema.sql',import.meta.url),'utf8'));
+function statement(sql,args=[]){return {bind(...values){return statement(sql,values);},async all(){return {results:db.prepare(sql).all(...args)};},async run(){return db.prepare(sql).run(...args);}};}
+const env={DB:{prepare:sql=>statement(sql)}};
+const post=(path,body,token)=>worker.fetch(new Request('https://test.example'+path,{method:'POST',headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{})},body:JSON.stringify(body)}),env);
+const a=await (await post('/accounts/register',{name:'Test Rider'})).json();assert.equal(a.account.role,'player');assert.equal(a.account.maxCustomWatts,20000);
+for(const name of [' test rider ','TEST RIDER','Ｔｅｓｔ Rider'])assert.equal((await post('/accounts/register',{name})).status,409);
+for(const name of ['Zepu',' zEPu ','Ｚｅｐｕ'])assert.equal((await post('/accounts/register',{name,role:'owner'})).status,409);
+assert.equal((await post('/accounts/login',{},'0'.repeat(64))).status,401);
+assert.equal((await post('/accounts/login',{},a.token)).status,200);
+const b=await (await post('/accounts/register',{name:'Second Rider'})).json();assert.equal((await post('/accounts/rename',{name:'TEST RIDER'},b.token)).status,409);
+const score={id:crypto.randomUUID(),name:'Zepu',vehicle:'G2',mode:'speed',value:60,customWatts:20000};
+assert.equal((await post('/scores',score)).status,401);
+assert.equal((await post('/scores',{...score,customWatts:50000,role:'owner'},a.token)).status,403);
+assert.equal((await post('/scores',score,a.token)).status,201);
+assert.equal(db.prepare('SELECT name FROM scores').get().name,'Test Rider');
+assert.equal((await post('/accounts/rename',{name:'New Name'},a.token)).status,200);
+assert.equal((await post('/accounts/register',{name:'New Name'})).status,409);
+const ownerToken='b'.repeat(64);db.prepare('INSERT INTO accounts VALUES(?,?,?,?,?,?)').run(crypto.randomUUID(),'Zepu','zepu',await tokenHash(ownerToken),'owner',Date.now());
+const owner=await (await post('/accounts/login',{},ownerToken)).json();assert.equal(owner.account.role,'owner');
+assert.equal((await post('/scores',{...score,id:crypto.randomUUID(),customWatts:50000},ownerToken)).status,201);
+assert.equal((await post('/scores',{...score,id:crypto.randomUUID(),customWatts:200001},ownerToken)).status,403);
+assert.equal((await post('/accounts/rename',{name:'Someone Else'},ownerToken)).status,409);
+db.close();console.log('PASS unique normalized names, reserved Zepu, key authentication, rename conflicts, canonical score names, 20kW player limit, 50kW owner access; old score table preserved.');

@@ -75,3 +75,8 @@ Validation: 390px phone ride produced a non-silent output signal; every included
 ## Latest update: v72
 
 Custom Parts now supports selecting and swapping individual battery cells, motor internals and controller packages, with removal/install animations, comparison, undo and persistent builds. Component ratings are virtual game models. See [workshop update](UPDATE-V72-CUSTOM-BUILDER.md). This update publishes a Windows build; no new Android APK has been built or included.
+
+
+## Latest update: v73
+
+Unique online rider names, private account recovery keys and a 20,000 W regular-account limit for custom motors. Zepu has a server-provisioned owner account. Existing garage and career saves remain; no APK was built. See UPDATE-V73-ACCOUNTS.md.
