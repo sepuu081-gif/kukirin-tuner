@@ -5,6 +5,9 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+concurrency:
+  group: windows-release
+  cancel-in-progress: false
 jobs:
   windows:
     runs-on: windows-latest
@@ -16,17 +19,26 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run lint
+      - run: node scripts/check-desktop-updater.cjs
       - run: npm run desktop:build
-      - name: Package portable Windows app
-        shell: pwsh
-        run: Compress-Archive -LiteralPath 'desktop-release/KuKirin Tuner-win32-x64' -DestinationPath 'KuKirin-Tuner-Windows.zip'
       - uses: actions/upload-artifact@v4
         with:
-          name: KuKirin-Tuner-Windows
-          path: KuKirin-Tuner-Windows.zip
-      - name: Publish download
+          name: KuKirin-Tuner-Windows-EXE
+          path: |
+            desktop-release/setup/*.exe
+            desktop-release/setup/*.blockmap
+            desktop-release/setup/latest.yml
+      - name: Publish installer and complete updater feed
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
-        run: >-
-          gh release create "windows-${{ github.run_number }}" 'KuKirin-Tuner-Windows.zip' --target '${{ github.sha }}' --title 'KuKirin Tuner v73 - Windows' --notes 'Unique online rider names with private account keys. Custom powertrain limit is 20,000 W for regular accounts; only the verified Zepu owner account has higher custom power. Existing garage and career saves are preserved. No new Android APK is included.'
+        run: |
+          $version = node -p "require('./package.json').version"
+          $tag = "v$version"
+          gh release create $tag --draft --target $env:GITHUB_SHA --title "KuKirin Tuner $version - Windows EXE" --notes-file desktop/release-notes.md
+          if ($LASTEXITCODE -ne 0) { throw 'Release creation failed. Increase package.json version for each release.' }
+          $assets = @(Get-ChildItem -LiteralPath desktop-release/setup -File | Where-Object { $_.Name -like '*.exe' -or $_.Name -like '*.blockmap' -or $_.Name -eq 'latest.yml' } | ForEach-Object { $_.FullName })
+          gh release upload $tag @assets
+          if ($LASTEXITCODE -ne 0) { throw 'Release upload failed; draft remains unpublished.' }
+          gh release edit $tag --draft=false --latest
+          if ($LASTEXITCODE -ne 0) { throw 'Release publication failed.' }

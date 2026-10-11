@@ -4,11 +4,11 @@ A game about tuning KuKirin, Xiaomi, Ninebot and other electric scooters, with r
 
 ## Windows app
 
-Download **KuKirin-Tuner-Windows.zip** from [Releases](https://github.com/sepuu081-gif/kukirin-tuner/releases/latest), extract the entire folder, and open **KuKirin Tuner.exe**. Keep the folder contents together. Windows 64-bit is supported.
+Download the **KuKirin-Tuner-Setup-*.exe** installer from [Releases](https://github.com/sepuu081-gif/kukirin-tuner/releases/latest) and open it. It installs for your Windows user and creates the game shortcut. No ZIP extraction is needed. Windows 64-bit is supported.
 
 W = throttle, S = rear brake, Space = wheelie, Q/E = training balance, F11 = fullscreen, Alt+Left = back. Touch/mouse controls also remain available. Riding and bundled assets work offline; network multiplayer needs a connection. Desktop saves are separate from browser and Android saves.
 
-Every push to main builds the Windows app and publishes a download. See [build progress](https://github.com/sepuu081-gif/kukirin-tuner/actions/workflows/windows.yml).
+Every release must increase package.json version. A push to main builds the EXE and publishes the installer and updater metadata together. The installed game checks GitHub automatically, downloads updates in the background and installs on a normal game close. Use Uuendused → Paigalda ja taaskäivita to apply a ready update immediately after your ride. Windows shutdown defers installation; saved data remains in the same AppData profile. Older ZIP versions need the installer once. See [build progress](https://github.com/sepuu081-gif/kukirin-tuner/actions/workflows/windows.yml).
 
 ## Run or build from source
 
@@ -27,7 +27,7 @@ npm run build
 npm run desktop:build
 ```
 
-The Windows app is generated in `desktop-release/KuKirin Tuner-win32-x64`. The Electron shell loads packaged local files; it does not need the development server.
+The EXE installer, latest.yml updater feed and blockmap are generated in `desktop-release/setup`. The Electron shell loads packaged local files; it does not need the development server.
 
 ## Android
 
@@ -72,11 +72,16 @@ Decoded samples have a blended loop seam, speed-dependent rate and load-dependen
 
 Validation: 390px phone ride produced a non-silent output signal; every included recording decoded and started offline from local assets. Restart, mute/unmute, stationary silence and drag audio were checked in Chrome. Subjective audio fidelity has not been independently auditioned.
 
-## Latest update: v72
+## Previous update: v72
 
 Custom Parts now supports selecting and swapping individual battery cells, motor internals and controller packages, with removal/install animations, comparison, undo and persistent builds. Component ratings are virtual game models. See [workshop update](UPDATE-V72-CUSTOM-BUILDER.md). This update publishes a Windows build; no new Android APK has been built or included.
 
 
-## Latest update: v73
+## Previous update: v73
 
 Unique online rider names, private account recovery keys and a 20,000 W regular-account limit for custom motors. Zepu has a server-provisioned owner account. Existing garage and career saves remain; no APK was built. See UPDATE-V73-ACCOUNTS.md.
+
+
+## Latest update: v74
+
+One Windows installer EXE with background updates from GitHub. Existing accounts, garage and career saves use the same Windows profile. APK was not built. See desktop/release-notes.md.

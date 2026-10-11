@@ -1,7 +1,7 @@
 {
   "name": "kukirin-tuner",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.74",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -94,6 +94,8 @@
     "autoprefixer": "^10.4.20",
     "baseline-browser-mapping": "^2.8.32",
     "electron": "^44.5.1",
+    "electron-builder": "^26.15.3",
+    "electron-updater": "^6.8.9",
     "eslint": "^9.19.0",
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^5.0.0",

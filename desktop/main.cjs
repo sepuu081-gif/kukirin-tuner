@@ -1,4 +1,6 @@
-const { app, BrowserWindow, Menu, protocol, net, shell } = require('electron');
+const { app, BrowserWindow, Menu, protocol, net, shell, dialog } = require('electron');
+const {createUpdater} = require('./updater.cjs');
+const {autoUpdater} = require('electron-updater');
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
 
@@ -7,7 +9,12 @@ protocol.registerSchemesAsPrivileged([{ scheme: 'kukirin', privileges: {
 } }]);
 app.setName('KuKirin Tuner');
 if (process.env.KUKIRIN_TEST_PROFILE) app.setPath('userData', process.env.KUKIRIN_TEST_PROFILE);
+else app.setPath('userData',path.join(app.getPath('appData'),'KuKirin Tuner'));
+app.setAppUserModelId('com.kukirin.tuner');
+const ownsLock=app.requestSingleInstanceLock();
+if(!ownsLock)app.quit();
 let window;
+let updater;
 const contentRoot = path.resolve(__dirname, app.isPackaged ? 'dist' : '../dist');
 function createWindow() {
   window = new BrowserWindow({
@@ -26,6 +33,14 @@ function createWindow() {
       if (/^https?:\/\//.test(url)) shell.openExternal(url);
     }
   });
+  window.on('query-session-end',()=>updater?.guardShutdown());
+  window.on('session-end',()=>updater?.guardShutdown());
+  buildMenu();
+  window.loadURL('kukirin://game/');
+}
+function buildMenu(){
+  const state=updater?.getState()||{phase:'idle'};
+  const status=state.phase==='ready'?`Uuendus ${state.version} valmis`:state.phase==='downloading'?`Laadin uuendust: ${state.percent}%`:state.phase==='checking'?'Kontrollin uuendusi…':state.phase==='error'?'Kontroll ebaõnnestus — proovi uuesti':`Versioon ${app.getVersion()}`;
   Menu.setApplicationMenu(Menu.buildFromTemplate([
     { label: 'Game', submenu: [
       { label: 'Back', accelerator: 'Alt+Left', click: () => window.webContents.executeJavaScript('history.back()') },
@@ -33,10 +48,16 @@ function createWindow() {
     ] },
     { label: 'View', submenu: [{ role: 'togglefullscreen', accelerator: 'F11' }, { role: 'reload' },
       { role: 'resetZoom' }, { role: 'zoomIn' }, { role: 'zoomOut' }] },
+    {label:state.phase==='ready'?'Uuendus valmis':'Uuendused',submenu:[
+      {label:status,enabled:false},
+      {id:'check-update',label:'Kontrolli uuendusi',enabled:!['checking','downloading'].includes(state.phase),click:()=>void updater.check(true)},
+      {id:'install-update',label:'Paigalda ja taaskäivita',enabled:state.phase==='ready',click:()=>void updater.install()},
+    ]},
   ]));
-  window.loadURL('kukirin://game/');
 }
 app.whenReady().then(() => {
+  if(!ownsLock)return;
+  updater=createUpdater({app,dialog,getWindow:()=>window,updater:autoUpdater,onState:()=>buildMenu()});
   const root = contentRoot;
   protocol.handle('kukirin', request => {
     const url = new URL(request.url);
@@ -48,6 +69,8 @@ app.whenReady().then(() => {
     return net.fetch(pathToFileURL(file).href);
   });
   createWindow();
+  const stopUpdates=updater.start();app.on('will-quit',stopUpdates);
   app.on('activate', () => { if (BrowserWindow.getAllWindows().length === 0) createWindow(); });
 });
+app.on('second-instance',()=>{if(window){if(window.isMinimized())window.restore();window.focus();}});
 app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
